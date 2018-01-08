@@ -20,7 +20,7 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -38,30 +38,29 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.3.5</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.twitter4j</groupId>
 			<artifactId>twitter4j-core</artifactId>
 			<version>[4.0,)</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.facebook4j</groupId>
 			<artifactId>facebook4j-core</artifactId>
 			<version>[2.2,)</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<type>jar</type>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -70,7 +69,7 @@
 			<artifactId>imgscalr-lib</artifactId>
 			<version>4.2</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
@@ -78,10 +77,10 @@
 		</dependency>
 
 		<!-- Spring dependencies -->
-		
+
 		<!-- Spring Security -->
-		
-		
+
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -99,7 +98,7 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>${spring.security.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -146,7 +145,7 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.hateoas</groupId>
 			<artifactId>spring-hateoas</artifactId>

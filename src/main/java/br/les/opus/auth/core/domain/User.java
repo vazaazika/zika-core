@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Classe que representa um usuário dos sistemas NYX. Essa classe implementa a
+ * Classe que representa um usuário. Essa classe implementa a
  * interface {@link UserDetails} do Spring Security para servir como entidade
  * autenticável no framework mencionado.
  * 
