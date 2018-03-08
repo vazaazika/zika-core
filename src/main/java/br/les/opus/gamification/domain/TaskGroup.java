@@ -36,13 +36,4 @@ public class TaskGroup {
 	@JoinColumn(name = "badge_id", nullable=false)
 	private Badge badge;
 
-	/**
-	 * Checks if a player can register progress in this task group.
-	 * @param player player trying to register progress
-	 * @return true if the player can have progress, false otherwise
-	 */
-	public boolean canProgress(Player player) {
-		return true;
-	}
-	
 }

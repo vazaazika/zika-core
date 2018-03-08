@@ -18,6 +18,11 @@ public class Quest extends TaskGroup {
 	@Column(nullable=false, unique=true)
 	private String name;
 	
+	/**
+	 * Checks if a player can register progress in the quest.
+	 * @param player player trying to register progress
+	 * @return true if the player can have progress, false otherwise
+	 */
 	public boolean canProgress(Player player) {
 		return minLevel != null && player.getLevel() >= minLevel;
 	}
