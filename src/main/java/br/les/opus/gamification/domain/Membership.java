@@ -28,7 +28,7 @@ public class Membership {
 	private Player player;
 	
 	@ManyToOne
-	@JoinColumn(name = "player_id", nullable=false)
+	@JoinColumn(name = "team_id", nullable=false)
 	private Team team;
 	
 	/**
