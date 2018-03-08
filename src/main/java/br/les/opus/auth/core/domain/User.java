@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -25,12 +27,12 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.les.opus.auth.core.validators.UniqueUsername;
-import br.les.opus.commons.persistence.IdAware;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.les.opus.auth.core.validators.UniqueUsername;
+import br.les.opus.commons.persistence.IdAware;
 
 /**
  * Classe que representa um usuário. Essa classe implementa a
@@ -43,6 +45,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @UniqueUsername(payload = {}) //ensures validation on insert/update regarding user name
 @Table(name = "system_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails, IdAware<Long> {
 
 	private static final long serialVersionUID = 5060765600109301997L;
