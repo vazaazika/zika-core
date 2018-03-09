@@ -10,8 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import br.les.opus.gamification.domain.PerformedTask;
 import br.les.opus.gamification.domain.TaskAssignment;
 
 @Entity
@@ -30,7 +30,22 @@ public abstract class AssignmentConstraint {
 	
 	protected String description;
 	
-	public abstract boolean isSatisfied(PerformedTask performedTask);
+	@Transient
+	public abstract Class<?> getCheckerClass();
+	
+	/**
+	 * By default, when a player satisfies a constraint, he is exactly one step closer
+	 * to finish the related task assignment. However, special constraints can have
+	 * a heavier workload. It means the player must perform more tasks to satisfy it.
+	 * For instance, the workload for a {@link QuantityConstraint} is equals to the
+	 * specified quantity. Computing the total and the completed workload can be used
+	 * to measure the player progress in the TaskAssignment.
+	 * @return the workload completed when the player satisfies the constraint
+	 */
+	@Transient
+	public Integer getWorkload() {
+		return 1;
+	}
 
 	public Long getId() {
 		return id;

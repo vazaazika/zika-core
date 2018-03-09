@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import br.les.opus.gamification.domain.PerformedTask;
+import br.les.opus.gamification.constraints.checkers.QuantityConstraintChecker;
 import br.les.opus.gamification.domain.TaskAssignment;
 
 @Entity
@@ -19,11 +19,23 @@ public class QuantityConstraint extends AssignmentConstraint {
 	 */
 	@Column(nullable=false)
 	private Integer quantity;
+	
+	@Override
+	public Integer getWorkload() {
+		return quantity;
+	}
 
 	@Override
-	public boolean isSatisfied(PerformedTask performedTask) {
-		//TODO implementar
-		return false;
+	public Class<?> getCheckerClass() {
+		return QuantityConstraintChecker.class;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 }

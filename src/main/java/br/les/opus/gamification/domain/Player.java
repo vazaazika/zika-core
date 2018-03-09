@@ -36,6 +36,19 @@ public class Player extends User {
 	
 	@OneToMany(mappedBy = "player")
 	private List<Membership> memberships;
+	
+	@OneToMany(mappedBy = "player")
+	private List<TaskGroupProgression> progressions;
+	
+	public Player() {
+		this.xp = 0l;
+		this.level = 1;
+	}
+	
+	public void addXp(Integer xp) {
+		//TODO ligar com o modulo que computa o level pelo xp
+		this.xp += xp;
+	}
 
 	public List<Membership> getMemberships() {
 		return memberships;
@@ -77,8 +90,12 @@ public class Player extends User {
 		this.performedTasks = performedTasks;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public List<TaskGroupProgression> getProgressions() {
+		return progressions;
+	}
+
+	public void setProgressions(List<TaskGroupProgression> progressions) {
+		this.progressions = progressions;
 	}
 	
 }
