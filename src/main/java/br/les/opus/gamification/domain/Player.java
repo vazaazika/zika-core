@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -39,6 +40,10 @@ public class Player extends User {
 	
 	@OneToMany(mappedBy = "player")
 	private List<TaskGroupProgression> progressions;
+	
+	@Version
+    @Column(name="opt_lock")
+	private Integer version;
 	
 	public Player() {
 		this.xp = 0l;
@@ -97,5 +102,9 @@ public class Player extends User {
 	public void setProgressions(List<TaskGroupProgression> progressions) {
 		this.progressions = progressions;
 	}
-	
+
+	public Integer getVersion() {
+		return version;
+	}
+
 }

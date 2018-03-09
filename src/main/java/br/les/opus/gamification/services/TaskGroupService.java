@@ -36,8 +36,6 @@ public class TaskGroupService {
 	@Autowired
 	private PlayerRepository playerDao;
 	
-	// TODO dar xp pela tarefa feita
-	
 	private TaskAssignmentProgression getAssignmentProgression(TaskAssignment assignment, Player player) {
 		TaskAssignmentProgression progression = taProgressionDao.findByPlayer(assignment, player);
 		if (progression == null) {
@@ -70,7 +68,6 @@ public class TaskGroupService {
 			tgProgressionDao.save(progression);
 			if (!isCompleteBefore && progression.isComplete()) {
 				// the player just completed the task group
-				//TODO isso precisa ser thread safe! refatorar
 				player.addXp(group.getGivenXp());
 			}
 		}

@@ -54,6 +54,12 @@ public class PerformedTask {
 	public PerformedTask() {
 		this.date = new Date();
 	}
+	
+	public PerformedTask(Task task, Player player) {
+		this();
+		this.task = task;
+		this.player = player;
+	}
 
 	public Long getId() {
 		return id;
