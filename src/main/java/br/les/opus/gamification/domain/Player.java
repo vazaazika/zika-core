@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import br.les.opus.auth.core.domain.User;
+import br.les.opus.gamification.LevelingSystem;
 
 @Entity
 @Table(name = "game_player")
@@ -51,8 +52,8 @@ public class Player extends User {
 	}
 	
 	public void addXp(Integer xp) {
-		//TODO ligar com o modulo que computa o level pelo xp
 		this.xp += xp;
+		this.level = LevelingSystem.computeLevel(this.xp.intValue());
 	}
 
 	public List<Membership> getMemberships() {
