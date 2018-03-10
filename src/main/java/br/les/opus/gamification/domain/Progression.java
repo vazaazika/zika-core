@@ -98,5 +98,10 @@ public abstract class Progression {
 	public void setCompletedWork(Integer completedWork) {
 		this.completedWork = completedWork;
 	}
+
+	@Override
+	public String toString() {
+		return "Progression [id=" + id + ", progress=" + progress + ", player=" + player + "]";
+	}
 	
 }

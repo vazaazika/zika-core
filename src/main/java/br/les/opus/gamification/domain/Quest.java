@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "game_quest")
@@ -25,5 +26,10 @@ public class Quest extends TaskGroup {
 	 */
 	public boolean canProgress(Player player) {
 		return minLevel != null && player.getLevel() >= minLevel;
+	}
+	
+	@Transient
+	public String getType() {
+		return "quest";
 	}
 }

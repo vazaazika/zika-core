@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -44,6 +45,19 @@ public class Resource {
 	
 	public Resource() {
 		this.open = false;
+	}
+	
+	/**
+	 * Builds a resource from a given HTTP request
+	 * @param request request used to build the resource object
+	 */
+	public Resource(HttpServletRequest request) {
+		this();
+		String uri = request.getRequestURI().substring(request.getContextPath().length());
+		String operation = request.getMethod();
+		
+		this.setUri(uri);
+		this.setOperation(operation);
 	}
 	
 	public boolean matches(Resource resource) {

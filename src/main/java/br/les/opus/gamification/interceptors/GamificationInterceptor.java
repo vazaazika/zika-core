@@ -6,25 +6,19 @@ import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.les.opus.auth.core.domain.Token;
-import br.les.opus.auth.core.domain.User;
-import br.les.opus.auth.core.services.TokenService;
 import br.les.opus.gamification.GamificationException;
-import br.les.opus.gamification.UserAction;
-import br.les.opus.gamification.repositories.UserActionRepository;
+import br.les.opus.gamification.services.GamificationService;
 
 @Transactional
-public class GamificationLoggerInterceptor implements HandlerInterceptor {
+public class GamificationInterceptor implements HandlerInterceptor {
 	
 	@Autowired
-	private TokenService tokenService;
-	
-	@Autowired
-	private UserActionRepository userActionDao;
+	private GamificationService gamificationService;
 	
 	private Logger logger = Logger.getLogger(getClass());
 	
@@ -45,15 +39,13 @@ public class GamificationLoggerInterceptor implements HandlerInterceptor {
 			throws Exception {
 		
 		try {
-			Token currentToken = tokenService.getAuthenticatedUser(request);
-			User user = currentToken.getUser();
-			
-			String uri = request.getRequestURI().substring(request.getContextPath().length());
-			String operation = request.getMethod();
+			// We only process the game performed task if the request was successful 
 			int status = response.getStatus();
-			
-			UserAction action = new UserAction(uri, operation, status, user);
-			userActionDao.save(action);
+			HttpStatus.Series series = HttpStatus.valueOf(status).series();
+			if (!series.equals(HttpStatus.Series.SUCCESSFUL)) {
+				return;
+			}
+			gamificationService.processRequest(request);
 		} catch (BadCredentialsException e) {
 			logger.error("Action performed with no token informed", e);
 			throw new GamificationException("Action performed with no token informed", e);

@@ -61,6 +61,17 @@ public class Token {
 		return false;
 	}
 	
+	public Resource matchedSystemResource(Resource targetResource) {
+		User user = this.getUser();
+		List<Resource> resources = user.getAllResources();
+		for (Resource resource : resources) {
+			if (resource.matches(targetResource)) {
+				return resource;
+			}
+		}
+		return null;
+	}
+	
 	public Token(UsernamePasswordAuthenticationToken authToken) {
 		this();
 		StringBuffer buffer = new StringBuffer();

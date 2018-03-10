@@ -6,6 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class maps a {@link Player} to a {@link TaskGroup}. It is the way the system
  * track the player progress in a particular {@link TaskGroup}
@@ -19,6 +21,7 @@ import javax.persistence.UniqueConstraint;
 )
 public class TaskGroupProgression extends Progression {
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "task_group_id", nullable=false)
 	private TaskGroup taskGroup;

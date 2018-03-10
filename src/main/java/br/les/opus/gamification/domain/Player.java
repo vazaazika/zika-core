@@ -11,7 +11,10 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.les.opus.auth.core.domain.User;
+import br.les.opus.gamification.LevelingSystem;
 
 @Entity
 @Table(name = "game_player")
@@ -31,12 +34,15 @@ public class Player extends User {
 	@Column(nullable = false)
 	private Integer level;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "player")
 	private List<PerformedTask> performedTasks;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "player")
 	private List<Membership> memberships;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "player")
 	private List<TaskGroupProgression> progressions;
 	
@@ -46,8 +52,8 @@ public class Player extends User {
 	}
 	
 	public void addXp(Integer xp) {
-		//TODO ligar com o modulo que computa o level pelo xp
 		this.xp += xp;
+		this.level = LevelingSystem.computeLevel(this.xp.intValue());
 	}
 
 	public List<Membership> getMemberships() {
@@ -96,6 +102,11 @@ public class Player extends User {
 
 	public void setProgressions(List<TaskGroupProgression> progressions) {
 		this.progressions = progressions;
+	}
+
+	@Override
+	public String toString() {
+		return "Player [nickname=" + nickname + "]";
 	}
 	
 }

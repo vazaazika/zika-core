@@ -37,7 +37,7 @@ public class Task {
 	 * Resource that represents this task as a HTTP request
 	 */
 	@ManyToOne
-	@JoinColumn(name = "resource_id", nullable=false)
+	@JoinColumn(name = "resource_id", nullable=false, unique=true)
 	private Resource resource;
 
 	public Long getId() {

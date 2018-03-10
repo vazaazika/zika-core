@@ -12,6 +12,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.les.opus.gamification.domain.TaskAssignment;
 
 @Entity
@@ -24,12 +26,14 @@ public abstract class AssignmentConstraint {
 	@SequenceGenerator(name="generator", sequenceName="SQ_PK_ASSIGNMENT_CONSTRAINT")
 	protected Long id;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="task_assignment_id")
 	protected TaskAssignment taskAssignment;
 	
 	protected String description;
 	
+	@JsonIgnore
 	@Transient
 	public abstract Class<?> getCheckerClass();
 	
