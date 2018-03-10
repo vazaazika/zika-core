@@ -8,9 +8,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
-import br.les.opus.gamification.domain.PerformedTask;
+import br.les.opus.gamification.constraints.checkers.LocationConstraintChecker;
 
 @Entity
 @Table(name = "game_assignment_constraint_location")
@@ -22,9 +21,16 @@ public class LocationConstraint extends AssignmentConstraint {
 	private Geometry geofence;
 
 	@Override
-	public boolean isSatisfied(PerformedTask performedTask) {
-		Point location = performedTask.getLocation();
-		return location != null && geofence.contains(location);
+	public Class<?> getCheckerClass() {
+		return LocationConstraintChecker.class;
+	}
+
+	public Geometry getGeofence() {
+		return geofence;
+	}
+
+	public void setGeofence(Geometry geofence) {
+		this.geofence = geofence;
 	}
 
 }

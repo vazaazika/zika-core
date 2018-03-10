@@ -1,5 +1,7 @@
 package br.les.opus.gamification.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.Type;
 
@@ -43,6 +47,13 @@ public class PerformedTask {
 	@Column(columnDefinition="Geometry")
 	@Type(type="org.hibernate.spatial.GeometryType")
 	private Point location;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
+	
+	public PerformedTask() {
+		this.date = new Date();
+	}
 
 	public Long getId() {
 		return id;
@@ -74,6 +85,14 @@ public class PerformedTask {
 
 	public void setLocation(Point location) {
 		this.location = location;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }

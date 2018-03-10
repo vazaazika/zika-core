@@ -33,20 +33,34 @@ public class TaskAssignment {
 	@JoinColumn(name = "task_id", nullable=false)
 	private Task task;
 	
+	@ManyToOne
+	@JoinColumn(name = "task_group_id", nullable=false)
+	private TaskGroup taskGroup;
+	
 	@OneToMany(mappedBy="taskAssignment")
 	private List<AssignmentConstraint> constraints;
 	
-	public boolean isComplete(PerformedTask task) {
-		for (AssignmentConstraint constraint : constraints) {
-			if (!constraint.isSatisfied(task)) {
-				return false;
-			}
-		}
-		return true;
-	}
+	@OneToMany(mappedBy = "taskAssignment")
+	private List<TaskAssignmentProgression> progressions;
 	
 	public TaskAssignment() {
 		constraints = new ArrayList<>();
+	}
+	
+	/**
+	 * The sum of the workload of all constraints. If there is no constraint,
+	 * the workload is equals 1
+	 * @return the workload completed when the player finishes the task assignment
+	 */
+	public Integer getWorkload() {
+		if (constraints.isEmpty()) {
+			return 1;
+		}
+		Integer totalWorkload = 0;
+		for (AssignmentConstraint assignmentConstraint : constraints) {
+			totalWorkload += assignmentConstraint.getWorkload();
+		}
+		return totalWorkload;
 	}
 	
 	public Long getId() {
@@ -71,6 +85,22 @@ public class TaskAssignment {
 
 	public void setConstraints(List<AssignmentConstraint> constraints) {
 		this.constraints = constraints;
+	}
+
+	public TaskGroup getTaskGroup() {
+		return taskGroup;
+	}
+
+	public void setTaskGroup(TaskGroup taskGroup) {
+		this.taskGroup = taskGroup;
+	}
+
+	public List<TaskAssignmentProgression> getProgressions() {
+		return progressions;
+	}
+
+	public void setProgressions(List<TaskAssignmentProgression> progressions) {
+		this.progressions = progressions;
 	}
 	
 }
