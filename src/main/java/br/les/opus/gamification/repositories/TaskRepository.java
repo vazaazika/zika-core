@@ -11,7 +11,7 @@ import br.les.opus.gamification.domain.Task;
 public class TaskRepository extends HibernateAbstractRepository<Task, Long>{
 
 	public Task findByResource(Resource resource) {
-		String hql = "from Task where resource.is = :resourceId";
+		String hql = "from Task where resource.id = :resourceId";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("resourceId", resource.getId());
 		Object obj = query.uniqueResult();

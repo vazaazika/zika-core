@@ -18,7 +18,7 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		builder.append("  and tp.player.id = :playerId ");
 		
 		Query query = getSession().createQuery(builder.toString());
-		query.setParameter("playerId", player);
+		query.setParameter("playerId", player.getId());
 		query.setParameter("groupId", group.getId());
 		
 		return (Long)query.uniqueResult();

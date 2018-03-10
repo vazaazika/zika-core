@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
@@ -87,10 +88,15 @@ public class User implements UserDetails, IdAware<Long> {
 	@Transient
 	private List<Resource> resources;
 	
+	@Version
+    @Column(name="opt_lock")
+	private Integer version;
+	
 	public User() {
 		this.userRoles = new ArrayList<UserRole>();
 		this.enabled = true;
 		this.locked = false;
+		this.version = 0;
 	}
 	
 	@Override
@@ -282,6 +288,10 @@ public class User implements UserDetails, IdAware<Long> {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Integer getVersion() {
+		return version;
 	}
 
 }

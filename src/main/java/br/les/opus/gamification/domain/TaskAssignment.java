@@ -13,6 +13,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.les.opus.gamification.constraints.AssignmentConstraint;
 
 /**
@@ -33,13 +38,16 @@ public class TaskAssignment {
 	@JoinColumn(name = "task_id", nullable=false)
 	private Task task;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "task_group_id", nullable=false)
 	private TaskGroup taskGroup;
 	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="taskAssignment")
 	private List<AssignmentConstraint> constraints;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "taskAssignment")
 	private List<TaskAssignmentProgression> progressions;
 	

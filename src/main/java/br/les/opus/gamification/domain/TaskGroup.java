@@ -11,10 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "game_task_group")
@@ -36,15 +42,26 @@ public class TaskGroup {
 	/**
 	 * Badge given to a user that finishes all tasks in a {@link TaskGroup}
 	 */
-	@ManyToOne
+	@JsonIgnore
+	@OneToOne
 	@JoinColumn(name = "badge_id", nullable=false)
 	private Badge badge;
 	
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "taskGroup")
 	private List<TaskAssignment> assignments;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "taskGroup")
+	private List<TaskGroupProgression> progressions;
+	
 	public TaskGroup() {
 		this.assignments = new ArrayList<>();
+	}
+	
+	@Transient
+	public String getType() {
+		return "simple";
 	}
 	
 	/**
@@ -110,6 +127,22 @@ public class TaskGroup {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public List<TaskAssignment> getAssignments() {
+		return assignments;
+	}
+
+	public void setAssignments(List<TaskAssignment> assignments) {
+		this.assignments = assignments;
+	}
+
+	public List<TaskGroupProgression> getProgressions() {
+		return progressions;
+	}
+
+	public void setProgressions(List<TaskGroupProgression> progressions) {
+		this.progressions = progressions;
 	}
 	
 }

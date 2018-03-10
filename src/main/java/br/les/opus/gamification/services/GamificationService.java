@@ -47,15 +47,11 @@ public class GamificationService {
 	 */
 	public void processRequest(HttpServletRequest request) {
 		// get the player who performed the request
-		Token token = tokenService.getAuthenticatedUser(request);
-		User user = token.getUser();
-		Player player = playerDao.findOne(user.getId());
-		if (player == null) {
-			throw new GamificationException("The user " + user + " is not a player.");
-		}
+		Player player = loadPlayer(request);
 
 		// tries to find the Task related to the resource
 		Resource resource = new Resource(request);
+		Token token = tokenService.getAuthenticatedUser(request);
 		resource = token.matchedSystemResource(resource);
 		if (resource == null) {
 			return;
@@ -67,5 +63,15 @@ public class GamificationService {
 
 		PerformedTask performedTask = performedTaskService.register(task, player);
 		taskGroupService.trackProgress(performedTask);
+	}
+	
+	public Player loadPlayer(HttpServletRequest request) {
+		Token token = tokenService.getAuthenticatedUser(request);
+		User user = token.getUser();
+		Player player = playerDao.findOne(user.getId());
+		if (player == null) {
+			throw new GamificationException("The user " + user + " is not a player.");
+		}
+		return player;
 	}
 }

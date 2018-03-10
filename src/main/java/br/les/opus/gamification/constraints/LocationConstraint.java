@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.Geometry;
 
 import br.les.opus.gamification.constraints.checkers.LocationConstraintChecker;
@@ -16,6 +17,7 @@ import br.les.opus.gamification.constraints.checkers.LocationConstraintChecker;
 @PrimaryKeyJoinColumn(name = "constraint_id")
 public class LocationConstraint extends AssignmentConstraint {
 	
+	@JsonIgnore
 	@Column(columnDefinition="Geometry", nullable=false)
 	@Type(type="org.hibernate.spatial.GeometryType")
 	private Geometry geofence;
