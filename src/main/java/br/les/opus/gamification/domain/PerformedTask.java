@@ -42,7 +42,7 @@ public class PerformedTask {
 	private Player player;
 	
 	/**
-	 * The location where the playr was when performed the task (can be null).
+	 * The location where the player was when performed the task (can be null).
 	 */
 	@Column(columnDefinition="Geometry")
 	@Type(type="org.hibernate.spatial.GeometryType")

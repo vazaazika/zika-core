@@ -33,7 +33,7 @@ public class TaskAssignmentRepositoryTest extends DbTestUtil {
 		pTask.setTask(taskDao.findOne(1l)); //create poi task
 		
 		List<TaskAssignment> assignments = taDao.findAllIncomplete(pTask);
-		Assert.assertEquals(1, assignments.size());
+		Assert.assertEquals(2, assignments.size());
 		
 		//it must be the TaskAssignment with id = 1
 		Assert.assertEquals(1l, assignments.get(0).getId().longValue()); 
@@ -55,20 +55,20 @@ public class TaskAssignmentRepositoryTest extends DbTestUtil {
 	
 	@Test
 	public void findAllIncompleteForAliceCreatePoiTest() {
-		Player bob = playerDao.findOne(2l);
+		Player alice = playerDao.findOne(2l);
 		PerformedTask pTask = new PerformedTask();
-		pTask.setPlayer(bob);
+		pTask.setPlayer(alice);
 		pTask.setTask(taskDao.findOne(1l)); //create poi task
 		
 		List<TaskAssignment> assignments = taDao.findAllIncomplete(pTask);
-		Assert.assertEquals(2, assignments.size());
+		Assert.assertEquals(3, assignments.size());
 	}
 	
 	@Test
 	public void findAllIncompleteForAliceCreateUserTest() {
-		Player bob = playerDao.findOne(2l);
+		Player alice = playerDao.findOne(2l);
 		PerformedTask pTask = new PerformedTask();
-		pTask.setPlayer(bob);
+		pTask.setPlayer(alice);
 		pTask.setTask(taskDao.findOne(2l)); //create user task
 		
 		List<TaskAssignment> assignments = taDao.findAllIncomplete(pTask);
