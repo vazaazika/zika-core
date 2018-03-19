@@ -21,7 +21,7 @@ public class QuantityConstraintChecker implements ConstraintChecker {
 		Task task = constraint.getTaskAssignment().getTask();
 		Long count = performedTaskDao.countByPlayerAndTask(performedTask.getPlayer(), task);
 		if (count >= quantityConstraint.getQuantity()) {
-			return constraint.getWorkload();
+			return quantityConstraint.getWorkload();
 		}
 		return count.intValue();
 	}

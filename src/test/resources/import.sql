@@ -7,7 +7,7 @@ INSERT INTO resource(id,open,operation,uri) VALUES (8,1,'POST','/poi');
 INSERT INTO resource(id,open,operation,uri) VALUES (6,1,'POST','/user');
 
 INSERT INTO game_task(id,givenxp,resource_id) VALUES (1,10,8); --create poi task
-INSERT INTO game_task(id,givenxp,resource_id) VALUES (2,5,8);  --create user task
+INSERT INTO game_task(id,givenxp,resource_id) VALUES (2,5,6);  --create user task
 
 INSERT INTO game_badge(id,description,imageurl,name) VALUES (1,E'poi creator!',E'fakepath',E'Poi Creator');
 INSERT INTO game_badge(id,description,imageurl,name) VALUES (2,E'user creator!',E'fakepath',E'User Creator');
@@ -23,7 +23,17 @@ INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (3,20,3); -- task group 
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (3,1,3);
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (4,2,3); 
 
+INSERT INTO game_quest(task_group_id,minLevel,name) VALUES (1,10,'Quest Test');
+
 -- progressos do bob
-INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id) VALUES (1,0,0.5,1,1);
-INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id) VALUES (2,1,1,1,2);
-INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id) VALUES (3,1,1,1,3);
+INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK)  VALUES (1,0,0.5,1,1,1);
+INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (2,1,1,1,2,1);
+INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (3,1,1,1,3,1);
+
+-- test constrainsts
+
+INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (5,1,1); 
+INSERT INTO game_assignment_constraint(id,task_assignment_id,description) VALUES (1,5,'Assignment Quantity test');
+INSERT INTO game_assignment_constraint_quantity(constraint_id,quantity) VALUES (1,5);
+-- INSERT INTO game_assignment_constraint_location()
+
