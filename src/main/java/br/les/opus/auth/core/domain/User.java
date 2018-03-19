@@ -88,6 +88,7 @@ public class User implements UserDetails, IdAware<Long> {
 	@Transient
 	private List<Resource> resources;
 	
+	@JsonIgnore
 	@Version
     @Column(name="opt_lock")
 	private Integer version;

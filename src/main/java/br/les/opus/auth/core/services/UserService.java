@@ -16,6 +16,7 @@ import br.les.opus.auth.core.repositories.ResourceRepository;
 import br.les.opus.auth.core.repositories.RoleRepository;
 import br.les.opus.auth.core.repositories.UserRepository;
 import br.les.opus.auth.core.repositories.UserRoleRepository;
+import br.les.opus.gamification.domain.Player;
 
 @Service
 public class UserService {
@@ -75,7 +76,8 @@ public class UserService {
 	 * @return
 	 */
 	public User save(User user) {
-		User newUser = userRepository.save(user);
+		Player player = new Player(user);
+		User newUser = userRepository.save(player);
 		loadDefaultRoles(newUser);
 		return newUser;
 	}
