@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tweet_classification", schema = "twitter")
 public class TweetClassification {
@@ -19,6 +21,7 @@ public class TweetClassification {
 	
 	private String description;
 	
+	@JsonIgnore
 	@Column(name = "used_in_twitter_rank")
 	private Boolean usedInTwitterRank;
 	
@@ -31,7 +34,7 @@ public class TweetClassification {
 		this.id = id;
 	}
 
-	public boolean isRelevant() {
+	public Boolean isRelevant() {
 		return usedInTwitterRank;
 	}
 

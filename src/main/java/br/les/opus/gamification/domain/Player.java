@@ -46,6 +46,14 @@ public class Player extends User {
 	@OneToMany(mappedBy = "player")
 	private List<TaskGroupProgression> progressions;
 	
+	public Player(User user) {
+		this();
+		this.setName(user.getName());
+		this.setUsername(user.getUsername());
+		this.setPassword(user.getPassword());
+		this.setNickname(user.getUsername());
+	}
+	
 	public Player() {
 		this.xp = 0l;
 		this.level = 1;
