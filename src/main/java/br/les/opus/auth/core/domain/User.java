@@ -34,6 +34,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.les.opus.auth.core.validators.UniqueUsername;
 import br.les.opus.commons.persistence.IdAware;
+import br.les.opus.dengue.core.domain.PoiStatusUpdate;
+import br.les.opus.dengue.core.domain.PointOfInterest;
 
 /**
  * Classe que representa um usuário. Essa classe implementa a
@@ -76,6 +78,14 @@ public class User implements UserDetails, IdAware<Long> {
 	private Boolean enabled;
 
 	private Boolean locked;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<PointOfInterest> reports;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<PoiStatusUpdate> poiUpdates;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
@@ -293,6 +303,22 @@ public class User implements UserDetails, IdAware<Long> {
 
 	public Integer getVersion() {
 		return version;
+	}
+
+	public List<PointOfInterest> getReports() {
+		return reports;
+	}
+
+	public void setReports(List<PointOfInterest> reports) {
+		this.reports = reports;
+	}
+
+	public List<PoiStatusUpdate> getPoiUpdates() {
+		return poiUpdates;
+	}
+
+	public void setPoiUpdates(List<PoiStatusUpdate> poiUpdates) {
+		this.poiUpdates = poiUpdates;
 	}
 
 }

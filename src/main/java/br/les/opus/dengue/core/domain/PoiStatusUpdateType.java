@@ -9,6 +9,8 @@ import br.les.opus.commons.persistence.IdAware;
 @Entity
 @Table(name = "poi_status_update_type")
 public class PoiStatusUpdateType implements IdAware<Long> {
+	
+	public static final Long VERIFICATION = 1l;
 
 	@Id
 	private Long id;
