@@ -120,9 +120,11 @@ public class TwitterUser {
 	 * It indicates that we need to go to Twitter
 	 * and get the followers of the user
 	 */
+	@JsonIgnore
 	@Column(name = "outdated_followers")
 	private Boolean outdatedFollowers;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "user")
 	private ValidationMetadata validationMetadata;
 	
