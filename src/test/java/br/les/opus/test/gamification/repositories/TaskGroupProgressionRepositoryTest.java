@@ -1,4 +1,4 @@
-package br.les.opus.test.gamification.domain;
+package br.les.opus.test.gamification.repositories;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import br.les.opus.gamification.repositories.TaskAssignmentRepository;
 import br.les.opus.gamification.repositories.TaskGroupProgressionRepository;
 import br.les.opus.test.util.DbTestUtil;
 
-public class TaskGroupProgressionTest extends DbTestUtil{
+public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 	
 	@Autowired
 	private TaskGroupProgressionRepository tgpDao;
@@ -112,6 +112,30 @@ public class TaskGroupProgressionTest extends DbTestUtil{
 		Assert.assertEquals(new Integer(2), progressions.get(1).getCompletedWork());
 		
 		tgpDao.delete(secondGroupProgression);
+	}
+	
+	
+	/*
+	 * Testing finding TaskGroupProgression by player and taskgroup
+	 */
+	@Test
+	public void findByPlayerTest() {
+		tAssignment = taskAssignmentDao.findOne(1L);
+		taskGroup = tAssignment.getTaskGroup();
+		
+		Assert.assertEquals(groupProgression, tgpDao.findByPlayer(taskGroup, bob));
+	}
+	
+	/*
+	 * Testing finding TaskGroupProgression null by player and taskgroup
+	 */
+	@Test
+	public void findNullByPlayerTest() {
+		Player alice = playerDao.findOne(2L);
+		tAssignment = taskAssignmentDao.findOne(1L);
+		taskGroup = tAssignment.getTaskGroup();
+		
+		Assert.assertNull(tgpDao.findByPlayer(taskGroup, alice));
 	}
 	
 }
