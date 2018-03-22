@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -57,6 +58,16 @@ public class Player extends User {
 	public Player() {
 		this.xp = 0l;
 		this.level = 1;
+	}
+	
+	@Transient
+	public Integer getXpCurrentLevel() {
+		return LevelingSystem.requiredXp(this.level);
+	}
+	
+	@Transient
+	public Integer getXpNextLevel() {
+		return LevelingSystem.requiredXp(this.level + 1);
 	}
 	
 	public void addXp(Integer xp) {
