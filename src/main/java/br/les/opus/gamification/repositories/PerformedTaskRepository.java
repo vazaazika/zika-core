@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.joda.time.DateTime;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import br.les.opus.commons.persistence.HibernateAbstractRepository;
@@ -15,6 +18,15 @@ import br.les.opus.gamification.domain.pojos.DailyRecord;
 
 @Repository
 public class PerformedTaskRepository extends HibernateAbstractRepository<PerformedTask, Long> {
+	
+	@SuppressWarnings("unchecked")
+	public Page<PerformedTask> findAllOrderedByDateDesc(Pageable pageable) {
+		String hql = "from PerformedTask order by date desc";
+		Query query = getSession().createQuery(hql);
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+		return new PageImpl<>(query.list(), pageable, this.count());
+	}
 
 	public Long countByPlayerAndTask(Player player, Task task) {
 		String hql = "select count(*) from PerformedTask p where p.task.id = :task and p.player.id = :player";

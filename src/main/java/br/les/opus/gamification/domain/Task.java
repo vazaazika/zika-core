@@ -39,6 +39,8 @@ public class Task {
 	@ManyToOne
 	@JoinColumn(name = "resource_id", nullable=false, unique=true)
 	private Resource resource;
+	
+	private String description;
 
 	public Long getId() {
 		return id;
@@ -62,6 +64,14 @@ public class Task {
 
 	public void setResource(Resource usedResource) {
 		this.resource = usedResource;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 }
