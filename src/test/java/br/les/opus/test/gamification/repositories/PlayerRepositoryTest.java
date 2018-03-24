@@ -14,10 +14,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import br.les.opus.auth.core.domain.User;
+import br.les.opus.dengue.core.domain.PoiStatusUpdate;
+import br.les.opus.dengue.core.domain.PoiStatusUpdateType;
 import br.les.opus.dengue.core.domain.PoiType;
 import br.les.opus.dengue.core.domain.PointOfInterest;
 import br.les.opus.dengue.core.fields.Field;
 import br.les.opus.dengue.core.repositories.FieldRepository;
+import br.les.opus.dengue.core.repositories.PoiStatusUpdateRepository;
+import br.les.opus.dengue.core.repositories.PoiStatusUpdateTypeRepository;
 import br.les.opus.dengue.core.repositories.PoiTypeRepository;
 import br.les.opus.dengue.core.repositories.PointOfInterestRepository;
 import br.les.opus.gamification.domain.Player;
@@ -40,12 +44,20 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 	@Autowired
 	private PoiTypeRepository typeDao;
 	
+	@Autowired
+	private PoiStatusUpdateRepository psuDao;
+	
+	@Autowired
+	private PoiStatusUpdateTypeRepository psutDao;
+	
 	private PointOfInterest pois[] = new PointOfInterest[3];
 	private PoiType type;
 	
 
 	private User[] users = new User[2];
 	private Player[] players = new Player[2];
+	
+	
 	
 	/*
 	 * Create two players for the testing
@@ -65,11 +77,6 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		pois[0] = CreatePoi.create(type);
 		pois[1] = CreatePoi.create(type);
 		pois[2] = CreatePoi.create(type);
-		
-		pois[0] = poiDao.save(pois[0]);
-		pois[1] = poiDao.save(pois[1]);
-		pois[2] = poiDao.save(pois[2]);
-		
 		
 		/*
 		 * Create two new users
@@ -102,9 +109,12 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		players[1] = playerDao.save(players[1]);
 		
 		pois[0].setUser(players[0]);
+		pois[1].setUser(players[1]);
 		pois[2].setUser(players[1]);
-		pois[2].setUser(players[1]);
-		poiDao.save(Arrays.asList(pois));
+		
+		pois[0] = poiDao.save(pois[0]);
+		pois[1] = poiDao.save(pois[1]);
+		pois[2] = poiDao.save(pois[2]);
 	}
 	
 	@After
@@ -145,10 +155,6 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		 */
 		Page<Player> pages = playerDao.findOrderedByLevel(pageRequest);
 		
-		for(Player p: pages) {
-			System.out.println(p);
-		}
-		
 		List<Player> rankedPlayers = new ArrayList<>();
 		rankedPlayers.add(players[0]);							//Player 0	Level = 3
 		rankedPlayers.add(players[1]);							//Player 1	Level = 2
@@ -168,6 +174,53 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 			received.add(rp.getPlayer());
 		}
 		
+		List<Player> rankedPlayers = new ArrayList<>();
+
+		rankedPlayers.add(players[1]);							//Player 1	Count = 2
+		rankedPlayers.add(players[0]);							//Player 0	Count = 1
+		rankedPlayers.add(playerDao.findOne(2L));				//Alice		Count = 0
+		rankedPlayers.add(playerDao.findOne(1L));				//Bob		Count = 0
+		
+		Assert.assertEquals(rankedPlayers, received);
+	}
+	
+	
+	/*
+	 * Create PoiStatusUpdate for the test
+	 */
+	@Test
+	public void findOrderedByVerificationNumberTest() {
+		PoiStatusUpdateType type = new PoiStatusUpdateType();
+		type.setId(1L);
+		type.setDescription("Poi Status Update testing");
+		type = psutDao.save(type);
+		
+		
+		/*
+		 * Create PoiStatus and associate them to a POI
+		 */
+		PoiStatusUpdate[] updates = new PoiStatusUpdate[3];
+		int i = 0;
+		for(PointOfInterest p: pois) {
+			updates[i] = new PoiStatusUpdate();
+			updates[i].setPoi(p);
+			updates[i].setUser(p.getUser());
+			updates[i].setType(type);
+			updates[i].setUserLocation(p.getLocation());
+			updates[i].setDate(p.getDate());
+			
+			updates[i] = psuDao.save(updates[i]);
+			++i;
+		}
+		
+		
+		PageRequest pageRequest = new PageRequest(0, 10);
+		
+		List<Player> received = new ArrayList<>();
+		for(RankedPlayer rp: playerDao.findOrderedByVerificationNumber(pageRequest)) {
+			received.add(rp.getPlayer());
+		}
+		
 		
 		List<Player> rankedPlayers = new ArrayList<>();
 
@@ -177,6 +230,9 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		rankedPlayers.add(playerDao.findOne(1L));				//Bob		Count = 0
 		
 		Assert.assertEquals(rankedPlayers, received);
+		
+		psuDao.delete(Arrays.asList(updates));
+		psutDao.delete(type);
 	}
 
 }
