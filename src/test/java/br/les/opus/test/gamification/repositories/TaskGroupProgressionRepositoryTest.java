@@ -27,12 +27,12 @@ public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 	@Autowired
 	private PlayerRepository playerDao;
 	
-	private Player bob;										//Bob id == 1L
+	private Player bob;											//Bob id == 1L
 	
 	@Autowired
-	private TaskAssignmentRepository taskAssignmentDao;		//used to retrieve the taskgroup
+	private TaskAssignmentRepository taskAssignmentDao;			//used to retrieve the TaskGroup
 	
-	private TaskGroup taskGroup;								//TaskGroup create poi task group id = 1L
+	private TaskGroup taskGroup;								//TaskGroup create POI task group id = 1L
 	
 	private TaskAssignment tAssignment;
 	
@@ -72,7 +72,7 @@ public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 		
 		List<TaskGroupProgression> progressions = taskGroup.getProgressions();
 		
-		//there is only 1 taskgroupprogression
+		//there is only 1 TaskGroupProgression
 		Assert.assertEquals(1, progressions.size());
 		
 		
@@ -86,7 +86,7 @@ public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 	 */
 	@Test
 	public void computeProgressCompleteTest() {
-		//create a second taskgroupprogression 
+		//create a second TaskGroupProgression 
 		TaskGroupProgression secondGroupProgression = new TaskGroupProgression();
 		
 		Player alicia = playerDao.findOne(2L);
@@ -103,7 +103,7 @@ public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 		taskGroup = tAssignment.getTaskGroup();
 		List<TaskGroupProgression> progressions = taskGroup.getProgressions();
 		
-		//there is only 1 taskgroupprogression
+		//there is only 1 TaskGroupProgression
 		Assert.assertEquals(2, progressions.size());
 		
 		
@@ -116,7 +116,7 @@ public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 	
 	
 	/*
-	 * Testing finding TaskGroupProgression by player and taskgroup
+	 * Testing finding TaskGroupProgression by player and TaskGroup
 	 */
 	@Test
 	public void findByPlayerTest() {
@@ -127,7 +127,7 @@ public class TaskGroupProgressionRepositoryTest extends DbTestUtil{
 	}
 	
 	/*
-	 * Testing finding TaskGroupProgression null by player and taskgroup
+	 * Testing finding TaskGroupProgression null by player and TaskGroup
 	 */
 	@Test
 	public void findNullByPlayerTest() {

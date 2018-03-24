@@ -55,6 +55,7 @@ public class Player extends User {
 	}
 	
 	public Player() {
+		super();
 		this.xp = 0l;
 		this.level = 1;
 	}

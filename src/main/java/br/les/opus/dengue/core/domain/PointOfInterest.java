@@ -272,5 +272,12 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 	public void setUserVote(Vote userVote) {
 		this.userVote = userVote;
 	}
+
+	@Override
+	public String toString() {
+		return "PointOfInterest [id=" + id + ", type=" + type + ", user=" + user + "]";
+	}
+	
+	
 	
 }

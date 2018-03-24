@@ -104,6 +104,7 @@ public class User implements UserDetails, IdAware<Long> {
 	private Integer version;
 	
 	public User() {
+		this.reports = new ArrayList<>();
 		this.userRoles = new ArrayList<UserRole>();
 		this.enabled = true;
 		this.locked = false;
