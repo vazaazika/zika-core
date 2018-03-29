@@ -16,6 +16,14 @@ public class MembershipService {
 	@Autowired
 	private MembershipRepository membershipDao;
 	
+	public Membership findCurrentMembership(Player player) {
+		List<Membership> team = membershipDao.findAllActive(player);
+		if (team.isEmpty()) {
+			return null;
+		}
+		return team.iterator().next();
+	}
+	
 	public Membership addMember(Team team, Player player) {
 		List<Membership> current = membershipDao.findAllActive(player, team);
 		if (!current.isEmpty()) {

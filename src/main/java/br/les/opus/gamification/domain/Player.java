@@ -47,6 +47,9 @@ public class Player extends User {
 	@OneToMany(mappedBy = "player")
 	private List<TaskGroupProgression> progressions;
 	
+	@Transient
+	private Team team;
+	
 	public Player(User user) {
 		this();
 		this.setName(user.getName());
@@ -127,6 +130,14 @@ public class Player extends User {
 	@Override
 	public String toString() {
 		return "Player [nickname=" + nickname + "]";
+	}
+
+	public Team getTeam() {
+		return team;
+	}
+
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 	
 }

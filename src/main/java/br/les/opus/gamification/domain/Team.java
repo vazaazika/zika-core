@@ -43,6 +43,7 @@ public class Team implements IdAware<Long> {
 	private List<Membership> memberships;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "player_id")
 	private Player creator;
 	

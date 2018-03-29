@@ -36,4 +36,12 @@ public class MembershipRepository extends HibernateAbstractRepository<Membership
 		query.setParameter("tId", team.getId());
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Membership> findAllActive(Player player) {
+		String hql = "from Membership where player.id = :pId and active = true";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("pId", player.getId());
+		return query.list();
+	}
 }
