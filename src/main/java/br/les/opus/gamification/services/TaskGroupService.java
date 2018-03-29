@@ -36,6 +36,7 @@ public class TaskGroupService {
 	@Autowired
 	private PlayerRepository playerDao;
 	
+	
 	private TaskAssignmentProgression getAssignmentProgression(TaskAssignment assignment, Player player) {
 		TaskAssignmentProgression progression = taProgressionDao.findByPlayer(assignment, player);
 		if (progression == null) {
