@@ -28,4 +28,9 @@ public class RankedPlayer {
 		this.player = player;
 	}
 	
+	@Override
+	public String toString() {
+		return "RankedPlayer[Nome: " + player.getNickname() + " count: " + count + "]";
+	}
+	
 }

@@ -101,7 +101,7 @@ public abstract class Progression {
 
 	@Override
 	public String toString() {
-		return "Progression [id=" + id + ", progress=" + progress + ", player=" + player + "]";
+		return "Progression [id=" + id + ", progress=" + progress + ", complete=" + complete + ", completedWork=" + completedWork + ", player=" + player + "]";
 	}
 	
 }
