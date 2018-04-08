@@ -1,6 +1,7 @@
 package br.les.opus.gamification.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -22,6 +24,8 @@ import org.hibernate.annotations.Type;
 
 import com.vividsolutions.jts.geom.Point;
 
+import br.les.opus.commons.persistence.IdAware;
+import br.les.opus.dengue.core.domain.PerformedTaskComment;
 import br.les.opus.dengue.core.domain.PointOfInterest;
 
 /**
@@ -32,7 +36,7 @@ import br.les.opus.dengue.core.domain.PointOfInterest;
  */
 @Entity
 @Table(name = "game_performed_task")
-public class PerformedTask {
+public class PerformedTask implements IdAware<Long> {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="generator")
@@ -67,6 +71,9 @@ public class PerformedTask {
     )
 	@JoinColumn(name = "object_id")
 	private Object object;
+	
+	@OneToMany(mappedBy = "performedTask")
+	private List<PerformedTaskComment> comments;
 	
 	public PerformedTask() {
 		this.date = new Date();
@@ -124,6 +131,14 @@ public class PerformedTask {
 
 	public void setObject(Object object) {
 		this.object = object;
+	}
+
+	public List<PerformedTaskComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<PerformedTaskComment> comments) {
+		this.comments = comments;
 	}
 	
 }
