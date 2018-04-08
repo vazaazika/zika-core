@@ -48,6 +48,7 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		builder.append(" left join p.reports report ");
 		builder.append("group by  ");
 		builder.append(" p.id, ");
+		builder.append(" p.avatar, ");
 		builder.append(" p.enabled, ");
 		builder.append(" p.locked, ");
 		builder.append(" p.name, ");
@@ -81,6 +82,7 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		builder.append(" left join p.poiUpdates as u with u.type.id = :verificationId ");
 		builder.append("group by  ");
 		builder.append(" p.id, ");
+		builder.append(" p.avatar, ");
 		builder.append(" p.enabled, ");
 		builder.append(" p.locked, ");
 		builder.append(" p.name, ");

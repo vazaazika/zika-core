@@ -22,6 +22,7 @@ import org.hibernate.annotations.AnyMetaDef;
 import org.hibernate.annotations.MetaValue;
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.Point;
 
 import br.les.opus.commons.persistence.IdAware;
@@ -72,6 +73,7 @@ public class PerformedTask implements IdAware<Long> {
 	@JoinColumn(name = "object_id")
 	private Object object;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "performedTask")
 	private List<PerformedTaskComment> comments;
 	
