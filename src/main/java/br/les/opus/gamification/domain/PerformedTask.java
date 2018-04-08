@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,9 +15,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Any;
+import org.hibernate.annotations.AnyMetaDef;
+import org.hibernate.annotations.MetaValue;
 import org.hibernate.annotations.Type;
 
 import com.vividsolutions.jts.geom.Point;
+
+import br.les.opus.dengue.core.domain.PointOfInterest;
 
 /**
  * This class represents a registration of game task performed by a given user. It is a kind of
@@ -50,6 +56,17 @@ public class PerformedTask {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
+	
+	@Any(metaColumn = @Column(name="object_type"), fetch=FetchType.EAGER)
+    @AnyMetaDef(
+    			metaType = "string",
+            idType = "long",
+            metaValues = {
+                    @MetaValue( value="poi", targetEntity=PointOfInterest.class ),
+            }
+    )
+	@JoinColumn(name = "object_id")
+	private Object object;
 	
 	public PerformedTask() {
 		this.date = new Date();
@@ -99,6 +116,14 @@ public class PerformedTask {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
 	}
 	
 }

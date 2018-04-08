@@ -13,10 +13,17 @@ public class PerformedTaskService {
 	
 	@Autowired
 	private PerformedTaskRepository performedTaskDao;
-
+	
+	public static ThreadLocal<Object> affectedObjectStorage;
+	
+	static {
+		affectedObjectStorage = new ThreadLocal<>();
+	}
+	
 	public PerformedTask register(Task task, Player player) {
 		PerformedTask performedTask = new PerformedTask(task, player);
 		performedTask = performedTaskDao.save(performedTask);
+		performedTask.setObject(affectedObjectStorage.get());
 		player.addXp(performedTask.getTask().getGivenXp());
 		return performedTask;
 	}
