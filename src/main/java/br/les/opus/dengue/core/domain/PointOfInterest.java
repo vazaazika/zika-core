@@ -34,58 +34,60 @@ import br.les.opus.commons.persistence.IdAware;
 import br.les.opus.commons.persistence.spatial.GeotaggedObject;
 import br.les.opus.dengue.core.fields.FieldValue;
 import br.les.opus.dengue.core.json.View;
+import br.les.opus.gamification.domain.PerformedTaskAffectedObject;
 
 @Entity
 @Table(name = "point_of_interest")
-public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Voteable, GeotaggedObject {
+public class PointOfInterest
+		implements IdAware<Long>, AuthorizedUserAware, Voteable, GeotaggedObject, PerformedTaskAffectedObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "generator")
 	@SequenceGenerator(name = "generator", sequenceName = "SQ_PK_POI")
 	private Long id;
-	
+
 	@NotNull
-	@Column(columnDefinition="Geometry")
-	@Type(type="org.hibernate.spatial.GeometryType")
-    private Point location;
-	
+	@Column(columnDefinition = "Geometry")
+	@Type(type = "org.hibernate.spatial.GeometryType")
+	private Point location;
+
 	@Column(length = 300)
 	private String address;
-	
+
 	@NotEmpty
 	@Column(length = 100, nullable = false)
 	private String title;
-	
+
 	@NotEmpty
 	@Column(length = 500, nullable = false)
 	private String description;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date date;
-	
+
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "poi_type_id")
 	private PoiType type;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
 	private List<Picture> pictures;
-	
+
 	@JsonView(View.PoiDetails.class)
 	@OneToMany(mappedBy = "poi", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<FieldValue> fieldValues;
-	
+
 	private Integer upVoteCount;
-	
+
 	private Integer downVoteCount;
-	
+
 	@Transient
 	private Vote userVote;
 
@@ -93,7 +95,7 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 	 * Whether the POI is visible to public or not
 	 */
 	private Boolean published;
-	
+
 	public PointOfInterest() {
 		this.date = new Date();
 		this.published = true;
@@ -102,7 +104,7 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 		this.upVoteCount = 0;
 		this.downVoteCount = 0;
 	}
-	
+
 	public void removeVote(Vote vote) {
 		if (vote.isUpVote()) {
 			this.decrementUpVote();
@@ -110,7 +112,7 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 			this.decrementDownVote();
 		}
 	}
-	
+
 	public void addVote(Vote vote) {
 		if (vote.isUpVote()) {
 			this.incrementUpVote();
@@ -118,19 +120,19 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 			this.incrementDownVote();
 		}
 	}
-	
+
 	public void incrementUpVote() {
 		this.upVoteCount++;
 	}
-	
+
 	public void decrementUpVote() {
 		this.upVoteCount--;
 	}
-	
+
 	public void incrementDownVote() {
 		this.downVoteCount++;
 	}
-	
+
 	public void decrementDownVote() {
 		this.downVoteCount--;
 	}
@@ -248,7 +250,6 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 		return true;
 	}
 
-
 	public Integer getDownVoteCount() {
 		return downVoteCount;
 	}
@@ -272,5 +273,15 @@ public class PointOfInterest implements IdAware<Long>, AuthorizedUserAware, Vote
 	public void setUserVote(Vote userVote) {
 		this.userVote = userVote;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "PointOfInterest [id=" + id + ", type=" + type + ", user=" + user + "]";
+	}
+
+	@Override
+	public String getObjectType() {
+		return PointOfInterest.class.getSimpleName();
+	}
+
 }

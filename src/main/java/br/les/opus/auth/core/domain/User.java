@@ -10,10 +10,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,15 +30,18 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.les.opus.auth.core.validators.UniqueUsername;
-import br.les.opus.commons.persistence.IdAware;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import br.les.opus.auth.core.validators.UniqueUsername;
+import br.les.opus.commons.persistence.IdAware;
+import br.les.opus.dengue.core.domain.Picture;
+import br.les.opus.dengue.core.domain.PoiStatusUpdate;
+import br.les.opus.dengue.core.domain.PointOfInterest;
+
 /**
- * Classe que representa um usuário dos sistemas NYX. Essa classe implementa a
+ * Classe que representa um usuário. Essa classe implementa a
  * interface {@link UserDetails} do Spring Security para servir como entidade
  * autenticável no framework mencionado.
  * 
@@ -43,6 +51,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @UniqueUsername(payload = {}) //ensures validation on insert/update regarding user name
 @Table(name = "system_user")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails, IdAware<Long> {
 
 	private static final long serialVersionUID = 5060765600109301997L;
@@ -72,6 +81,14 @@ public class User implements UserDetails, IdAware<Long> {
 	private Boolean enabled;
 
 	private Boolean locked;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<PointOfInterest> reports;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<PoiStatusUpdate> poiUpdates;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
@@ -84,10 +101,21 @@ public class User implements UserDetails, IdAware<Long> {
 	@Transient
 	private List<Resource> resources;
 	
+	@JsonIgnore
+	@Version
+    @Column(name="opt_lock")
+	private Integer version;
+	
+	@OneToOne
+	@JoinColumn(name = "picture_id")
+	private Picture avatar;
+	
 	public User() {
+		this.reports = new ArrayList<>();
 		this.userRoles = new ArrayList<UserRole>();
 		this.enabled = true;
 		this.locked = false;
+		this.version = 0;
 	}
 	
 	@Override
@@ -279,6 +307,38 @@ public class User implements UserDetails, IdAware<Long> {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public List<PointOfInterest> getReports() {
+		return reports;
+	}
+
+	public void setReports(List<PointOfInterest> reports) {
+		this.reports = reports;
+	}
+
+	public List<PoiStatusUpdate> getPoiUpdates() {
+		return poiUpdates;
+	}
+
+	public void setPoiUpdates(List<PoiStatusUpdate> poiUpdates) {
+		this.poiUpdates = poiUpdates;
+	}
+
+	public Picture getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Picture avatar) {
+		this.avatar = avatar;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

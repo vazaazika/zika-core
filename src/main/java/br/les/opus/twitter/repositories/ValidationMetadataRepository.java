@@ -43,7 +43,6 @@ public class ValidationMetadataRepository extends HibernateAbstractRepository<Va
 		return (Long)count;
 	}
 	
-	//TODO auto generate needs to be completed
 	public double generateKeysOverAll(TwitterUser user) {
 		Long total = this.countPublishedTweetsFrom(user);
 		Long zika = this.countPublishedZika(user);
@@ -52,7 +51,6 @@ public class ValidationMetadataRepository extends HibernateAbstractRepository<Va
 		return percentage;
 	}
 	
-	//TODO auto generate needs to be completed
 	public double generateRelevantOverKeys(TwitterUser user) {
 		Long total = this.countPublishedZika(user);
 		Long relevant = this.countRelevantTweetsFrom(user);
@@ -61,7 +59,6 @@ public class ValidationMetadataRepository extends HibernateAbstractRepository<Va
 		return percentage;
 	}
 	
-	//TODO auto generate needs to be completed
 	public double generateRelevantOverAll(TwitterUser user) {
 		Long total = this.countPublishedTweetsFrom(user);
 		Long relevant = this.countRelevantTweetsFrom(user);
