@@ -12,7 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -34,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.les.opus.auth.core.validators.UniqueUsername;
 import br.les.opus.commons.persistence.IdAware;
+import br.les.opus.dengue.core.domain.Picture;
 import br.les.opus.dengue.core.domain.PoiStatusUpdate;
 import br.les.opus.dengue.core.domain.PointOfInterest;
 
@@ -102,6 +105,10 @@ public class User implements UserDetails, IdAware<Long> {
 	@Version
     @Column(name="opt_lock")
 	private Integer version;
+	
+	@OneToOne
+	@JoinColumn(name = "picture_id")
+	private Picture avatar;
 	
 	public User() {
 		this.reports = new ArrayList<>();
@@ -320,6 +327,18 @@ public class User implements UserDetails, IdAware<Long> {
 
 	public void setPoiUpdates(List<PoiStatusUpdate> poiUpdates) {
 		this.poiUpdates = poiUpdates;
+	}
+
+	public Picture getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Picture avatar) {
+		this.avatar = avatar;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

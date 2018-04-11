@@ -57,6 +57,7 @@ public class Picture implements IdAware<Long>, AuthorizedUserAware {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -135,6 +136,11 @@ public class Picture implements IdAware<Long>, AuthorizedUserAware {
 		FileOutputStream fos = new FileOutputStream(file);
 		IOUtils.copy(fileInputStream, fos);
 		fos.close();
+	}
+
+	public boolean deleteFileFromFileSystem(String basePath) {
+		File file = new File(getFileName(basePath));
+		return file.delete();
 	}
 	
 	public void retrieveDimentionsFromFile(String basePath) throws FileNotFoundException, IOException {

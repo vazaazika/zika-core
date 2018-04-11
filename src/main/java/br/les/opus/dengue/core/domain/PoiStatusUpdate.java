@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vividsolutions.jts.geom.Point;
 
 import br.les.opus.auth.core.domain.User;
@@ -32,7 +31,6 @@ public class PoiStatusUpdate implements IdAware<Long> {
 	@SequenceGenerator(name = "generator", sequenceName = "SQ_PK_POI_STATUS_UPDATE")
 	private Long id;
 	
-	@JsonIgnore
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "poi_id", nullable=false)

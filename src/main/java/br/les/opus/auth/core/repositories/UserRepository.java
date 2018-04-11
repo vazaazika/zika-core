@@ -19,7 +19,7 @@ public class UserRepository extends HibernateAbstractRepository<User, Long> {
 	
 	public User findByUsernameAndPassword(String username, String password) {
 		Criteria criteria = getSession().createCriteria(getEntityClass());
-		criteria.add(Restrictions.eq("username", username));
+		criteria.add(Restrictions.eq("username", username).ignoreCase());
 		criteria.add(Restrictions.eq("password", password));
 		Object obj = criteria.uniqueResult();
 		return (obj == null)? null : (User)obj;
