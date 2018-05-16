@@ -58,7 +58,4 @@ public class LevellingSystemTest {
 		Assert.assertEquals(requiredXP, LevelingSystem.requiredXp(level));
 	}
 
-
-
-
 }
