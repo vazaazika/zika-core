@@ -1,5 +1,7 @@
 package br.les.opus.gamification.repositories;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import br.les.opus.commons.persistence.HibernateAbstractRepository;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.Team;
+import br.les.opus.gamification.domain.TeamFeed;
 
 @Repository
 public class TeamRepository extends HibernateAbstractRepository<Team, Long>{
@@ -37,5 +40,45 @@ public class TeamRepository extends HibernateAbstractRepository<Team, Long>{
 		criteria.add(Restrictions.eq("name", name).ignoreCase());
 		Object obj = criteria.uniqueResult();
 		return (obj == null)? null : (Team)obj;
+	}
+	
+	public Page<TeamFeed> findAllTeamsWithActiveMembers(Pageable pageable){
+		String hql  = "select new br.les.opus.gamification.domain.TeamFeed(t.id, t.name, br.les.opus.gamification.domain.Player(p.level, p.nickname, p.xp)) "
+				+ "from Team as t, Player as p, Membership as m "
+				+ "where m.team.id=t.id and p.id=m.player.id";
+		Query query = getSession().createQuery(hql);
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+		
+		@SuppressWarnings("unchecked")
+		List<TeamFeed> teams = query.list();
+		
+		System.out.println(teams.get(0).getTeam().getName());
+		
+		/*String hql = "select t, p from Team as t, Player as p, Membership as m where m.team.id=t.id and p.id=m.player.id";
+		Query query = getSession().createQuery(hql);
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+		
+		List<TeamFeed> teams = query.list();
+		
+		System.out.println(teams.get(0).getTeam().getName());
+		
+		/*HashMap<Long, TeamFeed> teamFeed = new HashMap<>();
+		
+		@SuppressWarnings("unchecked")
+		List<TeamFeed> teams = query.list();
+		
+		for(TeamFeed team: teams) {
+			Long key = team.getGame_team().getId();
+			
+			if(teamFeed.containsKey(key)) {
+				teamFeed.get(key).addMember(team.getGame_player());
+			}else {
+				teamFeed.put(key, team);
+			}
+		}*/
+		
+		return new PageImpl<TeamFeed>(teams,pageable, teams.size());
 	}
 }
