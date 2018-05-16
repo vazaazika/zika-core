@@ -45,4 +45,5 @@ public class QuestTest extends DbTestUtil{
 		Assert.assertFalse(quest.canProgress(player));
 	}
 
+
 }
