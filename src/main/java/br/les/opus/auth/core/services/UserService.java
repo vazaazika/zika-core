@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import br.les.opus.gamification.domain.Invite;
+import br.les.opus.gamification.repositories.InviteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import br.les.opus.auth.core.repositories.RoleRepository;
 import br.les.opus.auth.core.repositories.UserRepository;
 import br.les.opus.auth.core.repositories.UserRoleRepository;
 import br.les.opus.gamification.domain.Player;
+
+import static java.util.UUID.randomUUID;
 
 @Service
 public class UserService {
@@ -35,6 +39,9 @@ public class UserService {
 	
 	@Autowired
 	private ResourceRepository resourceDao;
+
+	@Autowired
+	private InviteRepository inviteDao;
 	
 	private List<Role> getDefaultRoles() {
 		String rolesList = env.getProperty("user.roles.default");
@@ -69,6 +76,12 @@ public class UserService {
 		user.setResources(resources);
 		return user;
 	}
+
+	public void generateInviteID(User user){
+		Invite invite = user.getInvite();
+
+		inviteDao.save(invite);
+	}
 	
 	/**
 	 * Creates a new user along with its default roles
@@ -79,6 +92,12 @@ public class UserService {
 		Player player = new Player(user);
 		User newUser = userRepository.save(player);
 		loadDefaultRoles(newUser);
+		generateInviteID(newUser);
 		return newUser;
+	}
+
+	public User loadUserByToken (String token){
+		return userRepository.findUserByInvitationToken(token);
+
 	}
 }
