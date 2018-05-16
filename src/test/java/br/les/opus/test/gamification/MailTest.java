@@ -8,10 +8,4 @@ import org.junit.Test;
  */
 public class MailTest {
 
-    @Test
-    public void mandaEmailPo(){
-        MailService mailService = new MailService();
-
-        mailService.send("anderson.jose.so@gmail.com", "eae man", "na moralz");
-    }
 }
