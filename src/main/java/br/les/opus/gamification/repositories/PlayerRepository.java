@@ -109,5 +109,4 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		
 		return new PageImpl<>(players, pageable, this.count());
 	}
-	
 }
