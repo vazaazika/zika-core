@@ -85,5 +85,6 @@ public class UserRepository extends HibernateAbstractRepository<User, Long> {
 		}
 
 		return new PageImpl<>(players, pageable, this.count());
+		
 	 */
 }

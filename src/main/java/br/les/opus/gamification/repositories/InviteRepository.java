@@ -6,6 +6,7 @@ import br.les.opus.gamification.domain.Membership;
 import org.springframework.stereotype.Repository;
 
 /**
+ * 
  * Created by andersonjso on 5/15/18.
  */
 @Repository

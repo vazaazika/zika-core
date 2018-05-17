@@ -96,6 +96,11 @@ public class UserService {
 		return newUser;
 	}
 
+	/**
+	 * Retrieve a user using its identification token
+	 * @param token
+	 * @return
+	 */
 	public User loadUserByToken (String token){
 		return userRepository.findUserByInvitationToken(token);
 

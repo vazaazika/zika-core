@@ -1,6 +1,7 @@
 package br.les.opus.gamification.domain;
 
 /**
+ * 
  * Created by andersonjso on 5/15/18.
  */
 public class MailBody {
