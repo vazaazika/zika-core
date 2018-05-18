@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import br.les.opus.gamification.domain.Invite;
+import br.les.opus.gamification.domain.ResetPassword;
 import br.les.opus.gamification.repositories.InviteRepository;
+import br.les.opus.gamification.repositories.ResetPasswordRepository;
+import br.les.opus.gamification.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -42,6 +45,12 @@ public class UserService {
 
 	@Autowired
 	private InviteRepository inviteDao;
+
+	@Autowired
+	private ResetPasswordRepository resetPasswordDao;
+
+	@Autowired
+	private MailService mailService;
 	
 	private List<Role> getDefaultRoles() {
 		String rolesList = env.getProperty("user.roles.default");
@@ -99,5 +108,20 @@ public class UserService {
 	public User loadUserByToken (String token){
 		return userRepository.findUserByInvitationToken(token);
 
+	}
+
+	public void changePassword (User user){
+		ResetPassword resetPassword = new ResetPassword(user);
+
+		String message = "Please access the following link to reset your password:\n" +
+				"http://vazazika.inf.puc-rio.br/password/reset?token=" + resetPassword.getHashedToken();
+
+		mailService.setSubject(user.getUsername());
+		mailService.setTo("Password Reset");
+		mailService.setText(message);
+
+		mailService.run();
+
+		resetPasswordDao.save(resetPassword);
 	}
 }
