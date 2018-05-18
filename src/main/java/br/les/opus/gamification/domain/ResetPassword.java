@@ -35,11 +35,9 @@ public class ResetPassword {
     private User user;
 
 
-    public ResetPassword(User user){
-        this.email = user.getUsername();
+    public ResetPassword(){
         this.hashedToken = randomUUID().toString();
         setExpirationDate();
-        this.user = user;
     }
 
     public void setExpirationDate(){

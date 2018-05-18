@@ -111,13 +111,15 @@ public class UserService {
 	}
 
 	public void changePassword (User user){
-		ResetPassword resetPassword = new ResetPassword(user);
+		ResetPassword resetPassword = new ResetPassword();
+		resetPassword.setEmail(user.getUsername());
+		resetPassword.setUser(user);
 
 		String message = "Please access the following link to reset your password:\n" +
 				"http://vazazika.inf.puc-rio.br/password/reset?token=" + resetPassword.getHashedToken();
 
-		mailService.setSubject(user.getUsername());
-		mailService.setTo("Password Reset");
+		mailService.setSubject("Password Reset");
+		mailService.setTo(user.getUsername());
 		mailService.setText(message);
 
 		mailService.run();
