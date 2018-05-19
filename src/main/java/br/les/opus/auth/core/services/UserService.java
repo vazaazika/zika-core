@@ -133,6 +133,9 @@ public class UserService {
 
 		ResetPassword resetPassword = resetPasswordDao.findToken(tokenReset);
 
+		if (resetPassword == null){
+			throw new BadCredentialsException("Token não encontrado ou já usado");
+		}
 		Calendar cal = Calendar.getInstance();
 		if ((resetPassword.getExpirationDate()
 				.getTime() - cal.getTime()
@@ -143,6 +146,8 @@ public class UserService {
 		User user = userRepository.findByUsername(resetPassword.getEmail());
 
 		user.setPassword(DigestUtils.md5Hex(newPassword));
+
+		resetPasswordDao.delete(resetPassword.getId());
 
 		return user;
 
