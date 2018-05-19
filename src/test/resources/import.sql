@@ -26,6 +26,9 @@ INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (4,2,3);
 
 INSERT INTO game_quest(task_group_id,minLevel,name) VALUES (1,10,'Quest Test');
 
+INSERT INTO game_challenge(task_group_id,name,description) VALUES (1,'Challenge Test','Testing a challenge task');
+
+
 -- progressos do bob
 INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK)  VALUES (1,0,0.5,1,1,1);
 INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (2,1,1,1,2,1);

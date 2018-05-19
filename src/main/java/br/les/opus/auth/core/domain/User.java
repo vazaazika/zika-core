@@ -33,6 +33,7 @@ import br.les.opus.dengue.core.domain.PointOfInterest;
  * interface {@link UserDetails} do Spring Security para servir como entidade
  * autenticável no framework mencionado.
  * 
+ * 
  * @author Diego Cedrim
  */
 @Entity

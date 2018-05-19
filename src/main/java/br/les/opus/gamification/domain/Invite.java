@@ -5,6 +5,7 @@ import javax.persistence.*;
 import static java.util.UUID.randomUUID;
 
 /**
+ * 
  * Created by andersonjso on 5/15/18.
  */
 @Entity
