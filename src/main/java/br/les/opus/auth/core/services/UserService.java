@@ -1,13 +1,19 @@
 package br.les.opus.auth.core.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import br.les.opus.gamification.domain.Invite;
+import br.les.opus.gamification.domain.ResetPassword;
 import br.les.opus.gamification.repositories.InviteRepository;
+import br.les.opus.gamification.repositories.ResetPasswordRepository;
+import br.les.opus.gamification.services.MailService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import br.les.opus.auth.core.domain.Resource;
@@ -42,6 +48,12 @@ public class UserService {
 
 	@Autowired
 	private InviteRepository inviteDao;
+
+	@Autowired
+	private ResetPasswordRepository resetPasswordDao;
+
+	@Autowired
+	private MailService mailService;
 	
 	private List<Role> getDefaultRoles() {
 		String rolesList = env.getProperty("user.roles.default");
@@ -103,6 +115,46 @@ public class UserService {
 	 */
 	public User loadUserByToken (String token){
 		return userRepository.findUserByInvitationToken(token);
+
+	}
+
+	public void changePassword (User user){
+		ResetPassword resetPassword = new ResetPassword();
+		resetPassword.setEmail(user.getUsername());
+
+		String message = "Please access the following link to reset your password:\n" +
+				"http://vazazika.inf.puc-rio.br/password/renew?token-reset=" + resetPassword.getHashedToken();
+
+		mailService.setSubject("Password Reset");
+		mailService.setTo(user.getUsername());
+		mailService.setText(message);
+
+		mailService.run();
+
+		resetPasswordDao.save(resetPassword);
+	}
+
+	public User resetPassword(String tokenReset, String newPassword){
+
+		ResetPassword resetPassword = resetPasswordDao.findToken(tokenReset);
+
+		if (resetPassword == null){
+			throw new BadCredentialsException("Token não encontrado ou já usado");
+		}
+		Calendar cal = Calendar.getInstance();
+		if ((resetPassword.getExpirationDate()
+				.getTime() - cal.getTime()
+				.getTime()) <= 0) {
+			throw new BadCredentialsException("O token informado está expirado");
+		}
+
+		User user = userRepository.findByUsername(resetPassword.getEmail());
+
+		user.setPassword(DigestUtils.md5Hex(newPassword));
+
+		resetPasswordDao.delete(resetPassword.getId());
+
+		return user;
 
 	}
 }

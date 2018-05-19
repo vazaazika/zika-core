@@ -1,30 +1,73 @@
 package br.les.opus.gamification.services;
 
+import br.les.opus.auth.core.domain.User;
 import br.les.opus.dengue.core.factories.MailRepositoryFactory;
 import br.les.opus.gamification.domain.Player;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.Properties;
 
 /**
  * Created by andersonjso on 5/10/18.
  */
 @Service
-public class MailService{
+@Configuration
+public class MailService extends Thread{
 
     @Autowired
     JavaMailSender mailSender;
 
-    public void send(String to, String subject, String text){
+    private String to;
+    private String subject;
+    private String text;
+
+    public void run(){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         mailSender.send(message);
+    }
+
+    public JavaMailSender getMailSender() {
+        return mailSender;
+    }
+
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String buildMessage(Player player, String personalizedMessage) {
@@ -37,4 +80,6 @@ public class MailService{
 
         return message;
     }
+
+
 }
