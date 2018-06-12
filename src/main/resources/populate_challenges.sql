@@ -52,3 +52,19 @@ INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (8,'Strik
 INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (9,'On Top','O objetivo desse desafio é se tornar o time com a maior pontuação (XP) de uma cidade. Logo para cada cidade haverá apenas um time (atualmente) vencedor desse desafio.','time');
 INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (10,'Fight!','O objetivo é desafiar um amigo para verificar quem notifica mais focos de mosquito nas próximas 24 horas. O usuário vencedor é aquele que acumula mais XP com notificações de foco após as 24 horas.','individual');
 INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (11,'Team Up!','O objetivo é desafiar um time para verificar quem notifica mais focos de mosquito em um tempo estipulado pelos times. O time vencedor é aquele cujo os membros do time acumulem mais XP com notificações de foco após se passar o tempo estipulado.','time');
+
+
+--OBSERVACAO: FOR EACH NEW RESOURCE IS NEEDED TO UPDATE THE TABLE ROLE_RESOURCE
+--insert new resource to get player info
+INSERT INTO RESOURCE(id,open,operation,uri) VALUES(37,false,'GET','/game/player/self');
+
+--insert new resource to share the vazazika
+INSERT INTO RESOURCE(id,open,operation,uri) VALUES(38,false,'GET','/game/share');
+
+--insert new resource to invite new users
+INSERT INTO RESOURCE(id,open,operation,uri) VALUES(39,false,'POST','/game/player/invite');
+
+--insert new resource to get and post challenges
+INSERT INTO RESOURCE(id,open,operation,uri) VALUES(40,false,'GET','/game/challenge');
+
+INSERT INTO RESOURCE(id,open,operation,uri) VALUES(41,false,'POST','/game/challenge');

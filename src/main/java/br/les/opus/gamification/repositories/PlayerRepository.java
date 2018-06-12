@@ -57,7 +57,8 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		builder.append(" p.version, ");
 		builder.append(" p.level, ");
 		builder.append(" p.nickname, ");
-		builder.append(" p.xp ");
+		builder.append(" p.xp, ");
+		builder.append(" p.invite ");
 		builder.append("order by count(report) desc ");
 		
 		Query query = getSession().createQuery(builder.toString());
@@ -91,7 +92,8 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		builder.append(" p.version, ");
 		builder.append(" p.level, ");
 		builder.append(" p.nickname, ");
-		builder.append(" p.xp ");
+		builder.append(" p.xp, ");
+		builder.append(" p.invite ");
 		builder.append("order by count(u) desc ");
 		
 		Query query = getSession().createQuery(builder.toString());
@@ -109,5 +111,4 @@ public class PlayerRepository extends HibernateAbstractRepository<Player, Long> 
 		
 		return new PageImpl<>(players, pageable, this.count());
 	}
-	
 }

@@ -2,12 +2,7 @@ package br.les.opus.gamification.domain;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -62,6 +57,13 @@ public class Player extends User {
 		super();
 		this.xp = 0l;
 		this.level = 1;
+	}
+	
+	public Player(Integer level, String nickname, Long xp) {
+		super();
+		this.level = level;
+		this.nickname = nickname;
+		this.xp = xp;
 	}
 	
 	@Transient

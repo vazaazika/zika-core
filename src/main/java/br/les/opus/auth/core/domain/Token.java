@@ -64,13 +64,26 @@ public class Token {
 	public Resource matchedSystemResource(Resource targetResource) {
 		User user = this.getUser();
 		List<Resource> resources = user.getAllResources();
-		for (Resource resource : resources) {
-			if (resource.matches(targetResource)) {
-				return resource;
+		
+		/*
+		 * Getting the best match in the resources
+		 */
+		int bestMatchValue = Integer.MAX_VALUE;
+		int matchValue;
+		Resource resourceMatch = null;
+		
+		for(Resource resource: resources) {
+			if(resource.matches(targetResource)) {
+				matchValue = Math.abs(targetResource.getUri().compareTo(resource.getUri()));
+				if(matchValue < bestMatchValue) {
+					bestMatchValue = matchValue;
+					resourceMatch = resource;
+				}
 			}
 		}
-		return null;
+		return resourceMatch;
 	}
+	
 	
 	public Token(UsernamePasswordAuthenticationToken authToken) {
 		this();
