@@ -2,7 +2,12 @@ package br.les.opus.gamification.repositories;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Projections;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import br.les.opus.commons.persistence.HibernateAbstractRepository;
@@ -43,5 +48,35 @@ public class MembershipRepository extends HibernateAbstractRepository<Membership
 		Query query = getSession().createQuery(hql);
 		query.setParameter("pId", player.getId());
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Page<Membership> findAllMemberships(Pageable pageable){
+		String hql = "from Membership";
+		Query query = getSession().createQuery(hql);
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+		
+		
+		return new PageImpl<>(query.list(), pageable, this.countMembershipsWithDistinctTeams());
+	}
+	
+	public Long countMembershipsWithDistinctTeams() {
+		Criteria criteria = getSession().createCriteria(getEntityClass());
+		criteria.setProjection(Projections.countDistinct("team"));
+		
+		return (Long) criteria.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Page<Team> findAllMembershipActiveDistinctTeam(Pageable pageable){
+		Criteria criteria = getSession().createCriteria(getEntityClass());
+		
+		criteria.setProjection(Projections.distinct(Projections.projectionList().add(Projections.property("team"))));
+		criteria.setFirstResult(pageable.getOffset());
+		criteria.setMaxResults(pageable.getPageSize());
+		
+		return new PageImpl<>(criteria.list(), pageable, this.countMembershipsWithDistinctTeams());
+		
 	}
 }

@@ -53,32 +53,6 @@ public class TeamRepository extends HibernateAbstractRepository<Team, Long>{
 		@SuppressWarnings("unchecked")
 		List<TeamFeed> teams = query.list();
 		
-		System.out.println(teams.get(0).getTeam().getName());
-		
-		/*String hql = "select t, p from Team as t, Player as p, Membership as m where m.team.id=t.id and p.id=m.player.id";
-		Query query = getSession().createQuery(hql);
-		query.setFirstResult(pageable.getOffset());
-		query.setMaxResults(pageable.getPageSize());
-		
-		List<TeamFeed> teams = query.list();
-		
-		System.out.println(teams.get(0).getTeam().getName());
-		
-		/*HashMap<Long, TeamFeed> teamFeed = new HashMap<>();
-		
-		@SuppressWarnings("unchecked")
-		List<TeamFeed> teams = query.list();
-		
-		for(TeamFeed team: teams) {
-			Long key = team.getGame_team().getId();
-			
-			if(teamFeed.containsKey(key)) {
-				teamFeed.get(key).addMember(team.getGame_player());
-			}else {
-				teamFeed.put(key, team);
-			}
-		}*/
-		
 		return new PageImpl<TeamFeed>(teams,pageable, teams.size());
 	}
 }
