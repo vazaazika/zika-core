@@ -1,6 +1,8 @@
 package br.les.opus.gamification.repositories;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -20,8 +22,10 @@ public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
 		String hql = "from TaskGroup tg left join tg.progressions ps with ps.player.id = :pId";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("pId", player.getId());
+		
 		List<Object[]> badgesAndProgressions = query.list();
 		List<Badge> badges = new ArrayList<>();
+		
 		for (Object[] objects : badgesAndProgressions) {
 			TaskGroup taskGroup =  (TaskGroup)objects[0];
 			Badge badge = taskGroup.getBadge();
@@ -29,8 +33,21 @@ public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
 				TaskGroupProgression progression = (TaskGroupProgression)objects[1];
 				badge.setCompletion(progression.getProgress());
 			}
+			
+			if (badge.getCompletion() == null) {
+				badge.setCompletion(-1F);
+			}
 			badges.add(badge);
 		}
+		
+		Collections.sort(badges, new Comparator<Badge>() {
+
+			@Override
+			public int compare(Badge b1, Badge b2) {
+				return (b2.getCompletion() > b1.getCompletion()) ? 1: -1;
+			}
+		});
+		
 		return badges;
 	}
 }

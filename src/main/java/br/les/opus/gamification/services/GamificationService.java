@@ -56,7 +56,9 @@ public class GamificationService {
 		if (resource == null) {
 			return;
 		}
+		
 		Task task = taskDao.findByResource(resource);
+		
 		if (task == null) {
 			return;
 		}
