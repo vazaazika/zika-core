@@ -257,7 +257,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
+<!--		<dependency>
 			<groupId>br.les.opus.test</groupId>
 			<artifactId>libreadline-java</artifactId>
 			<version>0.8.0</version>
@@ -290,8 +290,14 @@
 			<artifactId>geodb</artifactId>
 			<version>0.8</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 
+                <dependency>
+                    <groupId>org.opengeo</groupId>
+                    <artifactId>geodb-app</artifactId>
+                    <version>0.6</version>
+                    <scope>test</scope>
+                </dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
@@ -326,7 +332,7 @@
 	<repositories>
 		<repository>
 			<id>OSGEO GeoTools repo</id>
-			<url>http://download.osgeo.org/webdav/geotools</url>
+			<url>http://repo.boundlessgeo.com/main/</url>
 		</repository>
 		<repository>
 			<id>Hibernate Spatial repo</id>
