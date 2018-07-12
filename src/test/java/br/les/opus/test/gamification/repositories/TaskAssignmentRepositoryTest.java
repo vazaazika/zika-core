@@ -9,12 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import br.les.opus.gamification.domain.PerformedTask;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.TaskAssignment;
+import br.les.opus.gamification.domain.TaskAssignmentProgression;
+import br.les.opus.gamification.repositories.PerformedTaskRepository;
 import br.les.opus.gamification.repositories.PlayerRepository;
+import br.les.opus.gamification.repositories.TaskAssignmentProgressionRepository;
 import br.les.opus.gamification.repositories.TaskAssignmentRepository;
+import br.les.opus.gamification.repositories.TaskGroupProgressionRepository;
 import br.les.opus.gamification.repositories.TaskRepository;
+import br.les.opus.gamification.services.TaskGroupService;
 import br.les.opus.test.util.DbTestUtil;
 
 public class TaskAssignmentRepositoryTest extends DbTestUtil {
+	
+	@Autowired
+	private TaskGroupService tgService;
+	
+	@Autowired
+	private PerformedTaskRepository performedTaskRepositoryDao;
 	
 	@Autowired
 	private PlayerRepository playerDao;
@@ -33,10 +44,10 @@ public class TaskAssignmentRepositoryTest extends DbTestUtil {
 		pTask.setTask(taskDao.findOne(1l)); //create poi task
 		
 		List<TaskAssignment> assignments = taDao.findAllIncomplete(pTask);
-		Assert.assertEquals(2, assignments.size());
+		Assert.assertEquals(3, assignments.size());
 		
-		//it must be the TaskAssignment with id = 1
-		Assert.assertEquals(1l, assignments.get(0).getId().longValue()); 
+//		//it must be the TaskAssignment with id = 1
+//		Assert.assertEquals(1l, assignments.get(0).getId().longValue()); 
 	}
 	
 	@Test
@@ -47,10 +58,15 @@ public class TaskAssignmentRepositoryTest extends DbTestUtil {
 		pTask.setTask(taskDao.findOne(2l)); //create user task
 		
 		List<TaskAssignment> assignments = taDao.findAllIncomplete(pTask);
-		Assert.assertEquals(1, assignments.size()); 
+		Assert.assertEquals(2, assignments.size()); 
 		
-		//it must be the TaskAssignment with id = 4
-		Assert.assertEquals(4l, assignments.get(0).getId().longValue()); 
+		performedTaskRepositoryDao.save(pTask);
+		tgService.trackProgress(pTask);
+		
+		assignments = taDao.findAllIncomplete(pTask);
+		Assert.assertEquals(0, assignments.size()); 
+//		//it must be the TaskAssignment with id = 4
+//		Assert.assertEquals(4l, assignments.get(0).getId().longValue()); 
 	}
 	
 	@Test

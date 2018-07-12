@@ -1,10 +1,16 @@
 INSERT INTO system_user (id,enabled,locked,name,password,username, opt_lock) VALUES (1,1,0,'Usuario Teste','25a5c0abc72c1c39ec05d2119f95b8f7','username@hotmail.com', 0);
 INSERT INTO system_user (id,enabled,locked,name,password,username, opt_lock) VALUES (2,1,0,'Open Graph Test User','79cf49f79aff73f103ff7470fa7a7d65','open_jcgmfer_user@tfbnw.net', 0);
 
+INSERT INTO role (id,authority,parent_id) VALUES (1, 'MASTER', null);
+INSERT INTO user_role (id, role_id, user_id) VALUES (1, 1, 1);
+
 INSERT INTO game_player (level,nickname,xp,user_id) VALUES (1,'bob',0,1), (0,'alice',0,2);
 
 INSERT INTO resource(id,open,operation,uri) VALUES (8,1,'POST','/poi');
 INSERT INTO resource(id,open,operation,uri) VALUES (6,1,'POST','/user');
+INSERT INTO resource(id,open,operation,uri) VALUES (7,0,'GET','/feed');
+
+INSERT INTO role_resource(id,resource_id,role_id) VALUES (1,8,1);
 
 INSERT INTO game_task(id,givenxp,resource_id) VALUES (1,10,8); --create poi task
 INSERT INTO game_task(id,givenxp,resource_id) VALUES (2,5,6);  --create user task
@@ -30,9 +36,9 @@ INSERT INTO game_challenge(task_group_id,name,description) VALUES (1,'Challenge 
 
 
 -- progressos do bob
-INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK)  VALUES (1,0,0.5,1,1,1);
-INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (2,1,1,1,2,1);
-INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (3,1,1,1,3,1);
+--NSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK)  VALUES (1,0,0.5,1,1,1);
+--INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (2,1,1,1,2,1);
+--INSERT INTO game_assignment_progression(id,complete,progress,player_id,task_assignment_id,COMPLETEDWORK) VALUES (3,1,1,1,3,1);
 
 -- testando constrainsts
 
