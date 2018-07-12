@@ -8,6 +8,11 @@ public class TeamFeed{
 	
 	private List<Player> members;
 	
+	public TeamFeed(Team team) {
+		this.team = team;
+		this.members = new ArrayList<>();
+	}
+	
 	public TeamFeed(Team team, Player player) {
 		this.team = team;
 		
@@ -28,6 +33,10 @@ public class TeamFeed{
 	
 	public void addMember(Player player) {
 		this.members.add(player);
+	}
+
+	public void addMembers(List<Player> players) {
+		this.members = players;
 	}
 	
 }

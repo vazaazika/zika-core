@@ -5,11 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import br.les.opus.gamification.domain.Invite;
-import br.les.opus.gamification.domain.ResetPassword;
-import br.les.opus.gamification.repositories.InviteRepository;
-import br.les.opus.gamification.repositories.ResetPasswordRepository;
-import br.les.opus.gamification.services.MailService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -24,9 +19,12 @@ import br.les.opus.auth.core.repositories.ResourceRepository;
 import br.les.opus.auth.core.repositories.RoleRepository;
 import br.les.opus.auth.core.repositories.UserRepository;
 import br.les.opus.auth.core.repositories.UserRoleRepository;
+import br.les.opus.gamification.domain.Invite;
 import br.les.opus.gamification.domain.Player;
-
-import static java.util.UUID.randomUUID;
+import br.les.opus.gamification.domain.ResetPassword;
+import br.les.opus.gamification.repositories.InviteRepository;
+import br.les.opus.gamification.repositories.ResetPasswordRepository;
+import br.les.opus.gamification.services.MailService;
 
 @Service
 public class UserService {

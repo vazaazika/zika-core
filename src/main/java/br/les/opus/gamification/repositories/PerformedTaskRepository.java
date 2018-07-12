@@ -34,7 +34,22 @@ public class PerformedTaskRepository extends HibernateAbstractRepository<Perform
 		Query query = getSession().createQuery(hql);
 		query.setFirstResult(pageable.getOffset());
 		query.setMaxResults(pageable.getPageSize());
-		return new PageImpl<>(query.list(), pageable, this.count());
+		
+		List<PerformedTask> list = query.list();
+		
+		return new PageImpl<>(list, pageable, countAllPoiPerformedTask());
+	}
+	
+	private Long countAllPoiPerformedTask() {
+		String hql = "select count(*) from PerformedTask where object_type = 'poi'";
+		Query query = getSession().createQuery(hql);
+		
+
+		Object result = query.uniqueResult();
+		if (result == null) {
+			return 0l;
+		}
+		return (Long)result;
 	}
 
 	public Long countByPlayerAndTask(Player player, Task task) {
