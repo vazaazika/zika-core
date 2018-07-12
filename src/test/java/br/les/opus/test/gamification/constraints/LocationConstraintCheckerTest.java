@@ -121,7 +121,7 @@ public class LocationConstraintCheckerTest extends DbTestUtil{
 		List<TaskAssignment> taskAssignments  = tarDao.findAllIncomplete(performedTask);
 		
 		//The number of incomplete task assignments should be 1
-		Assert.assertEquals(1, taskAssignments.size());
+		Assert.assertEquals(2, taskAssignments.size());
 		
 		
 		//The workload should be 1 since there is not constraint
@@ -149,7 +149,7 @@ public class LocationConstraintCheckerTest extends DbTestUtil{
 		List<TaskAssignment> taskAssignments  = tarDao.findAllIncomplete(performedTask);
 		
 		//The number of incomplete task assignments should be 1
-		Assert.assertEquals(1, taskAssignments.size());
+		Assert.assertEquals(2, taskAssignments.size());
 		
 		
 		//The workload should be 1 since there is not constraint
@@ -179,7 +179,7 @@ public class LocationConstraintCheckerTest extends DbTestUtil{
 		List<TaskAssignment> taskAssignments  = tarDao.findAllIncomplete(performedTask);
 		
 		//The number of incomplete task assignments should be 1
-		Assert.assertEquals(1, taskAssignments.size());
+		Assert.assertEquals(2, taskAssignments.size());
 		
 		
 		//The value should be 0 since location is null
@@ -208,7 +208,7 @@ public class LocationConstraintCheckerTest extends DbTestUtil{
 		List<TaskAssignment> taskAssignments  = tarDao.findAllIncomplete(performedTask);
 		
 		//The number of incomplete task assignments should be 1
-		Assert.assertEquals(1, taskAssignments.size());
+		Assert.assertEquals(2, taskAssignments.size());
 		
 		
 		//The value should be 1 since location is within the constraint
@@ -237,7 +237,7 @@ public class LocationConstraintCheckerTest extends DbTestUtil{
 		List<TaskAssignment> taskAssignments  = tarDao.findAllIncomplete(performedTask);
 		
 		//The number of incomplete task assignments should be 1
-		Assert.assertEquals(1, taskAssignments.size());
+		Assert.assertEquals(2, taskAssignments.size());
 		
 		
 		//The value should be 0 since location is not within the constraint
@@ -266,7 +266,7 @@ public class LocationConstraintCheckerTest extends DbTestUtil{
 		List<TaskAssignment> taskAssignments  = tarDao.findAllIncomplete(performedTask);
 		
 		//The number of incomplete task assignments should be 1
-		Assert.assertEquals(1, taskAssignments.size());
+		Assert.assertEquals(2, taskAssignments.size());
 		
 		
 		//The workload should be 1 since there is 1 location constraint

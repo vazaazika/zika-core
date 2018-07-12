@@ -78,19 +78,21 @@ public class PerformedTaskRepository extends HibernateAbstractRepository<Perform
 		builder.append("group by ");
 		builder.append("  year(pt.date), month(pt.date), day(pt.date) ");
 		builder.append("order by ");
-		builder.append(" sum(pt.task.givenXp) desc ");
+		builder.append(" sum(pt.task.givenXp) desc");
 		
-		Query query = getSession().createQuery(builder.toString());
-		query.setParameter("player", player.getId());
+		Object[] data = (Object[]) getSession().createQuery(builder.toString())
+			.setParameter("player", player.getId())
+			.setMaxResults(1)
+			.uniqueResult();
 		
-		List<Object[]> result = query.list();
-		if (result.isEmpty()) {
-			return null;
+		DailyRecord record = null;
+
+		if (data != null) {
+			record = new DailyRecord();
+			record.setDay(new DateTime((Integer)data[0], (Integer)data[1], (Integer)data[2], 0, 0).toDate());
+			record.setXp(((Long)data[3]).intValue());
 		}
-		Object[] data = result.iterator().next();
-		DailyRecord record = new DailyRecord();
-		record.setDay(new DateTime((Integer)data[0], (Integer)data[1], (Integer)data[2], 0, 0).toDate());
-		record.setXp(((Long)data[3]).intValue());
+		
 		return record;
 	}
 	
