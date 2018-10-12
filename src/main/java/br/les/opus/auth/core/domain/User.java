@@ -133,19 +133,6 @@ public class User implements UserDetails, IdAware<Long> {
 		return false;
 	}
 
-
-
-	@JsonIgnore
-	public boolean isHealthAgent() {
-		for (GrantedAuthority authority : this.getAuthorities()) {
-			if (authority.getAuthority().equals(Role.HEALTH_AGENT)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
 	@Transient
 	@JsonIgnore
 	public List<Resource> getAllResources() {

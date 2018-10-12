@@ -4,10 +4,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import br.les.opus.dengue.core.domain.enumeration.PoiStatus;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -58,11 +70,6 @@ public class PointOfInterest
 	@ManyToOne
 	@JoinColumn(name = "poi_type_id")
 	private PoiType type;
-
-	@Enumerated
-	@Column(columnDefinition = "smallint", nullable = false)
-	private PoiStatus poiStatus;
-
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -267,14 +274,6 @@ public class PointOfInterest
 		this.userVote = userVote;
 	}
 
-	public PoiStatus getPoiStatus() {
-		return poiStatus;
-	}
-
-	public void setPoiStatus(PoiStatus poiStatus) {
-		this.poiStatus = poiStatus;
-	}
-
 	@Override
 	public String toString() {
 		return "PointOfInterest [id=" + id + ", type=" + type + ", user=" + user + "]";
@@ -285,6 +284,4 @@ public class PointOfInterest
 		return PointOfInterest.class.getSimpleName();
 	}
 
-
 }
-

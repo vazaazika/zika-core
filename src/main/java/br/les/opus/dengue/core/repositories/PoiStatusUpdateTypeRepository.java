@@ -8,8 +8,4 @@ import br.les.opus.dengue.core.domain.PoiStatusUpdateType;
 @Repository
 public class PoiStatusUpdateTypeRepository extends HibernateAbstractRepository<PoiStatusUpdateType, Long>{
 
-
-
-
-
 }

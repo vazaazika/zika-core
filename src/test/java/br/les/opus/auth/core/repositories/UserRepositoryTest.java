@@ -86,7 +86,7 @@ public class UserRepositoryTest extends DbTestUtil {
          assertEquals("Marcio", userRepository.findByUsernameAndPassword("marcioaguiar", "123456").getName());
          assertNull(userRepository.findByUsernameAndPassword("marcioaguiar", "12345"));
     }
-/*
+
     @Test
     public void testFindUserByInvitationToken() throws IOException {
         
@@ -116,6 +116,5 @@ public class UserRepositoryTest extends DbTestUtil {
         picture.getScaledInstance("/tmp/", 10, 10);
         picture.deleteFileFromFileSystem("/tmp/");
     }
-*/
-
+    
 }
