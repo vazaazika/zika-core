@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "role")
 public class Role implements GrantedAuthority, IdAware<Long> {
-	
+
 	private static final long serialVersionUID = -250949549378267771L;
 	
 	public static final String ROOT = "ROOT";
