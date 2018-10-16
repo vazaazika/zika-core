@@ -1,12 +1,8 @@
 package br.les.opus.gamification.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +26,6 @@ import br.les.opus.gamification.repositories.OnTopRepository;
 import br.les.opus.gamification.repositories.PerformedChallengeRepository;
 import br.les.opus.gamification.repositories.PerformedTaskRepository;
 import br.les.opus.gamification.repositories.PlayerRepository;
-import br.les.opus.gamification.repositories.TeamRepository;
 
 @Service
 @Transactional
@@ -53,9 +48,6 @@ public class ChallengeService {
 	@Autowired
 	private PlayerRepository playerDao;
 	
-	@Autowired
-	private TeamRepository teamDao;
-
 	/**
 	 * verify if the challenge has any constraint
 	 * @param challengeId
@@ -69,14 +61,14 @@ public class ChallengeService {
 	public void verifyOpenChallenges() {
 		/*
 		 * Get regular challenges
-		 *
+		 */
 		List<PerformedChallenge> openChallenges = getIncompletePerformedChallenges();
 		
 		for(PerformedChallenge pc: openChallenges) {
 			shouldBeClosed(pc);
 		}
 		
-		*
+		/*
 		 * Get OnTopChallenges
 		 */
 		//List<OnTop> openOnTops = onTopDao.findAll();
