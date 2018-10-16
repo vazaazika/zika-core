@@ -51,6 +51,9 @@ public class Team implements IdAware<Long> {
     @Column(name="opt_lock")
 	private Integer version;
 	
+	@Column(nullable = false)
+	private Long xp;
+	
 	@Transient
 	@JsonIgnore
 	public boolean wasCreatedBy(Player player) {
@@ -59,6 +62,7 @@ public class Team implements IdAware<Long> {
 	
 	public Team() {
 		this.version = 0;
+		this.xp = 0L;
 	}
 
 	public Long getId() {
@@ -96,5 +100,22 @@ public class Team implements IdAware<Long> {
 	public Integer getVersion() {
 		return version;
 	}
+
+	public Long getXp() {
+		return xp;
+	}
+
+	public void setXp(Long xp) {
+		this.xp = xp;
+	}
+	public void addXp(Long xp) {
+		this.xp += xp;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+	
+	
 
 }

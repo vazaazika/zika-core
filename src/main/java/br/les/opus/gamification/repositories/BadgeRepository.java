@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.hibernate.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.les.opus.commons.persistence.HibernateAbstractRepository;
@@ -13,9 +14,17 @@ import br.les.opus.gamification.domain.Badge;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.TaskGroup;
 import br.les.opus.gamification.domain.TaskGroupProgression;
+import br.les.opus.gamification.domain.challenge.Challenge;
+import br.les.opus.gamification.domain.challenge.ChallengeName;
+import br.les.opus.gamification.domain.challenge.PerformedChallenge;
 
 @Repository
 public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
+	@Autowired
+	private PerformedChallengeRepository pcDao;
+	
+	@Autowired
+	private OnTopRepository onTopDao;
 
 	@SuppressWarnings("unchecked")
 	public List<Badge> findAllWithProgressions(Player player) {
@@ -27,6 +36,48 @@ public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
 		List<Badge> badges = new ArrayList<>();
 		
 		for (Object[] objects : badgesAndProgressions) {
+			if (objects[0] instanceof Challenge	) {
+				Challenge challenge = (Challenge) objects[0];
+				
+				if(challenge != null && challenge.getName().equals(ChallengeName.ONTOP.getName())) {
+					Badge badge = challenge.getBadge();
+					
+					//verify if player Team won the challenge On Top
+					if(onTopDao.isPlayerTeamWinnerOnTopChallenge(player)) {
+						badge.setCompletion(1F);
+					}else {
+						badge.setCompletion(-1F);
+					}
+					badges.add(badge);
+					continue;
+				}
+				
+				Badge badge = challenge.getBadge();
+				
+				List<PerformedChallenge> pChallenge = pcDao.findAllPerformedChallengeByPlayerAndChallenge(player, challenge);
+				
+				//player is not in the challenge
+				if(pChallenge == null) {
+					badge.setCompletion(-1F);
+				}else {
+					//verify if the developer concluded the challenge
+					for(PerformedChallenge pc: pChallenge) {
+						if(pc.isSucceed()) {
+							badge.setCompletion(1F);
+							break;
+						}
+					}
+					
+					if (badge.getCompletion() == null) {
+						badge.setCompletion(-1F);
+					}
+				}
+				badges.add(badge);
+				
+				continue;
+			}
+
+			
 			TaskGroup taskGroup =  (TaskGroup)objects[0];
 			Badge badge = taskGroup.getBadge();
 			if (objects[1] != null) {

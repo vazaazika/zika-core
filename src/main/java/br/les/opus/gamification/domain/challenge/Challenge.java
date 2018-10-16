@@ -1,12 +1,15 @@
-package br.les.opus.gamification.domain;
+package br.les.opus.gamification.domain.challenge;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import br.les.opus.commons.persistence.IdAware;
+import br.les.opus.gamification.domain.Player;
+import br.les.opus.gamification.domain.TaskGroup;
 
 /**
  * Class to store the challenges performed by a group or a single player
@@ -24,8 +27,9 @@ public class Challenge extends TaskGroup implements IdAware<Long>{
 	@Column(nullable=false, unique=false)
 	private String description;
 	
-	
-	private String type;
+	@ManyToOne
+	@JoinColumn(name = "type_id", nullable=false, unique=false)
+	private ChallengeType type;
 	
 	/**
 	 * Checks if a player can register progress in the challenge.
@@ -59,15 +63,17 @@ public class Challenge extends TaskGroup implements IdAware<Long>{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
-
-	@Transient
+	
 	public String getType() {
+		return type.getName();
+	}
+	public ChallengeType getChallengeType() {
 		return type;
 	}
-	
-	public void setType(String type) {
+
+
+
+	public void setChallengeType(ChallengeType type) {
 		this.type = type;
 	}
 }
