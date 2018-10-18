@@ -11,8 +11,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import br.les.opus.gamification.services.ChallengeService;
 
-@Configuration
-@EnableScheduling
+//@Configuration
+//@EnableScheduling
 public class ScheduleChallengerChecker {
 	@Autowired
 	private ChallengeService service;
