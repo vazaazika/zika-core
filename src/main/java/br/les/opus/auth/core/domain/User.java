@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 import br.les.opus.gamification.domain.Invite;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.NaturalId;
@@ -41,6 +42,7 @@ import br.les.opus.dengue.core.domain.PointOfInterest;
 @UniqueUsername(payload = {}) //ensures validation on insert/update regarding user name
 @Table(name = "system_user")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorOptions(force=true)
 public class User implements UserDetails, IdAware<Long> {
 
 	private static final long serialVersionUID = 5060765600109301997L;

@@ -43,7 +43,7 @@ public class TeamRepository extends HibernateAbstractRepository<Team, Long>{
 	}
 	
 	public Page<TeamFeed> findAllTeamsWithActiveMembers(Pageable pageable){
-		String hql  = "select new br.les.opus.gamification.domain.TeamFeed(t.id, t.name, br.les.opus.gamification.domain.Player(p.level, p.nickname, p.xp)) "
+		String hql  = "select new br.les.opus.gamification.domain.TeamFeed(t, p) "
 				+ "from Team as t, Player as p, Membership as m "
 				+ "where m.team.id=t.id and p.id=m.player.id";
 		Query query = getSession().createQuery(hql);

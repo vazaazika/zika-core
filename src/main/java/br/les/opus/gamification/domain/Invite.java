@@ -1,5 +1,9 @@
 package br.les.opus.gamification.domain;
 
+import br.les.opus.auth.core.domain.User;
+import br.les.opus.commons.persistence.IdAware;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 import static java.util.UUID.randomUUID;
@@ -11,7 +15,7 @@ import static java.util.UUID.randomUUID;
 @Entity
 @Table(name = "game_invite")
 @PrimaryKeyJoinColumn(name = "invite_id")
-public class Invite {
+public class Invite implements IdAware<Long>{
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO, generator="generator")
@@ -23,6 +27,11 @@ public class Invite {
 
     @Column(unique = true, nullable = false)
     private String hashedToken;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Invite() {
         this.quantity = 0;
@@ -43,5 +52,14 @@ public class Invite {
 
     public void setHashedToken(String hashedToken) {
         this.hashedToken = hashedToken;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 }
