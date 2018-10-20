@@ -1,15 +1,15 @@
 package br.les.opus.gamification.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.les.opus.auth.core.domain.User;
 import br.les.opus.gamification.domain.PerformedTask;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.Task;
 import br.les.opus.gamification.repositories.InviteRepository;
-import br.les.opus.gamification.repositories.PerformedTaskRepository;
 import br.les.opus.gamification.repositories.PlayerRepository;
 import br.les.opus.gamification.repositories.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Created by andersonjso on 8/20/18.

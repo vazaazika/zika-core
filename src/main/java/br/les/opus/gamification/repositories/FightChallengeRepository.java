@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.les.opus.commons.persistence.HibernateAbstractRepository;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.challenge.FightChallenge;
-import br.les.opus.gamification.domain.challenge.OnTop;
 
 @Repository
 public class FightChallengeRepository extends HibernateAbstractRepository<FightChallenge, Long>{
