@@ -111,10 +111,10 @@ public class UserService {
 	 * @param token
 	 * @return
 	 */
-//	public User loadUserByToken (String token){
-//		return userRepository.findUserByInvitationToken(token);
-//
-//	}
+	public User loadUserByToken (String token){
+		return userRepository.findUserByInvitationToken(token);
+
+	}
 
 	public void changePassword (User user){
 		ResetPassword resetPassword = new ResetPassword();

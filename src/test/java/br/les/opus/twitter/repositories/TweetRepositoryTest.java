@@ -69,20 +69,7 @@ public class TweetRepositoryTest extends DbTestUtil {
 		sampleUser.setListedCount(20);
 		sampleUser.setLocation("Maceió");
 		sampleUser.setOutdatedFollowers(false);
-                sampleUser.setDescription("Description");
-                sampleUser.setProfileBackgroundColor("setProfileBackgroundColor");
-                sampleUser.setProfileBackgroundImageUrl("profileBackgroundImageUrl");
-                sampleUser.setProfileBackgroundImageUrlHttps("profileBackgroundImageUrlHttps");
-                sampleUser.setProfileBackgroundTiled(Boolean.FALSE);
-                sampleUser.setProfileBannerImageUrl("setProfileBannerImageUrl");
-                sampleUser.setProfileImageUrl("profileImageUrl");
-                sampleUser.setProfileImageUrlHttps("profileImageUrlHttps");
-                sampleUser.setProfileLinkColor("profileLinkColor");
-                sampleUser.setProfileSidebarBorderColor("profileSidebarBorderColor");
-                sampleUser.setProfileSidebarFillColor("profileSidebarFillColor");
-                sampleUser.setProfileTextColor("profileTextColor");
-                sampleUser.setProfileUseBackgroundImage(Boolean.FALSE);
-                
+		
 		twitterUserRepository.save(sampleUser);
 		
 		classificationRepository.save(Arrays.asList(
@@ -94,32 +81,15 @@ public class TweetRepositoryTest extends DbTestUtil {
 
 	@Test
 	public void testTwitterUser() {
-                TwitterUser sampleUser = twitterUserRepository.findByScreenname("marcioaguiar");
-		assertEquals(new Integer(5), sampleUser.getFavouritesCount());
-                
-                assertEquals("Description", sampleUser.getDescription());
-                assertEquals("setProfileBackgroundColor", sampleUser.getProfileBackgroundColor());
-                assertEquals("profileBackgroundImageUrl", sampleUser.getProfileBackgroundImageUrl());
-                assertEquals("profileBackgroundImageUrlHttps", sampleUser.getProfileBackgroundImageUrlHttps());
-                assertEquals(Boolean.FALSE, sampleUser.getProfileBackgroundTiled());
-                assertEquals("setProfileBannerImageUrl", sampleUser.getProfileBannerImageUrl());
-                assertEquals("profileImageUrl", sampleUser.getProfileImageUrl());
-                assertEquals("profileImageUrlHttps", sampleUser.getProfileImageUrlHttps());
-                assertEquals("profileLinkColor", sampleUser.getProfileLinkColor());
-                assertEquals("profileSidebarBorderColor", sampleUser.getProfileSidebarBorderColor());
-                assertEquals("profileSidebarFillColor", sampleUser.getProfileSidebarFillColor());
-                assertEquals("profileTextColor", sampleUser.getProfileTextColor());
-                assertEquals(Boolean.FALSE, sampleUser.getProfileUseBackgroundImage());
-                
+		assertEquals(new Integer(5), twitterUserRepository.findByScreenname("marcioaguiar").getFavouritesCount());
 		List<TwitterUser> users = twitterUserRepository.findAllOrderedById();
 		assertEquals(4, users.size());
 		assertEquals(new Long(4), users.get(users.size() - 1).getId());
 		assertEquals(new Long(1), users.get(0).getId());
-		assertEquals(3, twitterUserRepository.findAllWithOutdatedFollowers().size());
 		twitterUserRepository.deleteByScreenname("diegocedrim");
 		assertNull(twitterUserRepository.findByScreenname("diegocedrim"));
 		assertEquals(0, twitterUserRepository.findAllRelevant().size());
-		assertEquals(2, twitterUserRepository.findAllWithOutdatedFollowers().size());
+		assertEquals(3, twitterUserRepository.findAllWithOutdatedFollowers().size());
 	}
 	
 	@Test

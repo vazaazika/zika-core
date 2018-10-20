@@ -41,9 +41,7 @@ public class Task {
 	private Resource resource;
 	
 	private String description;
-	
-	private String xpGiverBeanName;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -74,14 +72,6 @@ public class Task {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getXpRuleBeanName() {
-		return xpGiverBeanName;
-	}
-
-	public void setXpGiverBeanName(String xpGiverBeanName) {
-		this.xpGiverBeanName = xpGiverBeanName;
 	}
 	
 }

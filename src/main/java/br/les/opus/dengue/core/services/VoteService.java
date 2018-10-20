@@ -11,7 +11,6 @@ import br.les.opus.dengue.core.repositories.VoteRepository;
 @Service
 public class VoteService {
 	
-	
 	@Autowired
 	private VoteRepositoryFactory voteRepositoryFactory;
 

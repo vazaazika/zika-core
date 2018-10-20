@@ -74,3 +74,4 @@ INSERT INTO RESOURCE(id,open,operation,uri) VALUES(39,false,'POST','/game/player
 --insert new resource to get and post challenges
 INSERT INTO RESOURCE(id,open,operation,uri) VALUES(40,false,'GET','/game/challenge');
 
+INSERT INTO RESOURCE(id,open,operation,uri) VALUES(41,false,'POST','/game/challenge');
