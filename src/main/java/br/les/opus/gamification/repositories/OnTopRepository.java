@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import br.les.opus.commons.persistence.HibernateAbstractRepository;
 import br.les.opus.gamification.domain.Membership;
-import br.les.opus.gamification.domain.OnTop;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.Team;
+import br.les.opus.gamification.domain.challenge.OnTop;
 import br.les.opus.gamification.services.MembershipService;
 
 @Repository

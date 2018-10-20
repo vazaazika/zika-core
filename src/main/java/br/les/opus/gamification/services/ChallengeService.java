@@ -13,13 +13,13 @@ import br.les.opus.gamification.constraints.DurationConstraint;
 import br.les.opus.gamification.constraints.QuantityConstraint;
 import br.les.opus.gamification.constraints.checkers.DurationConstraintChecker;
 import br.les.opus.gamification.domain.Membership;
-import br.les.opus.gamification.domain.OnTop;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.Task;
 import br.les.opus.gamification.domain.Team;
 import br.les.opus.gamification.domain.challenge.Challenge;
 import br.les.opus.gamification.domain.challenge.ChallengeEntity;
 import br.les.opus.gamification.domain.challenge.ChallengeName;
+import br.les.opus.gamification.domain.challenge.OnTop;
 import br.les.opus.gamification.domain.challenge.PerformedChallenge;
 import br.les.opus.gamification.repositories.ChallengeRepository;
 import br.les.opus.gamification.repositories.OnTopRepository;
@@ -218,6 +218,10 @@ public class ChallengeService {
 				}
 			}
 		}
+		
+	}
+	
+	public void sendInvitationFightChallente(Player challenger, Player rival) {
 		
 	}
 
