@@ -1,4 +1,4 @@
-package br.les.opus.gamification.domain;
+package br.les.opus.gamification.domain.challenge;
 
 import java.util.Date;
 
@@ -13,6 +13,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.les.opus.gamification.domain.Team;
 
 /**
  * A mapping between player and team
