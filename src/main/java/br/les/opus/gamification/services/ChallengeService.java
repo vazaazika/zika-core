@@ -3,6 +3,8 @@ package br.les.opus.gamification.services;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.transaction.Transactional;
 
@@ -317,18 +319,19 @@ public class ChallengeService {
 		mailService.start();
 	}
 
+	
 	/**
 	 * 
 	 * Check if date is valid (less then 24h)
 	 * 
 	 *
-	 * @param fc = FightChallenge
+	 * @param date = Date
 	 * @return true if the date is valid, false if the date is invalid
 	 */
-	public boolean checkValidDate(FightChallenge fc) {
+	public boolean checkValidDate(Date date) {
 		
 		Calendar calendar  = Calendar.getInstance();
-		calendar.setTime(fc.getCreatedDate());
+		calendar.setTime(date);
 		calendar.add(Calendar.DATE, 1);
 		
 		if(calendar.getTime().compareTo(new Date()) < 0) {
@@ -336,6 +339,32 @@ public class ChallengeService {
 		}else {
 			return true;
 		}
+		
+	}
+
+	public void sendInvitationTeamUpChallente(Player loggedPlayer, Team challengerTeam, Team rivalTeam, Long idTeamUpChallenge) {
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+		
+		ChallengeInvitation invitation;
+		
+		List<Membership> members = rivalTeam.getMemberships();
+		
+		
+		for(Membership m: members) {
+			Player rival = m.getPlayer();
+			
+			invitation = new ChallengeInvitation();
+			MailBody mail = invitation.createTeamUpChallengeInvitation(loggedPlayer, challengerTeam, rival, idTeamUpChallenge);
+			
+			mailService.setMail(mail);
+			
+			executor.execute(mailService);
+		}
+			
+		executor.shutdown();
+		
+        while (!executor.isTerminated()) {
+        }
 		
 	}
 	
