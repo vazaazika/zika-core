@@ -13,15 +13,16 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.les.opus.commons.persistence.IdAware;
 import br.les.opus.gamification.domain.Player;
 
 /**
- * A mapping between player and team
+ * A mapping between players and FightChallenge
  * @author Leonardo Sousa
  */
 @Entity
 @Table(name = "game_fight_challenge")
-public class FightChallenge {
+public class FightChallenge implements IdAware<Long> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "generator")
@@ -39,14 +40,18 @@ public class FightChallenge {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date startDate;
+	
 	private boolean complete;
 	
 	private String status;
 	
 	public FightChallenge() {
 		this.complete = false;
-		status = InvitationStatus.ONHOLD.getValue();
+		this.status = InvitationStatus.ONHOLD.getValue();
 		this.createdDate = new Date();
+		this.startDate = null;
 	}
 	
 	public FightChallenge(Player challenger, Player rival) {
@@ -85,6 +90,14 @@ public class FightChallenge {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
 	public boolean isComplete() {

@@ -2,7 +2,7 @@ package br.les.opus.gamification.domain.challenge;
 
 public enum InvitationStatus {
 	ACCEPTED("Aceito"),
-	REFUSED("Recusado"),
+	EXPIRED("Expirado"),
 	ONHOLD("Em Espera");
 	
 	private String value;

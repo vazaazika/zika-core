@@ -1,5 +1,6 @@
 package br.les.opus.gamification.services;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,16 +13,20 @@ import org.springframework.stereotype.Service;
 import br.les.opus.gamification.constraints.DurationConstraint;
 import br.les.opus.gamification.constraints.QuantityConstraint;
 import br.les.opus.gamification.constraints.checkers.DurationConstraintChecker;
+import br.les.opus.gamification.domain.MailBody;
 import br.les.opus.gamification.domain.Membership;
 import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.Task;
 import br.les.opus.gamification.domain.Team;
 import br.les.opus.gamification.domain.challenge.Challenge;
 import br.les.opus.gamification.domain.challenge.ChallengeEntity;
+import br.les.opus.gamification.domain.challenge.ChallengeInvitation;
 import br.les.opus.gamification.domain.challenge.ChallengeName;
+import br.les.opus.gamification.domain.challenge.FightChallenge;
 import br.les.opus.gamification.domain.challenge.OnTop;
 import br.les.opus.gamification.domain.challenge.PerformedChallenge;
 import br.les.opus.gamification.repositories.ChallengeRepository;
+import br.les.opus.gamification.repositories.FightChallengeRepository;
 import br.les.opus.gamification.repositories.OnTopRepository;
 import br.les.opus.gamification.repositories.PerformedChallengeRepository;
 import br.les.opus.gamification.repositories.PerformedTaskRepository;
@@ -37,6 +42,9 @@ public class ChallengeService {
 	private ChallengeRepository repository;
 	
 	@Autowired
+	private FightChallengeRepository fightDao;
+	
+	@Autowired
 	private PerformedChallengeRepository pcDao;
 	
 	@Autowired
@@ -47,6 +55,10 @@ public class ChallengeService {
 	
 	@Autowired
 	private PlayerRepository playerDao;
+	
+	@Autowired
+    private MailService mailService;
+
 	
 	/**
 	 * verify if the challenge has any constraint
@@ -61,15 +73,21 @@ public class ChallengeService {
 	public void verifyOpenChallenges() {
 		/*
 		 * Get regular challenges
-		 */
+		 *
 		List<PerformedChallenge> openChallenges = getIncompletePerformedChallenges();
 		
 		for(PerformedChallenge pc: openChallenges) {
 			shouldBeClosed(pc);
-		}
+		}*/
 		
 		/*
-		 * Get OnTopChallenges
+		 * FighChallenge
+		 */
+		handleFightChallenges();
+		
+		
+		/*
+		 * OnTopChallenges
 		 */
 		//List<OnTop> openOnTops = onTopDao.findAll();
 		handleOnTopChallenge();
@@ -90,7 +108,7 @@ public class ChallengeService {
 		}
 		
 		if(challenge.getName().equals(ChallengeName.FIGHT.getName())) {
-			handleFightChallenge(pc, challenge);
+			//handleFightChallenge(pc, challenge);
 		}
 		
 	}
@@ -133,7 +151,7 @@ public class ChallengeService {
 		pc.setComplete(true);
 	}
 	
-	private void handleFightChallenge(PerformedChallenge pc, Challenge challenge) {
+	/*private void handleFightChallenge(PerformedChallenge pc, Challenge challenge) {
 		
 		DurationConstraint durationConstraint = repository.getDurationConstraint(challenge.getId());
 		
@@ -175,7 +193,7 @@ public class ChallengeService {
 		
 		/*
 		 * identify the player who scored the most
-		 */
+		 *
 		Long p1Pois = ptDao.countByPlayerAndTaskPeriodDate(player1, task, dateStart);
 		Long p2Pois = ptDao.countByPlayerAndTaskPeriodDate(player2, task, dateStart);
 		
@@ -195,6 +213,75 @@ public class ChallengeService {
 		
 		pc.setSucceed(true);
 		pc.setComplete(true);
+	}*/
+
+	private void handleFightChallenges() {
+		List<FightChallenge> challenges = fightDao.findOpenChallenges();
+		
+		for(FightChallenge fc: challenges) {
+			handleFightChallenge(fc);
+		}
+	}
+	
+	private void handleFightChallenge(FightChallenge fc) {
+		Challenge challenge = repository.findChallengeByName(ChallengeName.FIGHT.getName());
+		DurationConstraint durationConstraint = repository.getDurationConstraint(challenge.getId());
+		
+		if(durationConstraint == null) {
+			return;
+		}
+		
+		DurationConstraintChecker checker = (DurationConstraintChecker)ctx.getBean(durationConstraint.getCheckerClass());
+		
+		//verify if the challenge should be closed due to time
+		if(checker.completedWork(durationConstraint, fc) == 0) {//
+			return;
+		}
+		
+		
+		//get Players, task and date that the challenge started
+		Player player1 = fc.getChallenger();
+		Player player2 = fc.getRival();
+		
+		
+		//if one of the players is null, then the other one receives the XP
+		if(player1 == null || player2 == null) {
+			if(player1 == null) {
+				player2.addXp(challenge.getGivenXp());
+			}else {
+				player1.addXp(challenge.getGivenXp());
+			}
+			
+			fc.setComplete(true);
+			
+			return;
+		}
+		
+		Task task = challenge.getAssignments().get(0).getTask();
+		Date dateStart = fc.getStartDate();
+		
+		
+		/*
+		 * identify the player who scored the most
+		 */
+		Long p1Pois = ptDao.countByPlayerAndTaskPeriodDate(player1, task, dateStart);
+		Long p2Pois = ptDao.countByPlayerAndTaskPeriodDate(player2, task, dateStart);
+		
+		
+		if(p1Pois > p2Pois) {
+			player1.addXp(challenge.getGivenXp());
+			player2.addXp(challenge.getGivenXp()/5);
+		}else {
+			if(p1Pois < p2Pois) {
+				player2.addXp(challenge.getGivenXp());
+				player1.addXp(challenge.getGivenXp()/5);
+			}else {				
+				player1.addXp(challenge.getGivenXp());
+				player2.addXp(challenge.getGivenXp());
+			}
+		}
+		
+		fc.setComplete(true);
 	}
 	
 	private void handleOnTopChallenge() {
@@ -221,8 +308,36 @@ public class ChallengeService {
 		
 	}
 	
-	public void sendInvitationFightChallente(Player challenger, Player rival) {
+	public void sendInvitationFightChallente(Player challenger, Player rival, Long idFightChallenge) {
+		ChallengeInvitation invitation = new ChallengeInvitation();
+		
+		MailBody mail = invitation.createFightChallengeInvitation(challenger, rival, idFightChallenge);
+		
+		mailService.setMail(mail);
+		mailService.start();
+	}
+
+	/**
+	 * 
+	 * Check if date is valid (less then 24h)
+	 * 
+	 *
+	 * @param fc = FightChallenge
+	 * @return true if the date is valid, false if the date is invalid
+	 */
+	public boolean checkValidDate(FightChallenge fc) {
+		
+		Calendar calendar  = Calendar.getInstance();
+		calendar.setTime(fc.getCreatedDate());
+		calendar.add(Calendar.DATE, 1);
+		
+		if(calendar.getTime().compareTo(new Date()) < 0) {
+			return false;
+		}else {
+			return true;
+		}
 		
 	}
+	
 
 }
