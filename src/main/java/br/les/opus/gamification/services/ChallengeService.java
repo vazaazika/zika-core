@@ -27,12 +27,14 @@ import br.les.opus.gamification.domain.challenge.ChallengeName;
 import br.les.opus.gamification.domain.challenge.FightChallenge;
 import br.les.opus.gamification.domain.challenge.OnTop;
 import br.les.opus.gamification.domain.challenge.PerformedChallenge;
+import br.les.opus.gamification.domain.challenge.TeamUpChallenge;
 import br.les.opus.gamification.repositories.ChallengeRepository;
 import br.les.opus.gamification.repositories.FightChallengeRepository;
 import br.les.opus.gamification.repositories.OnTopRepository;
 import br.les.opus.gamification.repositories.PerformedChallengeRepository;
 import br.les.opus.gamification.repositories.PerformedTaskRepository;
 import br.les.opus.gamification.repositories.PlayerRepository;
+import br.les.opus.gamification.repositories.TeamUpChallengeRepository;
 
 @Service
 @Transactional
@@ -56,21 +58,14 @@ public class ChallengeService {
 	private OnTopRepository onTopDao;
 	
 	@Autowired
+	private TeamUpChallengeRepository teamUpDao;
+	
+	@Autowired
 	private PlayerRepository playerDao;
 	
 	@Autowired
     private MailService mailService;
 
-	
-	/**
-	 * verify if the challenge has any constraint
-	 * @param challengeId
-	 * @return
-	 */
-	
-	public boolean checkChallenges(Long challengeId){
-		return true;
-	}
 	
 	public void verifyOpenChallenges() {
 		/*
@@ -85,16 +80,37 @@ public class ChallengeService {
 		/*
 		 * FighChallenge
 		 */
-		handleFightChallenges();
+		//handleFightChallenges();
 		
 		
 		/*
 		 * OnTopChallenges
 		 */
-		//List<OnTop> openOnTops = onTopDao.findAll();
-		handleOnTopChallenge();
+		//handleOnTopChallenges();
+		
+		/*
+		 * TeamUpChallenges
+		 */
+		handleTeamUpChallenges();
 		
 	}
+	
+	
+	/**
+	 * verify if the challenge has any constraint
+	 * @param challengeId
+	 * @return
+	 */
+	
+	public boolean checkChallenges(Long challengeId){
+		return true;
+	}
+	
+	/* ******************************************************************************************
+	 * 
+	 * 										Strike Challenge
+	 * 
+	 * *****************************************************************************************/
 
 	public List<PerformedChallenge> getIncompletePerformedChallenges() {
 		List<PerformedChallenge> openChallenges = pcDao.findIncompletePerformedChallenge();
@@ -126,7 +142,7 @@ public class ChallengeService {
 		DurationConstraintChecker checker = (DurationConstraintChecker)ctx.getBean(durationConstraint.getCheckerClass());
 		
 		//verify if the challenge should be closed due to time
-		if(checker.completedWork(durationConstraint, pc) == 0) {//
+		if(checker.completedWork(durationConstraint, pc.getDate()) == 0) {//
 			return;
 		}
 		
@@ -217,6 +233,11 @@ public class ChallengeService {
 		pc.setComplete(true);
 	}*/
 
+	/* ******************************************************************************************
+	 * 
+	 * 										Fight Challenge
+	 * 
+	 * *****************************************************************************************/
 	private void handleFightChallenges() {
 		List<FightChallenge> challenges = fightDao.findOpenChallenges();
 		
@@ -236,7 +257,7 @@ public class ChallengeService {
 		DurationConstraintChecker checker = (DurationConstraintChecker)ctx.getBean(durationConstraint.getCheckerClass());
 		
 		//verify if the challenge should be closed due to time
-		if(checker.completedWork(durationConstraint, fc) == 0) {//
+		if(checker.completedWork(durationConstraint, fc.getStartDate()) == 0) {//
 			return;
 		}
 		
@@ -248,10 +269,12 @@ public class ChallengeService {
 		
 		//if one of the players is null, then the other one receives the XP
 		if(player1 == null || player2 == null) {
-			if(player1 == null) {
+			if(player1 == null && player2 != null) {
 				player2.addXp(challenge.getGivenXp());
 			}else {
-				player1.addXp(challenge.getGivenXp());
+				if(player1 != null && player2 == null) {
+					player1.addXp(challenge.getGivenXp());
+				}
 			}
 			
 			fc.setComplete(true);
@@ -286,7 +309,13 @@ public class ChallengeService {
 		fc.setComplete(true);
 	}
 	
-	private void handleOnTopChallenge() {
+	/* ******************************************************************************************
+	 * 
+	 * 										OnTop Challenge
+	 * 
+	 * *****************************************************************************************/
+	
+	private void handleOnTopChallenges() {
 		Challenge challenge = repository.findChallengeByName(ChallengeName.ONTOP.getName());
 		OnTop onTop = onTopDao.getOnTop();
 		
@@ -298,18 +327,117 @@ public class ChallengeService {
 			
 			//update Xp for the team and its members
 			Team team = maxXp.getTeam();
-			List<Membership> memberships = team.getMemberships();
-			team.addXp(Long.valueOf(challenge.getGivenXp()));
-			
-			for(Membership m: memberships) {
-				if(m.getActive()) {
-					m.getPlayer().addXp(300);
-				}
-			}
+			giveTemMembersXp(team, challenge.getGivenXp(), 100);
 		}
 		
 	}
 	
+	/* ******************************************************************************************
+	 * 
+	 * 										TeamUp Challenge
+	 * 
+	 * *****************************************************************************************/
+	private void handleTeamUpChallenges() {
+		List<TeamUpChallenge> challenges = teamUpDao.findOpenChallenges();
+		
+		for(TeamUpChallenge teamUpChallenge: challenges) {
+			handleTeamUpChallenge(teamUpChallenge);
+		}
+		
+	}
+	
+	private void handleTeamUpChallenge(TeamUpChallenge teamUpChallenge) {
+		Challenge challenge = repository.findChallengeByName(ChallengeName.TEAMUP.getName());
+		DurationConstraint durationConstraint = repository.getDurationConstraint(challenge.getId());
+		
+		if(durationConstraint == null) {
+			return;
+		}
+		
+		DurationConstraintChecker checker = (DurationConstraintChecker)ctx.getBean(durationConstraint.getCheckerClass());
+		
+		//verify if the challenge should be closed due to time
+		if(checker.completedWork(durationConstraint, teamUpChallenge.getStartDate()) == 0) {//
+			return;
+		}
+		
+		//get teams
+		Team challenger = teamUpChallenge.getChallenger();
+		Team rival = teamUpChallenge.getRival();
+		
+		//if one of the players is null, then the other one receives the XP
+		if(challenger == null || rival == null) {
+			if(challenger == null && rival != null) {
+				giveTemMembersXp(rival, challenge.getGivenXp(), 100);
+			}else {
+				if(challenger != null && rival == null) {
+					giveTemMembersXp(challenger, challenge.getGivenXp(), 100);
+				}
+			}
+			
+			teamUpChallenge.setComplete(true);
+			
+			return;
+		}
+		
+		Task task = challenge.getAssignments().get(0).getTask();
+		Date dateStart = teamUpChallenge.getStartDate();
+		
+		
+		/*
+		 * identify the Team that members scored the most
+		 */
+		Long challengerMembers = getMembersXp(challenger.getMemberships(), task, dateStart);
+		Long rivalMembers = getMembersXp(rival.getMemberships(), task, dateStart);
+		
+		if(challengerMembers > rivalMembers) {
+			giveTemMembersXp(challenger, challenge.getGivenXp(), 100);
+			giveTemMembersXp(rival, challenge.getGivenXp()/5, 50);
+		}else {
+			if(challengerMembers < rivalMembers) {
+				giveTemMembersXp(rival, challenge.getGivenXp(), 100);
+				giveTemMembersXp(challenger, challenge.getGivenXp()/5, 50);
+			}else {				
+				giveTemMembersXp(challenger, challenge.getGivenXp(), 100);
+				giveTemMembersXp(rival, challenge.getGivenXp(), 100);
+			}
+		}
+		
+		teamUpChallenge.setComplete(true);
+		
+	}
+
+
+	private void giveTemMembersXp(Team team, Integer teamGivenXp, Integer memberGivenXp) {
+		//update Xp for the team and its members
+		List<Membership> memberships = team.getMemberships();
+		
+		team.addXp(Long.valueOf(teamGivenXp));
+		
+		for(Membership m: memberships) {
+			if(m.getActive()) {
+				m.getPlayer().addXp(memberGivenXp);
+			}
+		}
+	}
+	
+	private Long getMembersXp(List<Membership> members, Task task, Date date) {
+		Long xp = 0L;
+		
+		if(members == null || members.isEmpty()) {
+			return xp;
+		}
+		
+		for(Membership m: members) {
+			if(m.getActive()) {
+				xp += ptDao.countByPlayerAndTaskPeriodDate(m.getPlayer(), task, date);
+			}
+		}
+		
+		return xp;
+	}
+
+
 	public void sendInvitationFightChallente(Player challenger, Player rival, Long idFightChallenge) {
 		ChallengeInvitation invitation = new ChallengeInvitation();
 		
