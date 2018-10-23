@@ -16,12 +16,18 @@ import br.les.opus.gamification.domain.TaskGroup;
 import br.les.opus.gamification.domain.TaskGroupProgression;
 import br.les.opus.gamification.domain.challenge.Challenge;
 import br.les.opus.gamification.domain.challenge.ChallengeName;
-import br.les.opus.gamification.domain.challenge.PerformedChallenge;
 
 @Repository
-public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
+public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{	
 	@Autowired
-	private PerformedChallengeRepository pcDao;
+	private StrikeChallengeRepository strikeDao;
+	
+	@Autowired
+	private FightChallengeRepository fightDao;
+	
+	@Autowired
+	private TeamUpChallengeRepository teamUpDao;
+	
 	
 	@Autowired
 	private OnTopRepository onTopDao;
@@ -38,6 +44,80 @@ public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
 		for (Object[] objects : badgesAndProgressions) {
 			if (objects[0] instanceof Challenge	) {
 				Challenge challenge = (Challenge) objects[0];
+				
+				/*
+				 * Strike Challenge
+				 */
+				if(challenge.getName().equals(ChallengeName.STRIKE.getName())){
+					Badge badge = challenge.getBadge();
+					
+					/*
+					 * verify if the player finished the strike challenge
+					 */
+					if(strikeDao.isPlayerWinner(player)) {
+						badge.setCompletion(1F);
+					}else {
+						badge.setCompletion(-1F);
+					}
+					badges.add(badge);
+					continue;
+				}
+				
+				/*
+				 * Fight Challenge
+				 */
+				if(challenge.getName().equals(ChallengeName.FIGHT.getName())){
+					Badge badge = challenge.getBadge();
+					
+					/*
+					 * verify if the player finished the strike challenge
+					 */
+					if(fightDao.isPlayerWinner(player)) {
+						badge.setCompletion(1F);
+					}else {
+						badge.setCompletion(-1F);
+					}
+					badges.add(badge);
+					continue;
+				}
+				
+				/*
+				 * OnTop Challenge
+				 */
+				if(challenge.getName().equals(ChallengeName.ONTOP.getName())){
+					Badge badge = challenge.getBadge();
+					
+					//verify if player Team won the challenge On Top
+					if(onTopDao.isPlayerTeamWinnerOnTopChallenge(player)) {
+						badge.setCompletion(1F);
+					}else {
+						badge.setCompletion(-1F);
+					}
+					badges.add(badge);
+					continue;
+					
+				}
+				
+				/*
+				 * TeamUp Challenge
+				 */
+				if(challenge.getName().equals(ChallengeName.TEAMUP.getName())){
+					Badge badge = challenge.getBadge();
+					
+					//verify if player Team won the challenge On Top
+					if(teamUpDao.isPlayerWinner(player)) {
+						badge.setCompletion(1F);
+					}else {
+						badge.setCompletion(-1F);
+					}
+					badges.add(badge);
+					continue;
+					
+				}
+				
+				
+				
+				/*System.out.println(challenge.getName());
 				
 				if(challenge != null && challenge.getName().equals(ChallengeName.ONTOP.getName())) {
 					Badge badge = challenge.getBadge();
@@ -60,7 +140,7 @@ public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
 				if(pChallenge == null) {
 					badge.setCompletion(-1F);
 				}else {
-					//verify if the developer concluded the challenge
+					//verify if the player concluded the challenge
 					for(PerformedChallenge pc: pChallenge) {
 						if(pc.isSucceed()) {
 							badge.setCompletion(1F);
@@ -74,7 +154,7 @@ public class BadgeRepository extends HibernateAbstractRepository<Badge, Long>{
 				}
 				badges.add(badge);
 				
-				continue;
+				continue;*/
 			}
 
 			

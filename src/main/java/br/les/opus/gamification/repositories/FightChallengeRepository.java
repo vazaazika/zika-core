@@ -58,5 +58,50 @@ public class FightChallengeRepository extends HibernateAbstractRepository<FightC
 		query.setParameter("rId", rival.getId());
 		return (Long)query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<FightChallenge> findInCompleteByPlayer(Player player) {
+		String hql = "from FightChallenge where (challenger.id = :cId or rival.id = :rId) and complete = :cValue and status = :status";
+		
+		Query query = getSession().createQuery(hql);
+		query.setParameter("cId", player.getId());
+		query.setParameter("rId", player.getId());
+		query.setParameter("cValue", false);
+		query.setParameter("status", InvitationStatus.ACCEPTED.getValue());
+
+		
+		return query.list();
+		
+	}
+
+	public boolean isPlayerEnrolledInChallenge(Player player) {
+		List<FightChallenge> lista = findInCompleteByPlayer(player);
+		if(lista  == null || lista.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<FightChallenge> findWins(Player player){
+		String hql = "from FightChallenge where (challenger.id = :cId or rival.id = :rId) and complete = :cValue and status = :status"
+				+ " and (winner = -1 or winner = :wId)";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("cId", player.getId());
+		query.setParameter("rId", player.getId());
+		query.setParameter("wId", player.getId());
+		query.setParameter("cValue", true);
+		query.setParameter("status", InvitationStatus.ACCEPTED.getValue());
+		
+		return query.list();
+	}
+
+	public boolean isPlayerWinner(Player player) {
+		List<FightChallenge> lista = findWins(player);
+		if(lista  == null || lista.isEmpty()) {
+			return false;
+		}
+		return true;
+	}
 
 }

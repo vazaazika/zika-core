@@ -91,7 +91,7 @@ public class ChallengeService {
 		/*
 		 * TeamUpChallenges
 		 */
-		handleTeamUpChallenges();
+		//handleTeamUpChallenges();
 		
 	}
 	
@@ -271,9 +271,11 @@ public class ChallengeService {
 		if(player1 == null || player2 == null) {
 			if(player1 == null && player2 != null) {
 				player2.addXp(challenge.getGivenXp());
+				fc.setWinner(player2.getId());
 			}else {
 				if(player1 != null && player2 == null) {
 					player1.addXp(challenge.getGivenXp());
+					fc.setWinner(player1.getId());
 				}
 			}
 			
@@ -296,10 +298,12 @@ public class ChallengeService {
 		if(p1Pois > p2Pois) {
 			player1.addXp(challenge.getGivenXp());
 			player2.addXp(challenge.getGivenXp()/5);
+			fc.setWinner(player1.getId());
 		}else {
 			if(p1Pois < p2Pois) {
 				player2.addXp(challenge.getGivenXp());
 				player1.addXp(challenge.getGivenXp()/5);
+				fc.setWinner(player2.getId());
 			}else {				
 				player1.addXp(challenge.getGivenXp());
 				player2.addXp(challenge.getGivenXp());
@@ -369,9 +373,11 @@ public class ChallengeService {
 		if(challenger == null || rival == null) {
 			if(challenger == null && rival != null) {
 				giveTemMembersXp(rival, challenge.getGivenXp(), 100);
+				teamUpChallenge.setWinner(rival.getId());
 			}else {
 				if(challenger != null && rival == null) {
 					giveTemMembersXp(challenger, challenge.getGivenXp(), 100);
+					teamUpChallenge.setWinner(challenger.getId());
 				}
 			}
 			
@@ -393,10 +399,12 @@ public class ChallengeService {
 		if(challengerMembers > rivalMembers) {
 			giveTemMembersXp(challenger, challenge.getGivenXp(), 100);
 			giveTemMembersXp(rival, challenge.getGivenXp()/5, 50);
+			teamUpChallenge.setWinner(challenger.getId());
 		}else {
 			if(challengerMembers < rivalMembers) {
 				giveTemMembersXp(rival, challenge.getGivenXp(), 100);
 				giveTemMembersXp(challenger, challenge.getGivenXp()/5, 50);
+				teamUpChallenge.setWinner(rival.getId());
 			}else {				
 				giveTemMembersXp(challenger, challenge.getGivenXp(), 100);
 				giveTemMembersXp(rival, challenge.getGivenXp(), 100);

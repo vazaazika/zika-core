@@ -47,11 +47,17 @@ public class FightChallenge implements IdAware<Long> {
 	
 	private String status;
 	
+	/**
+	 * retorna o id do vencesdor, -1 empate
+	 */
+	private Long winner;
+	
 	public FightChallenge() {
 		this.complete = false;
 		this.status = InvitationStatus.ONHOLD.getValue();
 		this.createdDate = new Date();
 		this.startDate = null;
+		this.winner = -1L;
 	}
 	
 	public FightChallenge(Player challenger, Player rival) {
@@ -115,5 +121,15 @@ public class FightChallenge implements IdAware<Long> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public Long getWinner() {
+		return winner;
+	}
+
+	public void setWinner(Long winner) {
+		this.winner = winner;
+	}
+	
+	
 	
 }
