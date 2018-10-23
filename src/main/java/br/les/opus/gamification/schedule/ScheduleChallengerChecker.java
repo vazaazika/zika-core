@@ -11,8 +11,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import br.les.opus.gamification.services.ChallengeService;
 
-//@Configuration
-//@EnableScheduling
+@Configuration
+@EnableScheduling
 public class ScheduleChallengerChecker {
 	@Autowired
 	private ChallengeService service;
@@ -22,7 +22,7 @@ public class ScheduleChallengerChecker {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Scheduled(fixedRate = 10000)
+	@Scheduled(cron = "0 0 * * * *")
 	public void checkOpenChallenges() {
 		service.verifyOpenChallenges();
 	}

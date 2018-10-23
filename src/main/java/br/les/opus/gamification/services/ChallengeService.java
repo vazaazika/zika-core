@@ -21,19 +21,17 @@ import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.domain.Task;
 import br.les.opus.gamification.domain.Team;
 import br.les.opus.gamification.domain.challenge.Challenge;
-import br.les.opus.gamification.domain.challenge.ChallengeEntity;
 import br.les.opus.gamification.domain.challenge.ChallengeInvitation;
 import br.les.opus.gamification.domain.challenge.ChallengeName;
 import br.les.opus.gamification.domain.challenge.FightChallenge;
 import br.les.opus.gamification.domain.challenge.OnTop;
-import br.les.opus.gamification.domain.challenge.PerformedChallenge;
+import br.les.opus.gamification.domain.challenge.StrikeChallenge;
 import br.les.opus.gamification.domain.challenge.TeamUpChallenge;
 import br.les.opus.gamification.repositories.ChallengeRepository;
 import br.les.opus.gamification.repositories.FightChallengeRepository;
 import br.les.opus.gamification.repositories.OnTopRepository;
-import br.les.opus.gamification.repositories.PerformedChallengeRepository;
 import br.les.opus.gamification.repositories.PerformedTaskRepository;
-import br.les.opus.gamification.repositories.PlayerRepository;
+import br.les.opus.gamification.repositories.StrikeChallengeRepository;
 import br.les.opus.gamification.repositories.TeamUpChallengeRepository;
 
 @Service
@@ -46,10 +44,10 @@ public class ChallengeService {
 	private ChallengeRepository repository;
 	
 	@Autowired
-	private FightChallengeRepository fightDao;
+	private StrikeChallengeRepository strikeDao;
 	
 	@Autowired
-	private PerformedChallengeRepository pcDao;
+	private FightChallengeRepository fightDao;
 	
 	@Autowired
 	private PerformedTaskRepository ptDao;
@@ -61,77 +59,51 @@ public class ChallengeService {
 	private TeamUpChallengeRepository teamUpDao;
 	
 	@Autowired
-	private PlayerRepository playerDao;
-	
-	@Autowired
     private MailService mailService;
 
 	
 	public void verifyOpenChallenges() {
 		/*
 		 * Get regular challenges
-		 *
-		List<PerformedChallenge> openChallenges = getIncompletePerformedChallenges();
+		 */
 		
-		for(PerformedChallenge pc: openChallenges) {
-			shouldBeClosed(pc);
-		}*/
+		handleStrikeChallenges();
 		
 		/*
 		 * FighChallenge
 		 */
-		//handleFightChallenges();
+		handleFightChallenges();
 		
 		
 		/*
 		 * OnTopChallenges
 		 */
-		//handleOnTopChallenges();
+		handleOnTopChallenges();
 		
 		/*
 		 * TeamUpChallenges
 		 */
-		//handleTeamUpChallenges();
+		handleTeamUpChallenges();
 		
 	}
 	
 	
-	/**
-	 * verify if the challenge has any constraint
-	 * @param challengeId
-	 * @return
-	 */
-	
-	public boolean checkChallenges(Long challengeId){
-		return true;
-	}
 	
 	/* ******************************************************************************************
 	 * 
 	 * 										Strike Challenge
 	 * 
 	 * *****************************************************************************************/
-
-	public List<PerformedChallenge> getIncompletePerformedChallenges() {
-		List<PerformedChallenge> openChallenges = pcDao.findIncompletePerformedChallenge();
+	private void handleStrikeChallenges() {
+		List<StrikeChallenge> challenges = strikeDao.findIncompletePerformedChallenge();
 		
-		return openChallenges;
+		for(StrikeChallenge sc: challenges) {
+			handleStrikeChallenge(sc);
+		}
 	}
 	
-	private void shouldBeClosed(PerformedChallenge pc) {
-		Challenge challenge = pc.getChallenge();
-		
-		if(challenge.getName().equals(ChallengeName.STRIKE.getName())) {
-			handleStrikeChallenge(pc, challenge);
-		}
-		
-		if(challenge.getName().equals(ChallengeName.FIGHT.getName())) {
-			//handleFightChallenge(pc, challenge);
-		}
-		
-	}
-	
-	private void handleStrikeChallenge(PerformedChallenge pc, Challenge challenge) {
+	private void handleStrikeChallenge(StrikeChallenge sc) {
+		Challenge challenge = repository.findChallengeByName(ChallengeName.STRIKE.getName());
 		
 		DurationConstraint durationConstraint = repository.getDurationConstraint(challenge.getId());
 		
@@ -142,7 +114,7 @@ public class ChallengeService {
 		DurationConstraintChecker checker = (DurationConstraintChecker)ctx.getBean(durationConstraint.getCheckerClass());
 		
 		//verify if the challenge should be closed due to time
-		if(checker.completedWork(durationConstraint, pc.getDate()) == 0) {//
+		if(checker.completedWork(durationConstraint, sc.getStartDate()) == 0) {//
 			return;
 		}
 		
@@ -151,87 +123,24 @@ public class ChallengeService {
 		
 		
 		//get Player, task and date that the challenge started
-		ChallengeEntity entity = pc.getEntities().get(0);
-		Player player = playerDao.findOne(entity.getIdEntity());
+		Player player = sc.getPlayer();
 		Task task = challenge.getAssignments().get(0).getTask();
-		Date dateStart = pc.getDate();
+		Date dateStart = sc.getStartDate();
+		
 		
 		//get the pois that the player did during the time that the challenge was active
 		Long nPois = ptDao.countByPlayerAndTaskPeriodDate(player, task, dateStart);
 		
 		if(nPois >= quantityConstraint.getId()) {//player receives the xp
 			player.addXp(challenge.getGivenXp());
-			pc.setSucceed(true);
+			sc.setSucceed(true);
 		}else {
-			pc.setSucceed(false);
+			sc.setSucceed(false);
 		}
 		
-		pc.setComplete(true);
+		sc.setComplete(true);
 	}
 	
-	/*private void handleFightChallenge(PerformedChallenge pc, Challenge challenge) {
-		
-		DurationConstraint durationConstraint = repository.getDurationConstraint(challenge.getId());
-		
-		if(durationConstraint == null) {
-			return;
-		}
-		
-		DurationConstraintChecker checker = (DurationConstraintChecker)ctx.getBean(durationConstraint.getCheckerClass());
-		
-		//verify if the challenge should be closed due to time
-		if(checker.completedWork(durationConstraint, pc) == 0) {//
-			return;
-		}
-		
-		
-		//get Players, task and date that the challenge started
-		List<ChallengeEntity> entities = pc.getEntities();
-		Player player1 = playerDao.findOne(entities.get(0).getIdEntity());
-		Player player2 = playerDao.findOne(entities.get(1).getIdEntity());
-		
-		
-		//if one of the players is null, then the other one receives the XP
-		if(player1 == null || player2 == null) {
-			if(player1 == null) {
-				player2.addXp(challenge.getGivenXp());
-			}else {
-				player1.addXp(challenge.getGivenXp());
-			}
-			
-			pc.setSucceed(true);
-			pc.setComplete(true);
-			
-			return;
-		}
-		
-		Task task = challenge.getAssignments().get(0).getTask();
-		Date dateStart = pc.getDate();
-		
-		
-		/*
-		 * identify the player who scored the most
-		 *
-		Long p1Pois = ptDao.countByPlayerAndTaskPeriodDate(player1, task, dateStart);
-		Long p2Pois = ptDao.countByPlayerAndTaskPeriodDate(player2, task, dateStart);
-		
-		
-		if(p1Pois > p2Pois) {
-			player1.addXp(challenge.getGivenXp());
-			player2.addXp(challenge.getGivenXp()/5);
-		}else {
-			if(p1Pois < p2Pois) {
-				player2.addXp(challenge.getGivenXp());
-				player1.addXp(challenge.getGivenXp()/5);
-			}else {
-				player1.addXp(challenge.getGivenXp());
-				player2.addXp(challenge.getGivenXp());
-			}
-		}
-		
-		pc.setSucceed(true);
-		pc.setComplete(true);
-	}*/
 
 	/* ******************************************************************************************
 	 * 
