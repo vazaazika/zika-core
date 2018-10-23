@@ -24,7 +24,7 @@ public class Challenge extends TaskGroup implements IdAware<Long>{
 	@Column(nullable=false, unique=true)
 	private String name;
 	
-	@Column(nullable=false, unique=false)
+	@Column(nullable=false, unique=false, length=1000)
 	private String description;
 	
 	@ManyToOne

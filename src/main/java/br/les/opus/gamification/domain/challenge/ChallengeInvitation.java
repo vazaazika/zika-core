@@ -11,7 +11,8 @@ import br.les.opus.gamification.domain.Team;
 
 public class ChallengeInvitation {
 	private MailBody mail;
-	private final String URL = "http://localhost:8080/zika-api/game/challenge/";
+	private final String URL = "http://vazazika.com.br:8081/zika-api/game/challenge";
+	//private final String URL = "http://vazazika.inf.puc-rio.br/zika-api/game/challenge/";
 
 	public ChallengeInvitation() {
 		mail = new MailBody();

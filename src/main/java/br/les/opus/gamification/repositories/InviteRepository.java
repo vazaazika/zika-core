@@ -1,14 +1,11 @@
 package br.les.opus.gamification.repositories;
 
-import br.les.opus.auth.core.domain.Resource;
-import br.les.opus.auth.core.domain.User;
-import br.les.opus.commons.persistence.HibernateAbstractRepository;
-import br.les.opus.gamification.domain.Invite;
-import br.les.opus.gamification.domain.Membership;
-import br.les.opus.gamification.domain.Player;
-import br.les.opus.gamification.domain.Task;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
+
+import br.les.opus.commons.persistence.HibernateAbstractRepository;
+import br.les.opus.gamification.domain.Invite;
+import br.les.opus.gamification.domain.Player;
 
 /**
  * 
