@@ -72,7 +72,11 @@ public class OnTopRepository extends HibernateAbstractRepository<OnTop, Long>{
 		OnTop playerTeam = findOneByTeam(team.getId());
 		OnTop onTopTeam = getOnTop();
 		
-		//verify if player team wont the challenge
+		if(onTopTeam == null || playerTeam == null) {
+			return false;
+		}
+		
+		//verify if player team won the challenge
 		return playerTeam.equals(onTopTeam);
 	}
 
