@@ -23,11 +23,11 @@ public class HealthAgent extends User {
     private Integer level;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "player_health_agent")
+    @OneToMany(mappedBy = "player")
     private List<PerformedTask> performedTasks;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "player_health_agent")
+    @OneToMany(mappedBy = "player")
     private List<TaskGroupProgression> progressions;
 
     public HealthAgent(User user) {

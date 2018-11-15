@@ -271,6 +271,7 @@ public class PointOfInterest
 	public PoiStatus getPoiStatus() {
 		return poiStatus;
 	}
+
 	public void setPoiStatus(PoiStatus poiStatus) {
 		this.poiStatus = poiStatus;
 	}
