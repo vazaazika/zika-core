@@ -29,7 +29,7 @@ public class Challenge extends TaskGroup implements IdAware<Long>{
 	
 	@ManyToOne
 	@JoinColumn(name = "type_id", nullable=false, unique=false)
-	private ChallengeType type;
+	private ChallengeType tipo;
 	
 	/**
 	 * Checks if a player can register progress in the challenge.
@@ -40,40 +40,31 @@ public class Challenge extends TaskGroup implements IdAware<Long>{
 		return true;//to do
 	}
 	
-	
-	
 	public String getName() {
 		return name;
 	}
 
-
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
-
+	
 	public String getDescription() {
 		return description;
 	}
-
-
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	
 	public String getType() {
-		return type.getName();
+		return tipo.getName();
 	}
+	
 	public ChallengeType getChallengeType() {
-		return type;
+		return tipo;
 	}
 
-
-
-	public void setChallengeType(ChallengeType type) {
-		this.type = type;
+	public void setChallengeType(ChallengeType tipo) {
+		this.tipo = tipo;
 	}
 }
