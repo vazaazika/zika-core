@@ -19,6 +19,7 @@ INSERT INTO game_badge(id,description,imageurl,name) VALUES (1,E'poi creator!',E
 INSERT INTO game_badge(id,description,imageurl,name) VALUES (2,E'user creator!',E'fakepath',E'User Creator');
 INSERT INTO game_badge(id,description,imageurl,name) VALUES (3,E'user and poi creator',E'fakepath',E'User and Poi Creator');
 INSERT INTO game_badge(id,description,imageurl,name) VALUES (4,E'testing creation of task group',E'fakepath',E'test');
+INSERT INTO game_badge(id,description,imageurl,name) VALUES (8,'Usuário recebe esse badge quando ele completa o desafio Strike Mosquito pela primeira vez.','fa fa-trophy','Striker');
 
 INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (1,10,1); -- create poi task group
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (1,1,1); -- associando a task de criação de poi ao grupo
@@ -32,7 +33,17 @@ INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (4,2,3);
 
 INSERT INTO game_quest(task_group_id,minLevel,name) VALUES (1,10,'Quest Test');
 
-INSERT INTO game_challenge(task_group_id,name,description) VALUES (1,'Challenge Test','Testing a challenge task');
+INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (8,3000,8); -- strike mosquito
+INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (8,1,8);
+INSERT INTO game_assignment_constraint(id,task_assignment_id,description) VALUES (2,8,'Restrição de quantidade de notificações');
+INSERT INTO game_assignment_constraint_quantity(constraint_id,quantity) VALUES (2,10);
+insert into game_assignment_constraint_duration (duration_days, constraint_id) values (7,2);
+
+
+insert into game_challenge_type (id, name) values (1, 'Individual');
+INSERT INTO game_challenge(task_group_id,name,description,type_id) VALUES (8,'Strike Mosquito','O objetivo desse desafio é reportar 10 focos do mosquito no período de uma semana.',1);
+insert into game_performed_challenge (id,complete,date,challenge_id, succeed) values(1,false,'2018-06-26 15:09:50.717',8,false);
+insert into game_challenge_entity (id, id_entity, type, performed_id) values (1,1,'Player',1);
 
 
 -- progressos do bob

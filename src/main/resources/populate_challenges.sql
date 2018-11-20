@@ -36,23 +36,30 @@ INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (8,3000,8); -- strike mo
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (8,1,8);
 INSERT INTO game_assignment_constraint(id,task_assignment_id,description) VALUES (2,8,'Restrição de quantidade de notificações');
 INSERT INTO game_assignment_constraint_quantity(constraint_id,quantity) VALUES (2,10);
+insert into game_assignment_constraint_duration (duration_days, constraint_id) values (7,2);
 
 INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (9,1000,9); -- on top
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (9,1,9);
 
 INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (10,500,10); -- fight
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (10,1,10);
+INSERT INTO game_assignment_constraint(id,task_assignment_id,description) VALUES (4,10,'Duração de 24 horas');
+insert into game_assignment_constraint_duration (duration_days, constraint_id) values (1,4);
 
-INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (11,500,11); -- fight
+
+INSERT INTO game_task_group(id,givenxp,badge_id) VALUES (11,500,11); -- team up
 INSERT INTO game_task_assignment(id,task_id,task_group_id) VALUES (11,1,11);
 
+--inserting challenge type
+insert into game_challenge_type (id, name) values (1, 'Individual');
+insert into game_challenge_type (id, name) values (2, 'Dupla');
+insert into game_challenge_type (id, name) values (3, 'Time');
 
 -- inserting challenges
-INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (8,'Strike Mosquito','O objetivo desse desafio é reportar 10 focos do mosquito no período de uma semana.','individual');
-INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (9,'On Top','O objetivo desse desafio é se tornar o time com a maior pontuação (XP) de uma cidade. Logo para cada cidade haverá apenas um time (atualmente) vencedor desse desafio.','time');
-INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (10,'Fight!','O objetivo é desafiar um amigo para verificar quem notifica mais focos de mosquito nas próximas 24 horas. O usuário vencedor é aquele que acumula mais XP com notificações de foco após as 24 horas.','individual');
-INSERT INTO game_challenge(task_group_id,name,description,type) VALUES (11,'Team Up!','O objetivo é desafiar um time para verificar quem notifica mais focos de mosquito em um tempo estipulado pelos times. O time vencedor é aquele cujo os membros do time acumulem mais XP com notificações de foco após se passar o tempo estipulado.','time');
-
+INSERT INTO game_challenge(task_group_id,name,description,type_id) VALUES (8,'Strike Mosquito','O objetivo desse desafio é reportar 10 focos do mosquito no período de uma semana.',1);
+INSERT INTO game_challenge(task_group_id,name,description,type_id) VALUES (9,'On Top','O objetivo desse desafio é se tornar o time com a maior pontuação (XP) de uma cidade. Logo para cada cidade haverá apenas um time (atualmente) vencedor desse desafio.',3);
+INSERT INTO game_challenge(task_group_id,name,description,type_id) VALUES (10,'Fight!','O objetivo é desafiar um amigo para verificar quem notifica mais focos de mosquito nas próximas 24 horas. O usuário vencedor é aquele que acumula mais XP com notificações de foco após as 24 horas.',2);
+INSERT INTO game_challenge(task_group_id,name,description,type_id) VALUES (11,'Team Up!','O objetivo é desafiar um time para verificar quem notifica mais focos de mosquito em um tempo estipulado pelos times. O time vencedor é aquele cujo os membros do time acumulem mais XP com notificações de foco após se passar o tempo estipulado.',3);
 
 --OBSERVACAO: FOR EACH NEW RESOURCE IS NEEDED TO UPDATE THE TABLE ROLE_RESOURCE
 --insert new resource to get player info
@@ -67,4 +74,3 @@ INSERT INTO RESOURCE(id,open,operation,uri) VALUES(39,false,'POST','/game/player
 --insert new resource to get and post challenges
 INSERT INTO RESOURCE(id,open,operation,uri) VALUES(40,false,'GET','/game/challenge');
 
-INSERT INTO RESOURCE(id,open,operation,uri) VALUES(41,false,'POST','/game/challenge');

@@ -111,4 +111,18 @@ public class PerformedTaskRepository extends HibernateAbstractRepository<Perform
 		return record;
 	}
 	
+	public Long countByPlayerAndTaskPeriodDate(Player player, Task task, Date date) {
+		String hql = "select count(*) from PerformedTask p where p.task.id = :task and p.player.id = :player and p.date >= :date";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("task", task.getId());
+		query.setParameter("player", player.getId());
+		query.setParameter("date", date);
+		Object result = query.uniqueResult();
+		if (result == null) {
+			return 0l;
+		}
+		return (Long)result;
+	}
+	
+	
 }

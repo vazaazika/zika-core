@@ -1,20 +1,13 @@
 package br.les.opus.gamification.services;
 
-import br.les.opus.auth.core.domain.User;
-import br.les.opus.dengue.core.factories.MailRepositoryFactory;
-import br.les.opus.gamification.domain.Player;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.Properties;
+import br.les.opus.gamification.domain.MailBody;
+import br.les.opus.gamification.domain.Player;
 
 /**
  * Created by andersonjso on 5/10/18.
@@ -80,6 +73,12 @@ public class MailService extends Thread{
 
         return message;
     }
+
+	public void setMail(MailBody mail) {
+		this.setTo(mail.getTo());
+		this.setSubject(mail.getSubject());
+		this.setText(mail.getText());
+	}
 
 
 }

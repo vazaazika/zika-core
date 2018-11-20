@@ -55,4 +55,11 @@ public class TeamRepository extends HibernateAbstractRepository<Team, Long>{
 		
 		return new PageImpl<TeamFeed>(teams,pageable, teams.size());
 	}
+	
+	public Team getTeamMaxXP() {
+		String hql = "from Team as t where t.xp=(select max(g.xp) from Team as g)";
+		Query query = getSession().createQuery(hql);
+		
+		return (Team) query.uniqueResult();
+	}
 }
