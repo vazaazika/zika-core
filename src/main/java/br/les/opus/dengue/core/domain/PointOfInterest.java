@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import br.les.opus.dengue.core.domain.enumeration.PoiStatus;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -59,11 +58,11 @@ public class PointOfInterest
 	@JoinColumn(name = "poi_type_id")
 	private PoiType type;
 
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "poi_status_id")
+	private PoiStatusUpdate poiStatusUpdate;
 
-
-	@Enumerated
-	@Column(columnDefinition = "smallint", nullable = false)
-	private PoiStatus poiStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -268,18 +267,22 @@ public class PointOfInterest
 		this.userVote = userVote;
 	}
 
-	public PoiStatus getPoiStatus() {
-		return poiStatus;
+	public PoiStatusUpdate getPoiStatusUpdate() {
+		return poiStatusUpdate;
 	}
 
-	public void setPoiStatus(PoiStatus poiStatus) {
-		this.poiStatus = poiStatus;
+	public void setPoiStatusUpdate(PoiStatusUpdate poiStatusUpdate) {
+		this.poiStatusUpdate = poiStatusUpdate;
 	}
-
 
 	@Override
 	public String toString() {
-		return "PointOfInterest [id=" + id + ", type=" + type + ", user=" + user + "]";
+		return "PointOfInterest{" +
+				"id=" + id +
+				", type=" + type +
+				", poiStatusUpdate=" + poiStatusUpdate +
+				", user=" + user +
+				'}';
 	}
 
 	@Override

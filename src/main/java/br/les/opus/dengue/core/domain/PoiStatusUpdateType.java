@@ -11,6 +11,10 @@ import br.les.opus.commons.persistence.IdAware;
 public class PoiStatusUpdateType implements IdAware<Long> {
 	
 	public static final Long VERIFICATION = 1l;
+	public static final Long REPORTED = 2l;
+	public static final Long IN_ANALYSIS = 3l;
+	public static final Long TREATED = 4l;
+
 
 	@Id
 	private Long id;

@@ -165,74 +165,74 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		
 	}
 	
-	@Test
-	public void findOrderedByReportNumberTest() {
-		PageRequest pageRequest = new PageRequest(0, 10);
-		
-		List<Player> received = new ArrayList<>();
-		for(RankedPlayer rp: playerDao.findOrderedByReportNumber(pageRequest)) {
-			received.add(rp.getPlayer());
-		}
-		
-		List<Player> rankedPlayers = new ArrayList<>();
+//	@Test
+//	public void findOrderedByReportNumberTest() {
+//		PageRequest pageRequest = new PageRequest(0, 10);
 
-		rankedPlayers.add(players[1]);							//Player 1	Count = 2
-		rankedPlayers.add(players[0]);							//Player 0	Count = 1
-		rankedPlayers.add(playerDao.findOne(2L));				//Alice		Count = 0
-		rankedPlayers.add(playerDao.findOne(1L));				//Bob		Count = 0
+//		List<Player> received = new ArrayList<>();
+//		for(RankedPlayer rp: playerDao.findOrderedByReportNumber(pageRequest)) {
+//			received.add(rp.getPlayer());
+//		}
+//
+//		List<Player> rankedPlayers = new ArrayList<>();
+
+//		rankedPlayers.add(players[1]);							//Player 1	Count = 2
+//		rankedPlayers.add(players[0]);							//Player 0	Count = 1
+//		rankedPlayers.add(playerDao.findOne(2L));				//Alice		Count = 0
+//		rankedPlayers.add(playerDao.findOne(1L));				//Bob		Count = 0
 		
-		Assert.assertEquals(rankedPlayers, received);
-	}
+//		Assert.assertEquals(rankedPlayers, received);
+//	}
 	
 	
 	/*
 	 * Create PoiStatusUpdate for the test
 	 */
-	@Test
-	public void findOrderedByVerificationNumberTest() {
-		PoiStatusUpdateType type = new PoiStatusUpdateType();
-		type.setId(1L);
-		type.setDescription("Poi Status Update testing");
-		type = psutDao.save(type);
+//	@Test
+//	public void findOrderedByVerificationNumberTest() {
+//		PoiStatusUpdateType type = new PoiStatusUpdateType();
+//		type.setId(1L);
+//		type.setDescription("Poi Status Update testing");
+//		type = psutDao.save(type);
 		
 		
 		/*
 		 * Create PoiStatus and associate them to a POI
 		 */
-		PoiStatusUpdate[] updates = new PoiStatusUpdate[3];
-		int i = 0;
-		for(PointOfInterest p: pois) {
-			updates[i] = new PoiStatusUpdate();
-			updates[i].setPoi(p);
-			updates[i].setUser(p.getUser());
-			updates[i].setType(type);
-			updates[i].setUserLocation(p.getLocation());
-			updates[i].setDate(p.getDate());
-			
-			updates[i] = psuDao.save(updates[i]);
-			++i;
-		}
+//		PoiStatusUpdate[] updates = new PoiStatusUpdate[3];
+//		int i = 0;
+//		for(PointOfInterest p: pois) {
+//			updates[i] = new PoiStatusUpdate();
+//			updates[i].setPoi(p);
+//			updates[i].setUser(p.getUser());
+//			updates[i].setType(type);
+//			updates[i].setUserLocation(p.getLocation());
+//			updates[i].setDate(p.getDate());
+//
+//			updates[i] = psuDao.save(updates[i]);
+//			++i;
+//		}
 		
 		
-		PageRequest pageRequest = new PageRequest(0, 10);
-		
-		List<Player> received = new ArrayList<>();
-		for(RankedPlayer rp: playerDao.findOrderedByVerificationNumber(pageRequest)) {
-			received.add(rp.getPlayer());
-		}
-		
-		
-		List<Player> rankedPlayers = new ArrayList<>();
+//		PageRequest pageRequest = new PageRequest(0, 10);
 
-		rankedPlayers.add(players[1]);							//Player 1	Count = 2
-		rankedPlayers.add(players[0]);							//Player 0	Count = 1
-		rankedPlayers.add(playerDao.findOne(2L));				//Alice		Count = 0
-		rankedPlayers.add(playerDao.findOne(1L));				//Bob		Count = 0
+//		List<Player> received = new ArrayList<>();
+//		for(RankedPlayer rp: playerDao.findOrderedByVerificationNumber(pageRequest)) {
+//			received.add(rp.getPlayer());
+//		}
 		
-		Assert.assertEquals(rankedPlayers, received);
 		
-		psuDao.delete(Arrays.asList(updates));
-		psutDao.delete(type);
-	}
+//		List<Player> rankedPlayers = new ArrayList<>();
+
+//		rankedPlayers.add(players[1]);							//Player 1	Count = 2
+//		rankedPlayers.add(players[0]);							//Player 0	Count = 1
+//		rankedPlayers.add(playerDao.findOne(2L));				//Alice		Count = 0
+//		rankedPlayers.add(playerDao.findOne(1L));				//Bob		Count = 0
+		
+//		Assert.assertEquals(rankedPlayers, received);
+		
+//		psuDao.delete(Arrays.asList(updates));
+//		psutDao.delete(type);
+//	}
 
 }

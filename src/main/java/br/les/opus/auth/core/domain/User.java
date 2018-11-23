@@ -150,6 +150,7 @@ public class User implements UserDetails, IdAware<Long> {
 	}
 
 
+
 	@Transient
 	@JsonIgnore
 	public List<Resource> getAllResources() {
