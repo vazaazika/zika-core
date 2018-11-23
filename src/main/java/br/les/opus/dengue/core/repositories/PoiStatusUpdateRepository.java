@@ -26,14 +26,14 @@ public class PoiStatusUpdateRepository extends HibernateAbstractRepository<PoiSt
 
 
 
-	public PoiStatusUpdate updateStatusReportedToInalysis(User user, PointOfInterest poi, PoiStatusUpdateType type) {
-		String hql = "UPDATE PoiStatusUpdate SET type_id = :tId";
-		Query query = getSession().createQuery(hql);
-		query.setParameter("poiId", poi.getId());
-		query.setParameter("tId", type.getId());
-		query.setParameter("uId", user.getId());
-		return query.executeUpdate();
-			}
+	//public PoiStatusUpdate updateStatusReportedToInalysis(User user, PointOfInterest poi, PoiStatusUpdateType type) {
+	//	String hql = "UPDATE PoiStatusUpdate SET type_id = :tId";
+	//	Query query = getSession().createQuery(hql);
+	//	query.setParameter("poiId", poi.getId());
+	//	query.setParameter("tId", type.getId());
+	//	query.setParameter("uId", user.getId());
+	//	return query.executeUpdate();
+//	}
 
 
 
