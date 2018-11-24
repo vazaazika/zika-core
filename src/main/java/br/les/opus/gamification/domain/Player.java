@@ -64,6 +64,13 @@ public class Player extends User {
 		this.level = 1;
 	}
 	
+	public Player(Integer level, String nickname, Long xp) {
+		super();
+		this.level = level;
+		this.nickname = nickname;
+		this.xp = xp;
+	}
+	
 	@Transient
 	public Integer getXpCurrentLevel() {
 		return LevelingSystem.requiredXp(this.level);

@@ -27,6 +27,30 @@ public class PerformedTaskRepository extends HibernateAbstractRepository<Perform
 		query.setMaxResults(pageable.getPageSize());
 		return new PageImpl<>(query.list(), pageable, this.count());
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Page<PerformedTask> findAllPoiPerformedTaskOrderedByDataDesc(Pageable pageable){
+		String hql = "from PerformedTask where object_type='poi' order by date desc";
+		Query query = getSession().createQuery(hql);
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+		
+		List<PerformedTask> list = query.list();
+		
+		return new PageImpl<>(list, pageable, countAllPoiPerformedTask());
+	}
+	
+	private Long countAllPoiPerformedTask() {
+		String hql = "select count(*) from PerformedTask where object_type = 'poi'";
+		Query query = getSession().createQuery(hql);
+		
+
+		Object result = query.uniqueResult();
+		if (result == null) {
+			return 0l;
+		}
+		return (Long)result;
+	}
 
 	public Long countByPlayerAndTask(Player player, Task task) {
 		String hql = "select count(*) from PerformedTask p where p.task.id = :task and p.player.id = :player";
@@ -69,20 +93,36 @@ public class PerformedTaskRepository extends HibernateAbstractRepository<Perform
 		builder.append("group by ");
 		builder.append("  year(pt.date), month(pt.date), day(pt.date) ");
 		builder.append("order by ");
-		builder.append(" sum(pt.task.givenXp) desc ");
+		builder.append(" sum(pt.task.givenXp) desc");
 		
-		Query query = getSession().createQuery(builder.toString());
-		query.setParameter("player", player.getId());
+		Object[] data = (Object[]) getSession().createQuery(builder.toString())
+			.setParameter("player", player.getId())
+			.setMaxResults(1)
+			.uniqueResult();
 		
-		List<Object[]> result = query.list();
-		if (result.isEmpty()) {
-			return null;
+		DailyRecord record = null;
+
+		if (data != null) {
+			record = new DailyRecord();
+			record.setDay(new DateTime((Integer)data[0], (Integer)data[1], (Integer)data[2], 0, 0).toDate());
+			record.setXp(((Long)data[3]).intValue());
 		}
-		Object[] data = result.iterator().next();
-		DailyRecord record = new DailyRecord();
-		record.setDay(new DateTime((Integer)data[0], (Integer)data[1], (Integer)data[2], 0, 0).toDate());
-		record.setXp(((Long)data[3]).intValue());
+		
 		return record;
 	}
+	
+	public Long countByPlayerAndTaskPeriodDate(Player player, Task task, Date date) {
+		String hql = "select count(*) from PerformedTask p where p.task.id = :task and p.player.id = :player and p.date >= :date";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("task", task.getId());
+		query.setParameter("player", player.getId());
+		query.setParameter("date", date);
+		Object result = query.uniqueResult();
+		if (result == null) {
+			return 0l;
+		}
+		return (Long)result;
+	}
+	
 	
 }

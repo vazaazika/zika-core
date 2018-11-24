@@ -47,9 +47,10 @@ public class TwitterUserRepository extends HibernateAbstractRepository<TwitterUs
 	
 	public TwitterUser findByScreenname(String screenname) {
 		String hql = "from TwitterUser order where screenName = :screenName";
-		Query query = getSession().createQuery(hql);
-		query.setParameter("screenName", screenname);
-		return (TwitterUser)query.list().get(0);
+		return (TwitterUser) getSession().createQuery(hql)
+				.setParameter("screenName", screenname)
+				.setMaxResults(1)
+				.uniqueResult();
 	}
 	
 }

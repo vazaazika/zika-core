@@ -86,7 +86,7 @@ public class PerformedTask implements IdAware<Long> {
 		this.task = task;
 		this.player = player;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

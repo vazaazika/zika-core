@@ -76,6 +76,20 @@
 			<version>2.6</version>
 		</dependency>
 
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+
+
+
 		<!-- Spring dependencies -->
 
 		<!-- Spring Security -->
@@ -257,7 +271,7 @@
 			<scope>test</scope>
 		</dependency>
 
-<!--		<dependency>
+		<dependency>
 			<groupId>br.les.opus.test</groupId>
 			<artifactId>libreadline-java</artifactId>
 			<version>0.8.0</version>
@@ -279,57 +293,51 @@
 		</dependency>
 
 		<dependency>
-			<groupId>br.les.opus.test</groupId>
+			<groupId>org.opengeo</groupId>
 			<artifactId>geodb-app</artifactId>
+			<version>0.8</version>
+			<scope>test</scope>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>net.sourceforge</groupId>
+                                <artifactId>henplus</artifactId>
+                            </exclusion>
+                        </exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.opengeo</groupId>
+			<artifactId>geodb</artifactId>
 			<version>0.8</version>
 			<scope>test</scope>
 		</dependency>
 
-        <dependency>
-                <groupId>br.les.opus.test</groupId>
-                <artifactId>geodb</artifactId>
-                <version>0.8</version>
-                <scope>test</scope>
-        </dependency>-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.opengeo</groupId>
-            <artifactId>geodb-app</artifactId>
-            <version>0.6</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.hatbox</groupId>
-            <artifactId>hatbox</artifactId>
-            <version>1.0.b8</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-expression</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-
-        <!-- Test Dependencies -->
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>2.0.2-beta</version>
-            <scope>test</scope>
-        </dependency>
+		<!-- Test Dependencies -->
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>2.0.2-beta</version>
+			<scope>test</scope>
+		</dependency>
 
         <dependency>
             <groupId>com.google.firebase</groupId>
@@ -339,23 +347,23 @@
 
 
 
-    </dependencies>
+	</dependencies>
 
-    <repositories>
-        <repository>
-            <id>OSGEO GeoTools repo</id>
-            <url>http://repo.boundlessgeo.com/main/</url>
-        </repository>
-        <repository>
-            <id>Hibernate Spatial repo</id>
-            <url>http://www.hibernatespatial.org/repository</url>
-        </repository>
-        <!-- add JBOSS repository for easy access to Hibernate libraries -->
-        <repository>
-            <id>JBOSS</id>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>OSGEO GeoTools repo</id>
+			<url>http://repo.boundlessgeo.com/main/</url>
+		</repository>
+		<repository>
+			<id>Hibernate Spatial repo</id>
+			<url>http://www.hibernatespatial.org/repository</url>
+		</repository>
+		<!-- add JBOSS repository for easy access to Hibernate libraries -->
+		<repository>
+			<id>JBOSS</id>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+		</repository>
+	</repositories>
 
     <packaging>jar</packaging>
     <build>

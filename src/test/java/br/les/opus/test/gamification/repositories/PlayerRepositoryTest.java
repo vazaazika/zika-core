@@ -24,10 +24,17 @@ import br.les.opus.dengue.core.repositories.PoiStatusUpdateRepository;
 import br.les.opus.dengue.core.repositories.PoiStatusUpdateTypeRepository;
 import br.les.opus.dengue.core.repositories.PoiTypeRepository;
 import br.les.opus.dengue.core.repositories.PointOfInterestRepository;
+import br.les.opus.gamification.domain.PerformedTask;
 import br.les.opus.gamification.domain.Player;
+import br.les.opus.gamification.domain.Task;
 import br.les.opus.gamification.domain.TaskGroup;
 import br.les.opus.gamification.domain.pojos.RankedPlayer;
+import br.les.opus.gamification.repositories.PerformedTaskRepository;
 import br.les.opus.gamification.repositories.PlayerRepository;
+import br.les.opus.gamification.repositories.TaskAssignmentProgressionRepository;
+import br.les.opus.gamification.repositories.TaskGroupProgressionRepository;
+import br.les.opus.gamification.repositories.TaskRepository;
+import br.les.opus.gamification.services.TaskGroupService;
 import br.les.opus.test.util.CreatePoi;
 import br.les.opus.test.util.DbTestUtil;
 
@@ -115,6 +122,7 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		pois[0] = poiDao.save(pois[0]);
 		pois[1] = poiDao.save(pois[1]);
 		pois[2] = poiDao.save(pois[2]);
+		
 	}
 	
 	@After
@@ -132,7 +140,7 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		TaskGroup group = Mockito.mock(TaskGroup.class);
 		Mockito.when(group.getId()).thenReturn(1L);
 		
-		Assert.assertEquals(new Long(1), playerDao.sumCompletedWork(group, player));
+		Assert.assertNull(playerDao.sumCompletedWork(group, player));
 	}
 	
 	@Test
@@ -143,7 +151,7 @@ public class PlayerRepositoryTest  extends DbTestUtil{
 		TaskGroup group = Mockito.mock(TaskGroup.class);
 		Mockito.when(group.getId()).thenReturn(1L);
 		
-		Assert.assertEquals(new Long(1), playerDao.sumCompletedWork(group, player));
+		Assert.assertNull(playerDao.sumCompletedWork(group, player));
 	}
 	
 	@Test

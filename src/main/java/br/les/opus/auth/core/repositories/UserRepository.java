@@ -1,6 +1,7 @@
 package br.les.opus.auth.core.repositories;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,15 @@ public class UserRepository extends HibernateAbstractRepository<User, Long> {
 		Object obj = criteria.uniqueResult();
 		return (obj == null)? null : (User)obj;
 	}
+
+	public int setUsername(Long id, String username){
+		Query query = getSession().createQuery("update User set username = :username where id = :id");
+		query.setParameter("username", username);
+		query.setParameter("id", id);
+
+		int result = query.executeUpdate();
+
+		return result;
+	}
+
 }
