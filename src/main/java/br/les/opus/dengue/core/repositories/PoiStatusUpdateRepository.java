@@ -33,7 +33,7 @@ public class PoiStatusUpdateRepository extends HibernateAbstractRepository<PoiSt
 	//	query.setParameter("tId", type.getId());
 	//	query.setParameter("uId", user.getId());
 	//	return query.executeUpdate();
-//	}
+	//}
 
 
 
