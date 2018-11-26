@@ -69,7 +69,6 @@ public class PointOfInterest
 	@JoinColumn(name = "poi_status_id")
 	private PoiStatusUpdate poiStatusUpdate;
 
-
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

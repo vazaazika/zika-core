@@ -32,7 +32,6 @@ public class HealthAgent extends User {
     private String city;
 
 
-
     public HealthAgent(User user) {
         this();
         this.setName(user.getName());
