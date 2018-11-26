@@ -41,6 +41,12 @@ public class PointOfInterest
 	@Column(length = 300)
 	private String address;
 
+	@Column(length = 300)
+	private String state;
+
+	@Column(length = 300)
+	private String city;
+
 	@NotEmpty
 	@Column(length = 100, nullable = false)
 	private String title;
@@ -218,6 +224,22 @@ public class PointOfInterest
 		this.fieldValues = fieldValues;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -275,6 +297,8 @@ public class PointOfInterest
 		this.poiStatusUpdate = poiStatusUpdate;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "PointOfInterest{" +
@@ -282,6 +306,7 @@ public class PointOfInterest
 				", type=" + type +
 				", poiStatusUpdate=" + poiStatusUpdate +
 				", user=" + user +
+				", data=" + date +
 				'}';
 	}
 
