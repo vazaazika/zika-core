@@ -5,22 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import br.les.opus.gamification.domain.Invite;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.DiscriminatorOptions;
 import org.hibernate.annotations.LazyCollection;
@@ -112,14 +100,21 @@ public class User implements UserDetails, IdAware<Long> {
 	@OneToOne
 	@JoinColumn(name = "picture_id")
 	private Picture avatar;
-	
+
+
+    @OneToOne (cascade = {CascadeType.ALL})
+    @JoinColumn(name = "invite_id")
+    private Invite invite;
+
 	public User() {
 		this.reports = new ArrayList<>();
 		this.userRoles = new ArrayList<UserRole>();
 		this.enabled = true;
 		this.locked = false;
 		this.version = 0;
-	}
+        this.invite = new Invite();
+
+    }
 	
 	@Override
 	@Transient
@@ -356,4 +351,8 @@ public class User implements UserDetails, IdAware<Long> {
 		this.version = version;
 	}
 
+
+    public Invite getInvite() {
+        return invite;
+    }
 }

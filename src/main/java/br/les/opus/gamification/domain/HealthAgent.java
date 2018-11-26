@@ -18,17 +18,17 @@ public class HealthAgent extends User {
 
     @NotNull
     @Length(max = 100)
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, unique=false)
     private String organization;
 
     @NotNull
     @Length(max = 100)
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, unique=false)
     private String state;
 
     @NotNull
     @Length(max = 100)
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, unique=false)
     private String city;
 
 
@@ -66,5 +66,14 @@ public class HealthAgent extends User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "HealthAgent{" +
+                "organization='" + organization + '\'' +
+                ", state='" + state + '\'' +
+                ", city='" + city + '\'' +
+                '}';
     }
 }
