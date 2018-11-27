@@ -272,25 +272,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>br.les.opus.test</groupId>
-			<artifactId>libreadline-java</artifactId>
-			<version>0.8.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>br.les.opus.test</groupId>
-			<artifactId>henplus</artifactId>
-			<version>0.9.8</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>br.les.opus.test</groupId>
-			<artifactId>hatbox</artifactId>
-			<version>1.0.b7</version>
-			<scope>test</scope>
-		</dependency>
+                    <groupId>net.sourceforge.hatbox</groupId>
+                    <artifactId>hatbox</artifactId>
+                    <version>1.0.b7</version>
+                    <scope>test</scope>
+                </dependency>
 
 		<dependency>
 			<groupId>org.opengeo</groupId>

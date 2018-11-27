@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "role")
+@Table(name = "device")
 public class Device implements IdAware<Long> {
 
     @Id
