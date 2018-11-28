@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "feedback_poi_information_quality")
-@PrimaryKeyJoinColumn(name = "notification_id")
+@PrimaryKeyJoinColumn(name = "feedback_id")
 public class FeedbackPoiInformationQuality extends Feedback {
 
 
