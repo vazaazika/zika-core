@@ -34,6 +34,7 @@ import br.les.opus.dengue.core.domain.PointOfInterest;
  * interface {@link UserDetails} do Spring Security para servir como entidade
  * autenticável no framework mencionado.
  *
+ *
  * @author Diego Cedrim
  */
 @Entity
@@ -98,13 +99,12 @@ public class User implements UserDetails, IdAware<Long> {
 
 	@JsonIgnore
 	@Version
-	@Column(name="opt_lock")
+    @Column(name="opt_lock")
 	private Integer version;
 
 	@OneToOne
 	@JoinColumn(name = "picture_id")
 	private Picture avatar;
-
 
 	@OneToOne (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "invite_id")
