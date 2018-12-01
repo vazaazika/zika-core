@@ -131,7 +131,7 @@ public class Player extends User {
 
 	@Override
 	public String toString() {
-		return "Player [nickname=" + nickname + "]";
+		return "Player [nickname=" + nickname + " XP=" + xp + "]";
 	}
 
 	public Team getTeam() {
