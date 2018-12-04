@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "device")
-public class Device implements IdAware<Long> {
+public class Device{
 
     @Id
     @JsonIgnore
@@ -34,12 +34,12 @@ public class Device implements IdAware<Long> {
         this.user = user;
     }
 
-    @Override
+    public Device(){}
+
     public Long getId() {
         return id;
     }
 
-    @Override
     public void setId(Long id) {
         this.id = id;
     }

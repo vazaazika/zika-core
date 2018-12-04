@@ -9,7 +9,7 @@ import br.les.opus.commons.persistence.IdAware;
 @Entity
 @Table(name = "poi_status_update_type")
 public class PoiStatusUpdateType implements IdAware<Long> {
-	
+
 	public static final Long VERIFICATION = 1l;
 	public static final Long REPORTED = 2l;
 	public static final Long IN_ANALYSIS = 3l;
@@ -18,7 +18,7 @@ public class PoiStatusUpdateType implements IdAware<Long> {
 
 	@Id
 	private Long id;
-	
+
 	private String description;
 
 	public Long getId() {
@@ -36,5 +36,5 @@ public class PoiStatusUpdateType implements IdAware<Long> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 }

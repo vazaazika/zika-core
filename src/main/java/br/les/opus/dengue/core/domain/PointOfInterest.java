@@ -65,7 +65,7 @@ public class PointOfInterest
 	private PoiType type;
 
 	@NotNull
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "poi_status_id")
 	private PoiStatusUpdate poiStatusUpdate;
 

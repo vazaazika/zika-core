@@ -24,7 +24,7 @@ import br.les.opus.dengue.core.domain.PointOfInterest;
 
 @Repository
 public class PointOfInterestRepository extends SpatialHibernateAbstractRepository<PointOfInterest, Long>{
-	
+
 	@SuppressWarnings("unchecked")
 	public Page<DistanceResult> findAllOrderringByDistance(Point origin, Pageable pageable) {
 		StringBuffer buffer = new StringBuffer();
@@ -36,12 +36,12 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 		buffer.append(" left join fetch g.user ");
 		buffer.append(" left join fetch g.type ");
 		buffer.append(" order by distance( g.location, :origin ) ");
-		
+
 		Query query = getSession().createQuery(buffer.toString());
 		query.setParameter("origin", origin.toText());
 		query.setFirstResult(pageable.getOffset());
 		query.setMaxResults(pageable.getPageSize());
-		
+
 		List<Object[]> rawResults = query.list();
 		List<DistanceResult> content = new ArrayList<>();
 		for (Object[] objects : rawResults) {
@@ -50,24 +50,24 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 			result.setDistance((Double)objects[1]);
 			content.add(result);
 		}
-		
+
 		PageImpl<DistanceResult> page = new PageImpl<>(content, pageable, this.count());
 		return page;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Page<PointOfInterest> findAllByUser(User user, Pageable pageable) {
 		CriteriaBuilder builder = new CriteriaBuilder(getSession(), PointOfInterest.class);
 		if (pageable.getSort() != null) {
 			builder.addSort(pageable.getSort());
 		}
-		
+
 		Criteria criteria = builder.getBuiltCriteria();
 		criteria.createAlias("user", "u");
 		criteria.add(Restrictions.eq("u.id", user.getId()));
 		criteria.setFirstResult(pageable.getOffset());
 		criteria.setMaxResults(pageable.getPageSize());
-		
+
 		List<PointOfInterest> content = getUniqueObjects(criteria.list());
 
 		PageImpl<PointOfInterest> page = new PageImpl<>(content, pageable, this.count());

@@ -10,10 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 //classe de notificação, você poderá usar os métodos sendNotificationId para enviar mensagem para um usuário em específico, ou sendNotificationTopic para vários usuários conectados ao tópico
@@ -24,13 +21,13 @@ public class NotificationService {
         try {
 
             Resource resource = new ClassPathResource("firebase.json");
-            File file = resource.getFile();
+            InputStream inputStream = resource.getInputStream();
 
             //arquivo de configurações do google
-            FileInputStream serviceAccount = new FileInputStream(file);
+            //FileInputStream serviceAccount = new FileInputStream(inputStream);
 
             FirebaseOptions options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setCredentials(GoogleCredentials.fromStream(inputStream))
                     .build();
 
             if(FirebaseApp.getApps().isEmpty())
