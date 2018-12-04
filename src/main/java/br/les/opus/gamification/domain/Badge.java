@@ -30,6 +30,9 @@ public class Badge implements IdAware<Long> {
 	
 	@Transient
 	private Float completion;
+	
+	@Transient
+	private String base64Image;
 
 	public Long getId() {
 		return id;
@@ -78,9 +81,28 @@ public class Badge implements IdAware<Long> {
 	public void setCompletion(Float completion) {
 		this.completion = completion;
 	}
+	
+
+	/*public byte[] getByteArray() {
+		return byteArray;
+	}
+
+	public void setByteArray(byte[] byteArray) {
+		this.byteArray = byteArray;
+	}*/
+	
+	
 
 	@Override
 	public String toString() {
 		return "Badge [id=" + id + ", name=" + name + "]";
+	}
+
+	public String getBase64Image() {
+		return base64Image;
+	}
+
+	public void setBase64Image(String base64Image) {
+		this.base64Image = base64Image;
 	}
 }
