@@ -4,6 +4,8 @@ package br.les.opus.auth.core.services;
 import br.les.opus.auth.core.domain.Device;
 import br.les.opus.auth.core.domain.User;
 import br.les.opus.auth.core.repositories.DeviceRepository;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,20 @@ public class DeviceService {
         device = deviceRepository.save(device);
         return device;
     }
+
+
+
+    public Device existDevice(User user, String token)  {
+
+        Device device = deviceRepository.findDeviceByUserAndToken(user,token);
+            return device;
+
+    }
+
+
+
+
+
+
 
 }
