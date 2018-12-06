@@ -2,7 +2,6 @@ package br.les.opus.gamification.services;
 
 
 import br.les.opus.gamification.domain.feedback.FeedbackPoiInformationQuality;
-import br.les.opus.gamification.repositories.FeedbackChangePoiStatusRepository;
 import br.les.opus.gamification.repositories.FeedbackPoiInformationQualityRepository;
 import br.les.opus.gamification.repositories.FeedbackRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,7 @@ public class FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
 
-    @Autowired
-    private FeedbackChangePoiStatusRepository changePoiStatusRepository;
-
-    @Autowired
+     @Autowired
     private FeedbackPoiInformationQualityRepository poiInformationQualityRepository;
 
 

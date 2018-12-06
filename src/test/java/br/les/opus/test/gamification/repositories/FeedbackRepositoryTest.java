@@ -1,8 +1,6 @@
 package br.les.opus.test.gamification.repositories;
 
 import br.les.opus.gamification.domain.feedback.Feedback;
-import br.les.opus.gamification.domain.feedback.FeedbackChangePoiStatus;
-import br.les.opus.gamification.repositories.FeedbackChangePoiStatusRepository;
 import br.les.opus.gamification.repositories.FeedbackPoiInformationQualityRepository;
 import br.les.opus.gamification.repositories.FeedbackRepository;
 import br.les.opus.test.util.CreateFeedback;
@@ -24,16 +22,11 @@ public class FeedbackRepositoryTest extends DbTestUtil {
     private FeedbackRepository feedbackRepository;
 
     @Autowired
-    private FeedbackChangePoiStatusRepository feedbackChangePoiStatusRepository;
-
-    @Autowired
     private FeedbackPoiInformationQualityRepository feedbackPoiInformationQualityRepository;
 
 
 
     private Feedback feedbacks[] = new Feedback[4];
-
-    private FeedbackChangePoiStatus changePoiStatus[] = new FeedbackChangePoiStatus[2];
 
 
 

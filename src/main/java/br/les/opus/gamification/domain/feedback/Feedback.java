@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "feedback")
@@ -27,6 +28,11 @@ public class Feedback implements IdAware<Long> {
     @Length(max = 250)
     @Column(nullable = false, unique=false)
     private String body;
+
+    @NotNull
+    @OneToMany
+    @Column(nullable = false, unique=true)
+    private List<FeedbackType> feedbackType;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
@@ -61,6 +67,14 @@ public class Feedback implements IdAware<Long> {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public List<FeedbackType> getFeedbackType() {
+        return feedbackType;
+    }
+
+    public void setFeedbackType(List<FeedbackType> feedbackType) {
+        this.feedbackType = feedbackType;
     }
 }
 
