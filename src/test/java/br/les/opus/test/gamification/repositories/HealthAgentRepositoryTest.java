@@ -189,7 +189,7 @@ public class HealthAgentRepositoryTest extends DbTestUtil {
         PageRequest pageRequest = new PageRequest(0, 10);
 
         DashboardResults db = poiDao.findAllPoiByFilters(healthAgentRio, point, pageRequest);
-          System.out.println(db.getPointOfInterestPage().getContent());
+          System.out.println("aqui"+ db.getPointOfInterestPage().getContent());
 
         List<PointOfInterest> pointOfInterests = new ArrayList<>();
         pointOfInterests.add(pois[0]);

@@ -12,6 +12,11 @@ VALUES (49, false ,'PUT','/poi/\d+/status-to-in-analysis');
 INSERT INTO resource(id,open,operation,uri)
 VALUES (48, false ,'POST','/user/health-agent');
 
+INSERT INTO resource(id,open,operation,uri)
+VALUES (50, true ,'GET','/dashboard-health-agent/dashboard');
+
+
+
 INSERT INTO role (id,authority,parent_id) VALUES (4, 'HEALTH_AGENT', null);
 
 INSERT INTO role_resource(id,resource_id,role_id)
@@ -25,5 +30,9 @@ VALUES (25,45,4);
 
 
 INSERT INTO role_resource(id,resource_id,role_id)
-VALUES (26,48,4);
+VALUES (27,48,4);
+
+
+INSERT INTO role_resource(id,resource_id,role_id)
+VALUES (28,50,4);
 
