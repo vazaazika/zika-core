@@ -91,7 +91,7 @@ public class HealthAgentService {
 
 
     public HealthAgent findById(User user) {
-       HealthAgent  healthAgent = healthAgentRepository.findOne(user.getId());
+       HealthAgent  healthAgent = healthAgentRepository.findById(user.getId());
         return healthAgent;
     }
 

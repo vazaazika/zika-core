@@ -78,6 +78,7 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 
 	public DashboardResults findAllPoiByFilters(HealthAgent agent, PointOfInterest point, Pageable pageable) {
+
 		CriteriaBuilder builder = new CriteriaBuilder(getSession(), PointOfInterest.class);
 		if (pageable.getSort() != null) {
 			builder.addSort(pageable.getSort());
