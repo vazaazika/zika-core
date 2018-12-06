@@ -10,10 +10,10 @@ INSERT INTO resource(id,open,operation,uri)
 VALUES (49, false ,'PUT','/poi/\d+/status-to-in-analysis');
 
 INSERT INTO resource(id,open,operation,uri)
-VALUES (48, false ,'POST','/user/health-agent');
+VALUES (50, false ,'POST','/user/health-agent');
 
 INSERT INTO resource(id,open,operation,uri)
-VALUES (50, true ,'GET','/dashboard-health-agent/dashboard');
+VALUES (51, true ,'GET','/dashboard-health-agent/dashboard');
 
 
 
@@ -23,16 +23,14 @@ INSERT INTO role_resource(id,resource_id,role_id)
 VALUES (26,47,4);
 
 INSERT INTO role_resource(id,resource_id,role_id)
-VALUES (24,44,4);
+VALUES (24,48,4);
 
 INSERT INTO role_resource(id,resource_id,role_id)
-VALUES (25,45,4);
-
-
-INSERT INTO role_resource(id,resource_id,role_id)
-VALUES (27,48,4);
-
+VALUES (25,49,4);
 
 INSERT INTO role_resource(id,resource_id,role_id)
-VALUES (28,50,4);
+VALUES (27,50,4);
+
+INSERT INTO role_resource(id,resource_id,role_id)
+VALUES (28,51,4);
 
