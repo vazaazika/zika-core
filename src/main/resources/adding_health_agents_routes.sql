@@ -34,3 +34,6 @@ VALUES (27,50,4);
 INSERT INTO role_resource(id,resource_id,role_id)
 VALUES (28,51,4);
 
+-- adding access to agent to game/feed route
+INSERT INTO "public"."role_resource"("id", "resource_id", "role_id") VALUES('29', 42, 4);
+
