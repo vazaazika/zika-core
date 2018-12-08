@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -65,6 +66,7 @@ public class PointOfInterest
 	private PoiType type;
 
 	@NotNull
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "poi_status_id")
 	private PoiStatusUpdate poiStatusUpdate;

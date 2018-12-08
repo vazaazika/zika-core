@@ -88,9 +88,9 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		System.out.println(point.getDate().getMonth());
 
-		if (point.getDate() != null)
-			criteria.add(Restrictions.sqlRestriction("month(this_.date) = "+point.getDate().getMonth()+""));
-
+		//if (point.getDate() != null)
+			//criteria.add(Restrictions.sqlRestriction("month(this_.date) = "+point.getDate().getMonth()+""));
+//
 		if (point.getPoiStatusUpdate() != null)
 			criteria.add(Restrictions.eq("poiStatusUpdate", point.getPoiStatusUpdate()));
 
