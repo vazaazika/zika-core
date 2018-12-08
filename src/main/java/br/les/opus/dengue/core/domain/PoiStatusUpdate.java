@@ -23,11 +23,6 @@ public class PoiStatusUpdate implements IdAware<Long> {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name = "poi_id", nullable=false)
-	private PointOfInterest poi;
-
-	@NotNull
-	@ManyToOne
 	@JoinColumn(name = "type_id", nullable=false)
 	private PoiStatusUpdateType type;
 
@@ -52,14 +47,6 @@ public class PoiStatusUpdate implements IdAware<Long> {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public PointOfInterest getPoi() {
-		return poi;
-	}
-
-	public void setPoi(PointOfInterest poi) {
-		this.poi = poi;
 	}
 
 	public PoiStatusUpdateType getType() {
