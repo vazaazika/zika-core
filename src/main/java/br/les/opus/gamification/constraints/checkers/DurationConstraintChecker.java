@@ -16,7 +16,8 @@ public class DurationConstraintChecker{
 	public Integer completedWork(AssignmentConstraint constraint, Date date) {
 		DurationConstraint durationConstraint = (DurationConstraint) constraint;
 		
-		Duration duration = Duration.ofDays(durationConstraint.getDuration());
+		//Duration duration = Duration.ofDays(durationConstraint.getDuration());
+		Duration duration = Duration.ofMinutes(1L);
 		
 		LocalDateTime current = convertToLocalDateTimeViaInstant(new Date());
 		LocalDateTime beginChallenge = convertToLocalDateTimeViaInstant(date);

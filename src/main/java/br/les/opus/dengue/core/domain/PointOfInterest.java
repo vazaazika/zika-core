@@ -53,6 +53,12 @@ public class PointOfInterest
 
 	@Column(length = 300)
 	private String address;
+	
+	@Column(length = 300)
+	private String state;
+
+	@Column(length = 300)
+	private String city;
 
 	@NotEmpty
 	@Column(length = 100, nullable = false)
@@ -223,6 +229,22 @@ public class PointOfInterest
 
 	public void setFieldValues(List<FieldValue> fieldValues) {
 		this.fieldValues = fieldValues;
+	}
+	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	@Override

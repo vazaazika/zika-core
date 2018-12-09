@@ -45,6 +45,7 @@ public class GamificationInterceptor implements HandlerInterceptor {
 			if (!series.equals(HttpStatus.Series.SUCCESSFUL)) {
 				return;
 			}
+			
 			gamificationService.processRequest(request);
 		} catch (BadCredentialsException e) {
 			logger.error("Action performed with no token informed", e);

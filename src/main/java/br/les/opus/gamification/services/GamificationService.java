@@ -66,9 +66,7 @@ public class GamificationService {
 
 		PerformedTask performedTask = performedTaskService.register(task, player);
 		taskGroupService.trackProgress(performedTask);
-		
-		
-		System.out.println(player);
+
 	}
 	
 	public Player loadPlayer(HttpServletRequest request) {

@@ -32,6 +32,17 @@ public class TeamUpChallengeRepository extends HibernateAbstractRepository<TeamU
 		return (TeamUpChallenge) query.uniqueResult();
 	}
 	
+	public TeamUpChallenge findInCompletedByPlayers(Team challenger, Team rival) {
+		String hql = "from TeamUpChallenge where ((challenger.id = :cId and rival.id = :rId) or (challenger.id = :rId and rival.id = :cId)) and complete = :cValue";
+		
+		Query query = getSession().createQuery(hql);
+		query.setParameter("cId", challenger.getId());
+		query.setParameter("rId", rival.getId());
+		query.setParameter("cValue", false);
+		
+		return (TeamUpChallenge) query.uniqueResult();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<TeamUpChallenge> findOpenChallenges() {
 		String hql = "from TeamUpChallenge where complete = :cValue and status = :status";
