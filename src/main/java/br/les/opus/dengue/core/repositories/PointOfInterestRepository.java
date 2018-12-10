@@ -88,27 +88,28 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		Criteria criteria = builder.getBuiltCriteria();
 
-		System.out.println(point.getDate().getMonth());
+		if (point.getPoiStatusUpdate() != null) {
+			criteria.createAlias("poiStatusUpdate", "poiStatus")
+					.add(Restrictions.eq("poiStatus.type.id", point.getPoiStatusUpdate().getType().getId().toString()));
+		}
 
-		//if (point.getDate() != null)
-			//criteria.add(Restrictions.sqlRestriction("month(this_.date) = "+point.getDate().getMonth()+""));
-//
-		if (point.getPoiStatusUpdate() != null)
-			criteria.add(Restrictions.eq("poiStatusUpdate", point.getPoiStatusUpdate()));
 
-		if (point.getType() != null)
-			criteria.add(Restrictions.eq("type", point.getType()));
+		if(point.getCity()!=null){
 
-		if(point.getCity()!=null)
 			criteria.add(Restrictions.eq("city", point.getCity()));
+		}
 
-		if(point.getState()!=null)
+		if(point.getState()!=null) {
+
 			criteria.add(Restrictions.eq("state", point.getState()));
+		}
 
 		criteria.setFirstResult(pageable.getOffset());
 		criteria.setMaxResults(pageable.getPageSize());
 
 		List<PointOfInterest> content = getUniqueObjects(criteria.list());
+
+
 
 		//adicionar criteria de lugar
 		criteria.add(Restrictions.eq("state", agent.getState()));
@@ -119,7 +120,7 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 		//obtendo quantidade de todos
 		long qtd = (long) getSession().createCriteria(PointOfInterest.class).setProjection(Projections.rowCount()).uniqueResult();
 
-		PageImpl<PointOfInterest> page = new PageImpl<>(content, pageable, this.count());
+		PageImpl<PointOfInterest> page = new PageImpl<PointOfInterest>(content, pageable, this.count());
 
 		DashboardResults dbr = new DashboardResults();
 
@@ -129,6 +130,5 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		return dbr;
 	}
-
 
 }
