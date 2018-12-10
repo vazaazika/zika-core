@@ -13,7 +13,7 @@ INSERT INTO resource(id,open,operation,uri)
 VALUES (50, false ,'POST','/user/health-agent');
 
 INSERT INTO resource(id,open,operation,uri)
-VALUES (51, true ,'GET','/dashboard-health-agent/dashboard');
+VALUES (51, true ,'GET','/dashboard-health-agent/filter');
 
 
 
@@ -37,3 +37,17 @@ VALUES (28,51,4);
 -- adding access to agent to game/feed route
 INSERT INTO "public"."role_resource"("id", "resource_id", "role_id") VALUES('29', 42, 4);
 
+
+-- adding type of status of mosquito breeding sites
+
+INSERT INTO poi_status_update_type (id,description)
+VALUES (1, 'Confirmação de Existência');
+
+INSERT INTO poi_status_update_type (id,description)
+VALUES (2, 'Foco do mosquito foi reportado pelo cidadão');
+
+INSERT INTO poi_status_update_type (id,description)
+VALUES (3, 'Foco do mosquito está em análise pelo Agente de Saúde');
+
+INSERT INTO poi_status_update_type (id,description)
+VALUES (4, 'Foco do mosquito foi tratado pelo Agente de Saúde');
