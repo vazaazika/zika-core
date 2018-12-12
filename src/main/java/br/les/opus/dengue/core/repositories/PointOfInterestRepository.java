@@ -7,6 +7,7 @@ import br.les.opus.gamification.domain.DashboardResults;
 import br.les.opus.gamification.domain.HealthAgent;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.data.domain.Page;
@@ -90,20 +91,19 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		Criteria criteria = builder.getBuiltCriteria();
 
+		System.out.println(point.getDate().getMonth());
 
-        if (point.getPoiStatusUpdateType() != null) {
-            criteria.createAlias("poiStatusUpdateType", "poiStatus")
-                    .add(Restrictions.eq("poiStatus.id", point.getPoiStatusUpdateType().getId()));
-        }
+		if (point.getPoiStatusUpdateType() != null) {
+			if(point.getPoiStatusUpdateType().getId()!=null)
+				criteria.createAlias("poiStatusUpdateType", "poiStatus")
+						.add(Restrictions.eq("poiStatus.id", point.getPoiStatusUpdateType().getId()));
+		}
 
-
-        if (point.getCity() != null) {
-
+		if (point.getCity() != null) {
 			criteria.add(Restrictions.eq("city", point.getCity()));
 		}
 
 		if (point.getState() != null) {
-
 			criteria.add(Restrictions.eq("state", point.getState()));
 		}
 
