@@ -17,7 +17,7 @@ public class ChallengeRepositoryTest  extends DbTestUtil{
 		Challenge challenge = challengeDao.findOne(1L);
 		Assert.notNull(challenge);
 	}
-	
+
 	@Test
 	public void searchOnRepositoryNullTest() {
 		Challenge challenge = challengeDao.findOne(2L);

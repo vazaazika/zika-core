@@ -26,15 +26,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import br.les.opus.auth.core.validators.UniqueUsername;
 import br.les.opus.commons.persistence.IdAware;
 import br.les.opus.dengue.core.domain.Picture;
-import br.les.opus.dengue.core.domain.PoiStatusUpdate;
 import br.les.opus.dengue.core.domain.PointOfInterest;
 
 /**
  * Classe que representa um usuário. Essa classe implementa a
  * interface {@link UserDetails} do Spring Security para servir como entidade
  * autenticável no framework mencionado.
- * 
- * 
+ *
+ *
  * @author Diego Cedrim
  */
 @Entity
@@ -72,31 +71,32 @@ public class User implements UserDetails, IdAware<Long> {
 	private Boolean enabled;
 
 	private Boolean locked;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<PointOfInterest> reports;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
-	private List<PoiStatusUpdate> poiUpdates;
+	private List<Device> devices;
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<UserRole> userRoles;
-	
+
 	@Transient
 	private List<Role> roles;
-	
+
 	@Transient
 	private List<Resource> resources;
-	
+
 	@JsonIgnore
 	@Version
-    @Column(name="opt_lock")
+	@Column(name="opt_lock")
 	private Integer version;
-	
+
 	@OneToOne
 	@JoinColumn(name = "picture_id")
 	private Picture avatar;
@@ -104,16 +104,17 @@ public class User implements UserDetails, IdAware<Long> {
 	@OneToOne (cascade = {CascadeType.ALL})
 	@JoinColumn(name = "invite_id")
 	private Invite invite;
-	
+
 	public User() {
 		this.reports = new ArrayList<>();
 		this.userRoles = new ArrayList<UserRole>();
+		this.devices = new ArrayList<Device>();
+		this.invite = new Invite();
 		this.enabled = true;
 		this.locked = false;
 		this.version = 0;
-		this.invite = new Invite();
 	}
-	
+
 	@Override
 	@Transient
 	@JsonIgnore
@@ -124,7 +125,7 @@ public class User implements UserDetails, IdAware<Long> {
 		}
 		return authorities;
 	}
-	
+
 	@JsonIgnore
 	public boolean isRoot() {
 		for (GrantedAuthority authority : this.getAuthorities()) {
@@ -134,6 +135,18 @@ public class User implements UserDetails, IdAware<Long> {
 		}
 		return false;
 	}
+
+	@JsonIgnore
+	public boolean isHealthAgent() {
+		for (GrantedAuthority authority : this.getAuthorities()) {
+			if (authority.getAuthority().equals(Role.HEALTH_AGENT)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 
 	@Transient
 	@JsonIgnore
@@ -147,7 +160,7 @@ public class User implements UserDetails, IdAware<Long> {
 		}
 		return resources;
 	}
-	
+
 	@Transient
 	@JsonIgnore
 	public UserRole findUserRole(Role role) {
@@ -159,7 +172,7 @@ public class User implements UserDetails, IdAware<Long> {
 		}
 		return null;
 	}
-	
+
 	@Transient
 	public String getShortName() {
 		if (StringUtils.isEmpty(this.name)) {
@@ -174,7 +187,7 @@ public class User implements UserDetails, IdAware<Long> {
 		}
 		return shortName.toString();
 	}
-	
+
 	public List<Resource> getResources() {
 		return resources;
 	}
@@ -317,14 +330,6 @@ public class User implements UserDetails, IdAware<Long> {
 		this.reports = reports;
 	}
 
-	public List<PoiStatusUpdate> getPoiUpdates() {
-		return poiUpdates;
-	}
-
-	public void setPoiUpdates(List<PoiStatusUpdate> poiUpdates) {
-		this.poiUpdates = poiUpdates;
-	}
-
 	public Picture getAvatar() {
 		return avatar;
 	}
@@ -337,7 +342,19 @@ public class User implements UserDetails, IdAware<Long> {
 		this.version = version;
 	}
 
+	public List<Device> getDevices() {
+		return devices;
+	}
+
+	public void setDevices(List<Device> devices) {
+		this.devices = devices;
+	}
+
 	public Invite getInvite() {
 		return invite;
+	}
+
+	public void setInvite(Invite invite) {
+		this.invite = invite;
 	}
 }

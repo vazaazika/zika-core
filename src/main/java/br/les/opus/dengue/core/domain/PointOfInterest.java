@@ -4,22 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
@@ -60,6 +48,12 @@ public class PointOfInterest
 	@Column(length = 300)
 	private String city;
 
+	@Column(length = 300)
+	private String state;
+
+	@Column(length = 300)
+	private String city;
+
 	@NotEmpty
 	@Column(length = 100, nullable = false)
 	private String title;
@@ -76,6 +70,16 @@ public class PointOfInterest
 	@ManyToOne
 	@JoinColumn(name = "poi_type_id")
 	private PoiType type;
+
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "poi_status_update_type_id")
+	@org.hibernate.annotations.ColumnDefault("1")
+	private PoiStatusUpdateType poiStatusUpdateType;
+
+	@ManyToOne
+	@JoinColumn(name = "user_modified_status_id")
+	private User userModifiedStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -109,6 +113,7 @@ public class PointOfInterest
 		this.fieldValues = new ArrayList<>();
 		this.upVoteCount = 0;
 		this.downVoteCount = 0;
+		this.poiStatusUpdateType = new PoiStatusUpdateType();
 	}
 
 	public void removeVote(Vote vote) {
@@ -247,6 +252,30 @@ public class PointOfInterest
 		this.city = city;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public User getUserModifiedStatus() {
+		return userModifiedStatus;
+	}
+
+	public void setUserModifiedStatus(User userModifiedStatus) {
+		this.userModifiedStatus = userModifiedStatus;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -296,9 +325,34 @@ public class PointOfInterest
 		this.userVote = userVote;
 	}
 
+	public PoiStatusUpdateType getPoiStatusUpdateType() {
+		return poiStatusUpdateType;
+	}
+
+	public void setPoiStatusUpdateType(PoiStatusUpdateType poiStatusUpdateType) {
+		this.poiStatusUpdateType = poiStatusUpdateType;
+	}
+
 	@Override
 	public String toString() {
-		return "PointOfInterest [id=" + id + ", type=" + type + ", user=" + user + "]";
+		return "PointOfInterest{" +
+				"id=" + id +
+				", location=" + location +
+				", address='" + address + '\'' +
+				", state='" + state + '\'' +
+				", city='" + city + '\'' +
+				", title='" + title + '\'' +
+				", description='" + description + '\'' +
+				", date=" + date +
+				", type=" + type +
+				", user=" + user +
+				", pictures=" + pictures +
+				", fieldValues=" + fieldValues +
+				", upVoteCount=" + upVoteCount +
+				", downVoteCount=" + downVoteCount +
+				", userVote=" + userVote +
+				", published=" + published +
+				'}';
 	}
 
 	@Override
