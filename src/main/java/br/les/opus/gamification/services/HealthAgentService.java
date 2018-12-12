@@ -96,6 +96,12 @@ public class HealthAgentService {
     }
 
 
+    public HealthAgent findById(Long id) {
+        HealthAgent  healthAgent = healthAgentRepository.findById(id);
+        return healthAgent;
+    }
+
+
 
 }
 
