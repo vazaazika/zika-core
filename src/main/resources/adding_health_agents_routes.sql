@@ -68,3 +68,15 @@ VALUES (3, 'Foco do mosquito está em análise pelo Agente de Saúde', 'IN_ANALY
 
 INSERT INTO poi_status_update_type (id,description, typeCode)
 VALUES (4, 'Foco do mosquito foi tratado pelo Agente de Saúde', 'TREATED');
+
+
+-- add status default for all poi
+update public.point_of_interest set poi_status_update_type_id = 2;
+
+
+INSERT INTO public.feedback_type( id, type)
+VALUES (1, 'Descrição insuficiente');
+INSERT INTO public.feedback_type( id, type)
+VALUES (2, 'Endereço incompleto');
+INSERT INTO public.feedback_type( id, type)
+VALUES (3, 'Endereço inexistente');
