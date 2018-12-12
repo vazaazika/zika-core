@@ -93,7 +93,7 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
         if (point.getPoiStatusUpdateType() != null) {
             criteria.createAlias("poiStatusUpdateType", "poiStatus")
-                    .add(Restrictions.eq("poiStatus.id", point.getPoiStatusUpdateType().getId().toString()));
+                    .add(Restrictions.eq("poiStatus.id", point.getPoiStatusUpdateType().getId()));
         }
 
 
