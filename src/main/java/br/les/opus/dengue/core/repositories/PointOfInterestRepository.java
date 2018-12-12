@@ -76,6 +76,8 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 
 
+	//PointOfInterest{id=null, location=null, address='null', state='Ceará', city='null', title='null', description='null',
+	// date=Sun Dec 09 14:54:45 BRT 2018, type=null, poiStatusUpdate=null, user=null, pictures=[], fieldValues=[], upVoteCount=0, downVoteCount=0, userVote=null, published=true}
 
 	public DashboardResults findAllPoiByFilters(HealthAgent agent, PointOfInterest point, Pageable pageable) {
 
@@ -88,18 +90,19 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		Criteria criteria = builder.getBuiltCriteria();
 
-		if (point.getPoiStatusUpdate() != null) {
-			criteria.createAlias("poiStatusUpdate", "poiStatus")
-					.add(Restrictions.eq("poiStatus.type.id", point.getPoiStatusUpdate().getType().getId().toString()));
-		}
+
+        if (point.getPoiStatusUpdateType() != null) {
+            criteria.createAlias("poiStatusUpdateType", "poiStatus")
+                    .add(Restrictions.eq("poiStatus.id", point.getPoiStatusUpdateType().getId().toString()));
+        }
 
 
-		if(point.getCity()!=null){
+        if (point.getCity() != null) {
 
 			criteria.add(Restrictions.eq("city", point.getCity()));
 		}
 
-		if(point.getState()!=null) {
+		if (point.getState() != null) {
 
 			criteria.add(Restrictions.eq("state", point.getState()));
 		}
@@ -109,6 +112,8 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		List<PointOfInterest> content = getUniqueObjects(criteria.list());
 
+		//	System.out.println("Quantidade: "+content.size());
+		//	System.out.println("Primeiro : "+content.get(0).getDescription());
 
 
 		//adicionar criteria de lugar
@@ -130,5 +135,4 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		return dbr;
 	}
-
 }

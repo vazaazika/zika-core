@@ -1,3 +1,4 @@
+
 package br.les.opus.gamification.domain.feedback;
 
 
@@ -28,11 +29,9 @@ public class FeedbackPoiInformationQuality extends Feedback {
     @JoinColumn(name = "object_id")
     private Object object;
 
-
     @NotNull
     @Type(type="true_false")
     private boolean resolved;
-
 
     public boolean isResolved() {
         return resolved;

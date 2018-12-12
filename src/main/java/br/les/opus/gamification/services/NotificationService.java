@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 //classe de notificação, você poderá usar os métodos sendNotificationId para enviar mensagem para um usuário em específico, ou sendNotificationTopic para vários usuários conectados ao tópico

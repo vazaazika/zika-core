@@ -1,7 +1,6 @@
 package br.les.opus.auth.core.domain;
 
 
-import br.les.opus.commons.persistence.IdAware;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ public class Device{
     @SequenceGenerator(name="generator", sequenceName="SQ_PK_DEVICE")
     private long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String token;
 
 

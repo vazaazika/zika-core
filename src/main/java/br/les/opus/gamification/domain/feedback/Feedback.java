@@ -1,6 +1,7 @@
 package br.les.opus.gamification.domain.feedback;
 
 
+import br.les.opus.auth.core.domain.User;
 import br.les.opus.commons.persistence.IdAware;
 import org.hibernate.validator.constraints.Length;
 
@@ -31,8 +32,12 @@ public class Feedback implements IdAware<Long> {
 
     @NotNull
     @OneToMany
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false)
     private List<FeedbackType> feedbackType;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
@@ -69,6 +74,14 @@ public class Feedback implements IdAware<Long> {
         this.date = date;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<FeedbackType> getFeedbackType() {
         return feedbackType;
     }
@@ -77,6 +90,4 @@ public class Feedback implements IdAware<Long> {
         this.feedbackType = feedbackType;
     }
 }
-
-
 

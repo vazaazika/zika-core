@@ -12,23 +12,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DeviceRepository extends HibernateAbstractRepository<Device, Long> {
-
-
     public Device findDeviceByUserAndToken(User user, String token) {
-
-        String hql = "from Device where user_id = :user_id and token = :token";
-        Query query = getSession().createQuery(hql);
-        query.setParameter("user_id",  user.getId());
-        query.setParameter("token",  token);
-        Object obj = query.uniqueResult();
-        if (obj != null) {
-            return (Device)obj;
-        }
-        return null;
-
+        Criteria criteria = getSession().createCriteria(getEntityClass());
+        criteria.createAlias("user", "user");
+        criteria.add(Restrictions.eq("user.id", user.getId()));
+        criteria.add(Restrictions.eq("token", token));
+        Object obj = criteria.uniqueResult();
+        return (obj == null)? null : (Device) obj;
     }
-
-
-
-
 }

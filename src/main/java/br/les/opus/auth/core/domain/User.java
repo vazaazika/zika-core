@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import br.les.opus.auth.core.validators.UniqueUsername;
 import br.les.opus.commons.persistence.IdAware;
 import br.les.opus.dengue.core.domain.Picture;
-import br.les.opus.dengue.core.domain.PoiStatusUpdate;
 import br.les.opus.dengue.core.domain.PointOfInterest;
 
 /**
@@ -79,10 +78,6 @@ public class User implements UserDetails, IdAware<Long> {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
-	private List<PoiStatusUpdate> poiUpdates;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "user")
 	private List<Device> devices;
 
 
@@ -99,7 +94,7 @@ public class User implements UserDetails, IdAware<Long> {
 
 	@JsonIgnore
 	@Version
-    @Column(name="opt_lock")
+	@Column(name="opt_lock")
 	private Integer version;
 
 	@OneToOne
@@ -333,14 +328,6 @@ public class User implements UserDetails, IdAware<Long> {
 
 	public void setReports(List<PointOfInterest> reports) {
 		this.reports = reports;
-	}
-
-	public List<PoiStatusUpdate> getPoiUpdates() {
-		return poiUpdates;
-	}
-
-	public void setPoiUpdates(List<PoiStatusUpdate> poiUpdates) {
-		this.poiUpdates = poiUpdates;
 	}
 
 	public Picture getAvatar() {

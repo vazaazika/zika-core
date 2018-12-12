@@ -66,9 +66,14 @@ public class PointOfInterest
 	private PoiType type;
 
 	@NotNull
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "poi_status_id")
-	private PoiStatusUpdate poiStatusUpdate;
+	@OneToOne
+	@JoinColumn(name = "poi_status_update_type_id")
+	@org.hibernate.annotations.ColumnDefault("1")
+	private PoiStatusUpdateType poiStatusUpdateType;
+
+	@ManyToOne
+	@JoinColumn(name = "user_modified_status_id")
+	private User userModifiedStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -102,6 +107,7 @@ public class PointOfInterest
 		this.fieldValues = new ArrayList<>();
 		this.upVoteCount = 0;
 		this.downVoteCount = 0;
+		this.poiStatusUpdateType = new PoiStatusUpdateType();
 	}
 
 	public void removeVote(Vote vote) {
@@ -240,6 +246,14 @@ public class PointOfInterest
 		this.city = city;
 	}
 
+	public User getUserModifiedStatus() {
+		return userModifiedStatus;
+	}
+
+	public void setUserModifiedStatus(User userModifiedStatus) {
+		this.userModifiedStatus = userModifiedStatus;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -289,24 +303,33 @@ public class PointOfInterest
 		this.userVote = userVote;
 	}
 
-	public PoiStatusUpdate getPoiStatusUpdate() {
-		return poiStatusUpdate;
+	public PoiStatusUpdateType getPoiStatusUpdateType() {
+		return poiStatusUpdateType;
 	}
 
-	public void setPoiStatusUpdate(PoiStatusUpdate poiStatusUpdate) {
-		this.poiStatusUpdate = poiStatusUpdate;
+	public void setPoiStatusUpdateType(PoiStatusUpdateType poiStatusUpdateType) {
+		this.poiStatusUpdateType = poiStatusUpdateType;
 	}
-
-
 
 	@Override
 	public String toString() {
 		return "PointOfInterest{" +
 				"id=" + id +
+				", location=" + location +
+				", address='" + address + '\'' +
+				", state='" + state + '\'' +
+				", city='" + city + '\'' +
+				", title='" + title + '\'' +
+				", description='" + description + '\'' +
+				", date=" + date +
 				", type=" + type +
-				", poiStatusUpdate=" + poiStatusUpdate +
 				", user=" + user +
-				", data=" + date +
+				", pictures=" + pictures +
+				", fieldValues=" + fieldValues +
+				", upVoteCount=" + upVoteCount +
+				", downVoteCount=" + downVoteCount +
+				", userVote=" + userVote +
+				", published=" + published +
 				'}';
 	}
 
