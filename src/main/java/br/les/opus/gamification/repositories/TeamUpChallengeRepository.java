@@ -75,6 +75,15 @@ public class TeamUpChallengeRepository extends HibernateAbstractRepository<TeamU
 		query.setParameter("rId", rival.getId());
 		return (Long)query.uniqueResult();
 	}
+	
+	public Long countTeamUpChallengeByTeams(Team challenger) {
+		String hql = "select count(f.id) from TeamUpChallenge f where (f.challenger.id = :cId) or (f.rival.id = :cId) and complete = :cValue and status != :status";
+		Query query = getSession().createQuery(hql);
+		query.setParameter("cId", challenger.getId());
+		query.setParameter("cValue", false);
+		query.setParameter("status", InvitationStatus.EXPIRED.getValue());
+		return (Long)query.uniqueResult();
+	}
 
 	public boolean isPlayerEnrolledInChallenge(Player player) {
 		//get the player team
@@ -133,6 +142,19 @@ public class TeamUpChallengeRepository extends HibernateAbstractRepository<TeamU
 			return false;
 		}
 		return true;
+	}
+
+	public Page<TeamUpChallenge> findOpenByTeam(Team challengerTeam, Pageable pageable) {
+		String hql = "from TeamUpChallenge where (challenger.id = :cId or rival.id = :cId) and complete = :cValue and status != :status";
+		
+		Query query = getSession().createQuery(hql);
+		query.setParameter("cId", challengerTeam.getId());
+		query.setParameter("cValue", false);
+		query.setParameter("status", InvitationStatus.EXPIRED.getValue());
+		query.setFirstResult(pageable.getOffset());
+		query.setMaxResults(pageable.getPageSize());
+		
+		return new PageImpl<>(query.list(), pageable, this.countTeamUpChallengeByTeams(challengerTeam));
 	}
 
 }

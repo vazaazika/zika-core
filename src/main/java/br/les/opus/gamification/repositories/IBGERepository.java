@@ -1,6 +1,7 @@
 package br.les.opus.gamification.repositories;
 
 import org.hibernate.SQLQuery;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.stereotype.Repository;
 
 import com.vividsolutions.jts.geom.Point;
@@ -11,7 +12,7 @@ import br.les.opus.gamification.domain.IBGEInfo;
 @Repository
 public class IBGERepository extends HibernateAbstractRepository<IBGEInfo, Long>{
 	
-	public IBGEInfo findByPoint(Point point) {
+	public IBGEInfo findByPoint(Point point) throws SQLGrammarException{
 		IBGEInfo ibge = new IBGEInfo();
 		
 		String x = Double.toString(point.getX());
