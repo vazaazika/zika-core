@@ -57,14 +57,14 @@ INSERT INTO "public"."role_resource"("id", "resource_id", "role_id") VALUES('29'
 
 -- adding type of status of mosquito breeding sites
 
-INSERT INTO poi_status_update_type (id,description)
-VALUES (1, 'Confirmação de Existência');
+INSERT INTO poi_status_update_type (id,description, typeCode)
+VALUES (1, 'Confirmação de Existência', 'VERIFICATION');
 
-INSERT INTO poi_status_update_type (id,description)
-VALUES (2, 'Foco do mosquito foi reportado pelo cidadão');
+INSERT INTO poi_status_update_type (id,description, typeCode)
+VALUES (2, 'Foco do mosquito foi reportado pelo cidadão', 'REPORTED');
 
-INSERT INTO poi_status_update_type (id,description)
-VALUES (3, 'Foco do mosquito está em análise pelo Agente de Saúde');
+INSERT INTO poi_status_update_type (id,description, typeCode)
+VALUES (3, 'Foco do mosquito está em análise pelo Agente de Saúde', 'IN_ANALYSIS');
 
-INSERT INTO poi_status_update_type (id,description)
-VALUES (4, 'Foco do mosquito foi tratado pelo Agente de Saúde');
+INSERT INTO poi_status_update_type (id,description, typeCode)
+VALUES (4, 'Foco do mosquito foi tratado pelo Agente de Saúde', 'TREATED');
