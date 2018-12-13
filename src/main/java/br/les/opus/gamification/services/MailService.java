@@ -14,7 +14,7 @@ import br.les.opus.gamification.domain.Player;
  */
 @Service
 @Configuration
-public class MailService extends Thread{
+public class MailService extends Thread {
 
     @Autowired
     JavaMailSender mailSender;
@@ -23,7 +23,7 @@ public class MailService extends Thread{
     private String subject;
     private String text;
 
-    public void run(){
+    public void run() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);
@@ -74,11 +74,11 @@ public class MailService extends Thread{
         return message;
     }
 
-	public void setMail(MailBody mail) {
-		this.setTo(mail.getTo());
-		this.setSubject(mail.getSubject());
-		this.setText(mail.getText());
-	}
+    public void setMail(MailBody mail) {
+        this.setTo(mail.getTo());
+        this.setSubject(mail.getSubject());
+        this.setText(mail.getText());
+    }
 
 
 }
