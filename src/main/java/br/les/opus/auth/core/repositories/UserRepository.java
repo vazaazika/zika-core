@@ -1,3 +1,4 @@
+
 package br.les.opus.auth.core.repositories;
 
 import org.hibernate.Criteria;
@@ -17,7 +18,7 @@ public class UserRepository extends HibernateAbstractRepository<User, Long> {
 		Object obj = criteria.uniqueResult();
 		return (obj == null)? null : (User)obj;
 	}
-	
+
 	public User findByUsernameAndPassword(String username, String password) {
 		Criteria criteria = getSession().createCriteria(getEntityClass());
 		criteria.add(Restrictions.eq("username", username).ignoreCase());
@@ -26,14 +27,16 @@ public class UserRepository extends HibernateAbstractRepository<User, Long> {
 		return (obj == null)? null : (User)obj;
 	}
 
-	public int setUsername(Long id, String username){
-		Query query = getSession().createQuery("update User set username = :username where id = :id");
-		query.setParameter("username", username);
+	public int setName(Long id, String name){
+		Query query = getSession().createQuery("update User set name = :name where id = :id");
+		query.setParameter("name", name);
 		query.setParameter("id", id);
 
 		int result = query.executeUpdate();
 
 		return result;
 	}
+
+
 
 }
