@@ -67,18 +67,18 @@ public class ChallengeService {
 		 * Get regular challenges
 		 */
 		
-		//handleStrikeChallenges();
+		handleStrikeChallenges();
 		
 		/*
 		 * FighChallenge
 		 */
-		//handleFightChallenges();
+		handleFightChallenges();
 		
 		
 		/*
 		 * OnTopChallenges
 		 */
-		//handleOnTopChallenges();
+		handleOnTopChallenges();
 		
 		/*
 		 * TeamUpChallenges
