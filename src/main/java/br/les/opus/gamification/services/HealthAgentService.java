@@ -10,10 +10,7 @@ import br.les.opus.auth.core.repositories.RoleRepository;
 import br.les.opus.auth.core.repositories.UserRepository;
 import br.les.opus.auth.core.repositories.UserRoleRepository;
 import br.les.opus.gamification.domain.HealthAgent;
-import br.les.opus.gamification.domain.Player;
 import br.les.opus.gamification.repositories.HealthAgentRepository;
-import br.les.opus.gamification.repositories.InviteRepository;
-import br.les.opus.gamification.repositories.ResetPasswordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -51,6 +48,7 @@ public class HealthAgentService {
     public HealthAgent save(HealthAgent user) {
         HealthAgent newUser = userRepository.save(user);
         loadDefaultRoles(newUser);
+        loadRolesAndResorces(newUser);
         //generateInviteID(newUser);
         return newUser;
     }
@@ -91,17 +89,16 @@ public class HealthAgentService {
 
 
     public HealthAgent findById(User user) {
-       HealthAgent  healthAgent = healthAgentRepository.findById(user.getId());
+        HealthAgent  healthAgent = healthAgentRepository.findById(user.getId());
+        loadRolesAndResorces(healthAgent);
         return healthAgent;
     }
-
 
     public HealthAgent findById(Long id) {
         HealthAgent  healthAgent = healthAgentRepository.findById(id);
+        loadRolesAndResorces(healthAgent);
         return healthAgent;
     }
-
-
 
 }
 
