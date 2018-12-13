@@ -62,11 +62,9 @@ public class GamificationService {
 		if (task == null) {
 			return;
 		}
-		
 
 		PerformedTask performedTask = performedTaskService.register(task, player);
 		taskGroupService.trackProgress(performedTask);
-
 	}
 	
 	public Player loadPlayer(HttpServletRequest request) {
@@ -78,5 +76,4 @@ public class GamificationService {
 		}
 		return player;
 	}
-	
 }
