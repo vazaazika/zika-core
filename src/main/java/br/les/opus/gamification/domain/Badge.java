@@ -31,6 +31,7 @@ public class Badge implements IdAware<Long> {
 	@Transient
 	private Float completion;
 	
+	
 	@Transient
 	private String base64Image;
 
