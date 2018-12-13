@@ -22,7 +22,8 @@ public class ScheduleChallengerChecker {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Scheduled(cron = "0 0 * * * *")
+	//@Scheduled(cron = "0 0 * * * *")
+	@Scheduled(cron = "0 * * ? * *")
 	public void checkOpenChallenges() {
 		service.verifyOpenChallenges();
 	}

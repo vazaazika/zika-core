@@ -73,6 +73,9 @@ public class Token {
 		Resource resourceMatch = null;
 		
 		for(Resource resource: resources) {
+			if(resource.getId() == 14L) {
+				System.out.println("entrou");
+			}
 			if(resource.matches(targetResource)) {
 				matchValue = Math.abs(targetResource.getUri().compareTo(resource.getUri()));
 				if(matchValue < bestMatchValue) {

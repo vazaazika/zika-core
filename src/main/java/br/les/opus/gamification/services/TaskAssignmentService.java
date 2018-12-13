@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import br.les.opus.gamification.constraints.AssignmentConstraint;
+import br.les.opus.gamification.constraints.DurationConstraint;
 import br.les.opus.gamification.constraints.checkers.ConstraintChecker;
 import br.les.opus.gamification.domain.PerformedTask;
 import br.les.opus.gamification.domain.TaskAssignment;
@@ -28,8 +29,14 @@ public class TaskAssignmentService {
 		 * Otherwise, we must compute, for each constraint, the completed work
 		 */
 		for (AssignmentConstraint constraint : assignment.getConstraints()) {
-			ConstraintChecker checker = (ConstraintChecker)ctx.getBean(constraint.getCheckerClass());
-			int work = checker.completedWork(constraint, performedTask);
+			int work;
+			if(constraint instanceof DurationConstraint) {
+				continue;
+			}else {
+				ConstraintChecker checker = (ConstraintChecker)ctx.getBean(constraint.getCheckerClass());
+				work = checker.completedWork(constraint, performedTask);
+			}
+			
 			completed += work;
 		}
 		return completed;
