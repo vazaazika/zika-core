@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +19,8 @@ import br.les.opus.commons.persistence.SpatialHibernateAbstractRepository;
 import br.les.opus.commons.persistence.builders.CriteriaBuilder;
 import br.les.opus.commons.persistence.spatial.DistanceResult;
 import br.les.opus.dengue.core.domain.PointOfInterest;
+import br.les.opus.gamification.domain.DashboardResults;
+import br.les.opus.gamification.domain.HealthAgent;
 
 @Repository
 public class PointOfInterestRepository extends SpatialHibernateAbstractRepository<PointOfInterest, Long>{
@@ -71,4 +74,62 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 		return page;
 	}
 	
+		//PointOfInterest{id=null, location=null, address='null', state='Ceará', city='null', title='null', description='null',
+			// date=Sun Dec 09 14:54:45 BRT 2018, type=null, poiStatusUpdate=null, user=null, pictures=[], fieldValues=[], upVoteCount=0, downVoteCount=0, userVote=null, published=true}
+
+	public DashboardResults findAllPoiByFilters(HealthAgent agent, PointOfInterest point, Pageable pageable) {
+
+
+
+		CriteriaBuilder builder = new CriteriaBuilder(getSession(), PointOfInterest.class);
+		if (pageable.getSort() != null) {
+			builder.addSort(pageable.getSort());
+		}
+
+		Criteria criteria = builder.getBuiltCriteria();
+
+		System.out.println(point.getDate().getMonth());
+
+		if (point.getPoiStatusUpdateType() != null) {
+			if(point.getPoiStatusUpdateType().getId()!=null)
+				criteria.createAlias("poiStatusUpdateType", "poiStatus")
+						.add(Restrictions.eq("poiStatus.id", point.getPoiStatusUpdateType().getId()));
+		}
+
+		if (point.getCity() != null) {
+			criteria.add(Restrictions.eq("city", point.getCity()));
+		}
+
+		if (point.getState() != null) {
+			criteria.add(Restrictions.eq("state", point.getState()));
+		}
+
+		criteria.setFirstResult(pageable.getOffset());
+		criteria.setMaxResults(pageable.getPageSize());
+
+		List<PointOfInterest> content = getUniqueObjects(criteria.list());
+
+		//	System.out.println("Quantidade: "+content.size());
+		//	System.out.println("Primeiro : "+content.get(0).getDescription());
+
+
+		//adicionar criteria de lugar
+		criteria.add(Restrictions.eq("state", agent.getState()));
+		criteria.add(Restrictions.eq("city", agent.getCity()));
+
+		List<PointOfInterest> content2 = getUniqueObjects(criteria.list());
+
+		//obtendo quantidade de todos
+		long qtd = (long) getSession().createCriteria(PointOfInterest.class).setProjection(Projections.rowCount()).uniqueResult();
+
+		PageImpl<PointOfInterest> page = new PageImpl<PointOfInterest>(content, pageable, this.count());
+
+		DashboardResults dbr = new DashboardResults();
+
+		dbr.setTotalReportBase(qtd);
+		dbr.setPointOfInterestPage(page);
+		dbr.setPercentByStates(content2.size());
+
+		return dbr;
+	}
 }

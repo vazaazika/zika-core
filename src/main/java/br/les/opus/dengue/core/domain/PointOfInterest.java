@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -76,6 +77,16 @@ public class PointOfInterest
 	@ManyToOne
 	@JoinColumn(name = "poi_type_id")
 	private PoiType type;
+	
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "poi_status_update_type_id")
+	@org.hibernate.annotations.ColumnDefault("1")
+	private PoiStatusUpdateType poiStatusUpdateType;
+
+	@ManyToOne
+	@JoinColumn(name = "user_modified_status_id")
+	private User userModifiedStatus;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
@@ -109,6 +120,7 @@ public class PointOfInterest
 		this.fieldValues = new ArrayList<>();
 		this.upVoteCount = 0;
 		this.downVoteCount = 0;
+		this.poiStatusUpdateType = new PoiStatusUpdateType();
 	}
 
 	public void removeVote(Vote vote) {
@@ -294,6 +306,22 @@ public class PointOfInterest
 
 	public void setUserVote(Vote userVote) {
 		this.userVote = userVote;
+	}
+	
+	public PoiStatusUpdateType getPoiStatusUpdateType() {
+		return poiStatusUpdateType;
+	}
+
+	public void setPoiStatusUpdateType(PoiStatusUpdateType poiStatusUpdateType) {
+		this.poiStatusUpdateType = poiStatusUpdateType;
+	}
+	
+	public User getUserModifiedStatus() {
+		return userModifiedStatus;
+	}
+
+	public void setUserModifiedStatus(User userModifiedStatus) {
+		this.userModifiedStatus = userModifiedStatus;
 	}
 
 	@Override

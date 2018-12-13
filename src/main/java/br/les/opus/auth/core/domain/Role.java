@@ -27,6 +27,7 @@ public class Role implements GrantedAuthority, IdAware<Long> {
 	private static final long serialVersionUID = -250949549378267771L;
 	
 	public static final String ROOT = "ROOT";
+	public static final String HEALTH_AGENT = "HEALTH_AGENT";
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="generator")
