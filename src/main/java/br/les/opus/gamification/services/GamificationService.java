@@ -49,6 +49,7 @@ public class GamificationService {
 		// get the player who performed the request
 		Player player = loadPlayer(request);
 
+
 		// tries to find the Task related to the resource
 		Resource resource = new Resource(request);
 		Token token = tokenService.getAuthenticatedUser(request);
@@ -66,6 +67,9 @@ public class GamificationService {
 
 		PerformedTask performedTask = performedTaskService.register(task, player);
 		taskGroupService.trackProgress(performedTask);
+		
+		Player updatedPlayer = playerDao.findOne(player.getId());
+		
 
 	}
 	

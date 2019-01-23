@@ -25,7 +25,6 @@ public class PerformedChallengeService {
 	
 	public  PerformedChallenge startSingleChallenge(Challenge challenge, Player player) {
 		//create the entity to log
-		System.out.println("entrou meu senhor");
 		return null;
 	}
 	
