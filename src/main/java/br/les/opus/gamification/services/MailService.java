@@ -1,5 +1,6 @@
 package br.les.opus.gamification.services;
 
+import br.les.opus.commons.mail.AppConfigMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,7 +18,7 @@ import br.les.opus.gamification.domain.Player;
 public class MailService extends Thread{
 
     @Autowired
-    JavaMailSender mailSender;
+    AppConfigMail mailSender;
 
     private String to;
     private String subject;
@@ -28,14 +29,14 @@ public class MailService extends Thread{
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        mailSender.send(message);
+        mailSender.getMailSender().send(message);
     }
 
     public JavaMailSender getMailSender() {
-        return mailSender;
+        return mailSender.getMailSender();
     }
 
-    public void setMailSender(JavaMailSender mailSender) {
+    public void setMailSender(AppConfigMail mailSender) {
         this.mailSender = mailSender;
     }
 
