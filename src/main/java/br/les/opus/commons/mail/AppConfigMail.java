@@ -26,15 +26,16 @@ public class AppConfigMail {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
         javaMailSender.setHost("smtp.gmail.com");
-        javaMailSender.setPort(465);
+        javaMailSender.setPort(587);
         javaMailSender.setUsername("vazazikasuporte@gmail.com");
         javaMailSender.setPassword(env.getProperty("mail.password"));
 
         Properties javaMailProperties = new Properties();
-//        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 //        javaMailProperties.put("mail.transport.protocol", "smtp");
         javaMailProperties.put("mail.smtp.auth", "true");
-        javaMailProperties.put("mail.smtp.socketFactory.port", "465");
+        javaMailProperties.put("mail.smtp.socketFactory.port", "587");
         javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         javaMailSender.setJavaMailProperties(javaMailProperties);
 
