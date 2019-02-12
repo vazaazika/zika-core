@@ -32,8 +32,9 @@ public class AppConfigMail {
 
         Properties javaMailProperties = new Properties();
         javaMailProperties.put("mail.smtp.starttls.enable", "true");
+        javaMailProperties.put("mail.smtp.starttls.required", "true");
         javaMailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-//        javaMailProperties.put("mail.transport.protocol", "smtp");
+        javaMailProperties.put("mail.transport.protocol", "smtp");
         javaMailProperties.put("mail.smtp.auth", "true");
         javaMailProperties.put("mail.smtp.socketFactory.port", "587");
         javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
