@@ -34,6 +34,7 @@ public class AppConfigMail {
         javaMailProperties.put("mail.smtp.starttls.enable", "true");
         javaMailProperties.put("mail.smtp.auth", "true");
         javaMailProperties.put("mail.transport.protocol", "smtp");
+        javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         javaMailSender.setJavaMailProperties(javaMailProperties);
 
         return javaMailSender;
