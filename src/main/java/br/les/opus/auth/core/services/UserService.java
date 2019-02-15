@@ -29,130 +29,133 @@ import br.les.opus.gamification.services.MailService;
 @Service
 public class UserService {
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private RoleRepository roleDao;
-	
-	@Autowired
-	private Environment env;
-	
-	@Autowired
-	private UserRoleRepository userRoleDao;
-	
-	@Autowired
-	private ResourceRepository resourceDao;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private InviteRepository inviteDao;
+    @Autowired
+    private RoleRepository roleDao;
 
-	@Autowired
-	private ResetPasswordRepository resetPasswordDao;
+    @Autowired
+    private Environment env;
 
-	@Autowired
-	private MailService mailService;
-	
-	private List<Role> getDefaultRoles() {
-		String rolesList = env.getProperty("user.roles.default");
-		StringTokenizer tokenizer = new StringTokenizer(rolesList);
-		List<Role> roles = new ArrayList<>();
-		while (tokenizer.hasMoreTokens()) {
-			Role role = roleDao.findByAuthority(tokenizer.nextToken());
-			roles.add(role);
-		}
-		return roles;
-	}
-	
-	/**
-	 * Adds the default roles to a specified user
-	 * @param user
-	 */
-	public void loadDefaultRoles(User user) {
-		List<Role> defaultRoles = this.getDefaultRoles();
-		for (Role role : defaultRoles) {
-			UserRole userRole = new UserRole();
-			userRole.setRole(role);
-			userRole.setUser(user);
-			userRoleDao.save(userRole);
-		}
-	}
-	
-	public User loadRolesAndResorces(User user) {
-		List<Role> roles = roleDao.findAllByUser(user);
-		user.setRoles(roles);
-		
-		List<Resource> resources = resourceDao.findAllByUser(user);
-		user.setResources(resources);
-		return user;
-	}
+    @Autowired
+    private UserRoleRepository userRoleDao;
 
-	public void generateInviteID(User user){
-		Invite invite = user.getInvite();
+    @Autowired
+    private ResourceRepository resourceDao;
 
-		inviteDao.save(invite);
-	}
-	
-	/**
-	 * Creates a new user along with its default roles
-	 * @param user
-	 * @return
-	 */
-	public User save(User user) {
-		Player player = new Player(user);
-		User newUser = userRepository.save(player);
-		loadDefaultRoles(newUser);
-		generateInviteID(newUser);
-		return newUser;
-	}
+    @Autowired
+    private InviteRepository inviteDao;
 
-	/**
-	 * Retrieve a user using its identification token
-	 * @param token
-	 * @return
-	 */
+    @Autowired
+    private ResetPasswordRepository resetPasswordDao;
+
+    @Autowired
+    private MailService mailService;
+
+    private List<Role> getDefaultRoles() {
+        String rolesList = env.getProperty("user.roles.default");
+        StringTokenizer tokenizer = new StringTokenizer(rolesList);
+        List<Role> roles = new ArrayList<>();
+        while (tokenizer.hasMoreTokens()) {
+            Role role = roleDao.findByAuthority(tokenizer.nextToken());
+            roles.add(role);
+        }
+        return roles;
+    }
+
+    /**
+     * Adds the default roles to a specified user
+     *
+     * @param user
+     */
+    public void loadDefaultRoles(User user) {
+        List<Role> defaultRoles = this.getDefaultRoles();
+        for (Role role : defaultRoles) {
+            UserRole userRole = new UserRole();
+            userRole.setRole(role);
+            userRole.setUser(user);
+            userRoleDao.save(userRole);
+        }
+    }
+
+    public User loadRolesAndResorces(User user) {
+        List<Role> roles = roleDao.findAllByUser(user);
+        user.setRoles(roles);
+
+        List<Resource> resources = resourceDao.findAllByUser(user);
+        user.setResources(resources);
+        return user;
+    }
+
+    public void generateInviteID(User user) {
+        Invite invite = user.getInvite();
+
+        inviteDao.save(invite);
+    }
+
+    /**
+     * Creates a new user along with its default roles
+     *
+     * @param user
+     * @return
+     */
+    public User save(User user) {
+        Player player = new Player(user);
+        User newUser = userRepository.save(player);
+        loadDefaultRoles(newUser);
+        generateInviteID(newUser);
+        return newUser;
+    }
+
+    /**
+     * Retrieve a user using its identification token
+     *
+     * @param token
+     * @return
+     */
 //	public User loadUserByToken (String token){
 //		return userRepository.findUserByInvitationToken(token);
 //
 //	}
+    public void changePassword(User user) {
+        ResetPassword resetPassword = new ResetPassword();
+        resetPassword.setEmail(user.getUsername());
 
-	public void changePassword (User user){
-		ResetPassword resetPassword = new ResetPassword();
-		resetPassword.setEmail(user.getUsername());
+        String message = "Por favor, acesse o seguinte link para alterar sua senha:\n";
+        message += env.getProperty("host.default") + "password/renew?token-reset=";
+        message += resetPassword.getHashedToken();
 
-		String message = "Please access the following link to reset your password:\n" +
-				"http://vazazika.inf.puc-rio.br/password/renew?token-reset=" + resetPassword.getHashedToken();
+        mailService.setSubject("Password Reset");
+        mailService.setTo(user.getUsername());
+        mailService.setText(message);
 
-		mailService.setSubject("Password Reset");
-		mailService.setTo(user.getUsername());
-		mailService.setText(message);
+        mailService.run();
 
-		mailService.run();
+        resetPasswordDao.save(resetPassword);
+    }
 
-		resetPasswordDao.save(resetPassword);
-	}
+    public User resetPassword(String tokenReset, String newPassword) {
 
-	public User resetPassword(String tokenReset, String newPassword){
+        ResetPassword resetPassword = resetPasswordDao.findToken(tokenReset);
 
-		ResetPassword resetPassword = resetPasswordDao.findToken(tokenReset);
+        if (resetPassword == null) {
+            throw new BadCredentialsException("Token não encontrado ou já usado");
+        }
+        Calendar cal = Calendar.getInstance();
+        if ((resetPassword.getExpirationDate()
+                .getTime() - cal.getTime()
+                .getTime()) <= 0) {
+            throw new BadCredentialsException("O token informado está expirado");
+        }
 
-		if (resetPassword == null){
-			throw new BadCredentialsException("Token não encontrado ou já usado");
-		}
-		Calendar cal = Calendar.getInstance();
-		if ((resetPassword.getExpirationDate()
-				.getTime() - cal.getTime()
-				.getTime()) <= 0) {
-			throw new BadCredentialsException("O token informado está expirado");
-		}
+        User user = userRepository.findByUsername(resetPassword.getEmail());
 
-		User user = userRepository.findByUsername(resetPassword.getEmail());
+        user.setPassword(DigestUtils.md5Hex(newPassword));
 
-		user.setPassword(DigestUtils.md5Hex(newPassword));
+        resetPasswordDao.delete(resetPassword.getId());
 
-		resetPasswordDao.delete(resetPassword.getId());
+        return user;
 
-		return user;
-
-	}
+    }
 }
