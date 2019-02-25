@@ -9,11 +9,13 @@ import br.les.opus.gamification.domain.HealthAgent;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.vividsolutions.jts.geom.Point;
@@ -23,6 +25,8 @@ import br.les.opus.commons.persistence.SpatialHibernateAbstractRepository;
 import br.les.opus.commons.persistence.builders.CriteriaBuilder;
 import br.les.opus.commons.persistence.spatial.DistanceResult;
 import br.les.opus.dengue.core.domain.PointOfInterest;
+
+import javax.swing.*;
 
 @Repository
 public class PointOfInterestRepository extends SpatialHibernateAbstractRepository<PointOfInterest, Long>{
@@ -88,6 +92,7 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 			builder.addSort(pageable.getSort());
 		}
 
+
 		Criteria criteria = builder.getBuiltCriteria();
 
 
@@ -109,6 +114,7 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 
 		List<PointOfInterest> content3 = getUniqueObjects(criteria.list());
 
+		criteria.addOrder(Order.asc("id"));
 		criteria.setFirstResult(pageable.getOffset());
 		criteria.setMaxResults(pageable.getPageSize());
 
@@ -135,7 +141,6 @@ public class PointOfInterestRepository extends SpatialHibernateAbstractRepositor
 		dbr.setPointOfInterestPage(page);
 		dbr.setPercentByStates(content2.size());
 
-		System.out.println("SAINDO DE BUSCA POR FILTRO -------------");
 
 		return dbr;
 	}

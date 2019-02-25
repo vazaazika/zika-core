@@ -23,28 +23,28 @@ public class Player extends User {
 	@Length(max = 100)
 	@Column(nullable = false, unique=true)
 	private String nickname;
-	
+
 	@Column(nullable = false)
 	private Long xp;
-	
+
 	@Column(nullable = false)
 	private Integer level;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "player")
 	private List<PerformedTask> performedTasks;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "player")
 	private List<Membership> memberships;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "player")
 	private List<TaskGroupProgression> progressions;
-	
+
 	@Transient
 	private Team team;
-	
+
 	public Player(User user) {
 		this();
 		this.setName(user.getName());
@@ -52,30 +52,31 @@ public class Player extends User {
 		this.setPassword(user.getPassword());
 		this.setNickname(user.getUsername());
 	}
-	
+
 	public Player() {
 		super();
+		this.nickname = "";
 		this.xp = 0l;
 		this.level = 1;
 	}
-	
+
 	public Player(Integer level, String nickname, Long xp) {
 		super();
 		this.level = level;
 		this.nickname = nickname;
 		this.xp = xp;
 	}
-	
+
 	@Transient
 	public Integer getXpCurrentLevel() {
 		return LevelingSystem.requiredXp(this.level);
 	}
-	
+
 	@Transient
 	public Integer getXpNextLevel() {
 		return LevelingSystem.requiredXp(this.level + 1);
 	}
-	
+
 	public void addXp(Integer xp) {
 		this.xp += xp;
 		this.level = LevelingSystem.computeLevel(this.xp.intValue());
@@ -129,11 +130,6 @@ public class Player extends User {
 		this.progressions = progressions;
 	}
 
-	@Override
-	public String toString() {
-		return "Player [nickname=" + nickname + " XP=" + xp + "]";
-	}
-
 	public Team getTeam() {
 		return team;
 	}
@@ -141,5 +137,5 @@ public class Player extends User {
 	public void setTeam(Team team) {
 		this.team = team;
 	}
-	
+
 }
