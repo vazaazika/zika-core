@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 @Service
 public class HealthAgentService {
@@ -42,14 +41,14 @@ public class HealthAgentService {
 
     /**
      * Creates a new user along with its default roles
-     * @param user
+     * @param healthAgent
      * @return
      */
-    public HealthAgent save(HealthAgent user) {
-        HealthAgent newUser = userRepository.save(user);
+    public HealthAgent save(HealthAgent healthAgent) {
+        HealthAgent newUser = healthAgentRepository.save(healthAgent);
         loadDefaultRoles(newUser);
         loadRolesAndResorces(newUser);
-        //generateInviteID(newUser);
+        // generateInviteID(newUser);
         return newUser;
     }
 
@@ -68,15 +67,21 @@ public class HealthAgentService {
     }
 
     private List<Role> getDefaultRoles() {
-        String rolesList = env.getProperty("user.roles.healthagent");
-        StringTokenizer tokenizer = new StringTokenizer(rolesList);
+
+        List<String> roleLists = new ArrayList<>();
+        roleLists.add(env.getProperty("user.roles.healthagent"));
+        roleLists.add(env.getProperty("user.roles.default"));
+
         List<Role> roles = new ArrayList<>();
-        while (tokenizer.hasMoreTokens()) {
-            Role role = roleDao.findByAuthority(tokenizer.nextToken());
+
+        for (int i = 0; i< roleLists.size(); i++){
+            Role role = roleDao.findByAuthority(roleLists.get(i));
             roles.add(role);
         }
+
         return roles;
     }
+
 
     public HealthAgent loadRolesAndResorces(HealthAgent user) {
         List<Role> roles = roleDao.findAllByUser(user);
@@ -89,13 +94,14 @@ public class HealthAgentService {
 
 
     public HealthAgent findById(User user) {
-        HealthAgent  healthAgent = healthAgentRepository.findById(user.getId());
+        System.out.println("aqui:" + user.toString());
+        HealthAgent  healthAgent = (HealthAgent) userRepository.findOne(user.getId());
         loadRolesAndResorces(healthAgent);
         return healthAgent;
     }
 
     public HealthAgent findById(Long id) {
-        HealthAgent  healthAgent = healthAgentRepository.findById(id);
+        HealthAgent  healthAgent = healthAgentRepository.findOne(id);
         loadRolesAndResorces(healthAgent);
         return healthAgent;
     }

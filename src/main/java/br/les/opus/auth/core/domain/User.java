@@ -37,6 +37,7 @@ import br.les.opus.dengue.core.domain.PointOfInterest;
  *
  * @author Diego Cedrim
  */
+
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @UniqueUsername(payload = {}) //ensures validation on insert/update regarding user name
@@ -73,6 +74,8 @@ public class User implements UserDetails, IdAware<Long> {
 
 	private Boolean locked;
 
+	//private UserType userType;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<PointOfInterest> reports;
@@ -80,7 +83,7 @@ public class User implements UserDetails, IdAware<Long> {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Device> devices;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<PoiStatusUpdate> poiUpdates;
@@ -292,12 +295,6 @@ public class User implements UserDetails, IdAware<Long> {
 	}
 
 	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", username="
-				+ username + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -341,7 +338,7 @@ public class User implements UserDetails, IdAware<Long> {
 	public void setAvatar(Picture avatar) {
 		this.avatar = avatar;
 	}
-	
+
 	public List<PoiStatusUpdate> getPoiUpdates() {
 		return poiUpdates;
 	}

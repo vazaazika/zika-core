@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "health_agent")
 @PrimaryKeyJoinColumn(name = "user_id")
-public class HealthAgent extends User {
+public class HealthAgent extends Player {
 
     @NotNull
     @Length(max = 100)
@@ -32,11 +32,11 @@ public class HealthAgent extends User {
     private String city;
 
 
-    public HealthAgent(User user) {
-        this();
-        this.setName(user.getName());
-        this.setUsername(user.getUsername());
-        this.setPassword(user.getPassword());
+    public HealthAgent(User user, String city, String state, String organization) {
+        super(user);
+        this.setCity(city);
+        this.setState(state);
+        this.setOrganization(organization);
     }
 
     public HealthAgent() {
@@ -65,14 +65,5 @@ public class HealthAgent extends User {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    @Override
-    public String toString() {
-        return "HealthAgent{" +
-                "organization='" + organization + '\'' +
-                ", state='" + state + '\'' +
-                ", city='" + city + '\'' +
-                '}';
     }
 }
