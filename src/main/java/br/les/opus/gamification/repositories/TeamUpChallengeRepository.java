@@ -95,7 +95,7 @@ public class TeamUpChallengeRepository extends HibernateAbstractRepository<TeamU
 		
 		Team team = membership.getTeam();
 		
-		TeamUpChallenge teamUp = findOneByTeam(team.getId());
+		TeamUpChallenge teamUp = findOneByTeamOpenChallenge(team.getId());
 		
 		if(teamUp == null) {
 			return false;
@@ -104,11 +104,13 @@ public class TeamUpChallengeRepository extends HibernateAbstractRepository<TeamU
 		}
 	}
 	
-	public TeamUpChallenge findOneByTeam(Long teamId) {
-		String hql = "from TeamUpChallenge where challenger.id = :cId or rival.id = :rId";
+	public TeamUpChallenge findOneByTeamOpenChallenge(Long teamId) {
+		String hql = "from TeamUpChallenge where (challenger.id = :cId or rival.id = :rId) and complete = :cValue and status = :status ";
 		Query query = getSession().createQuery(hql);
 		query.setParameter("cId", teamId);
 		query.setParameter("rId", teamId);
+		query.setParameter("cValue", false);
+		query.setParameter("status", InvitationStatus.ACCEPTED.getValue());
 		
 		return (TeamUpChallenge) query.uniqueResult();
 	}

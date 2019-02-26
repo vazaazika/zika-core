@@ -68,7 +68,7 @@ public class GamificationService {
 		PerformedTask performedTask = performedTaskService.register(task, player);
 		taskGroupService.trackProgress(performedTask);
 		
-		Player updatedPlayer = playerDao.findOne(player.getId());
+		//Player updatedPlayer = playerDao.findOne(player.getId());
 		
 
 	}
